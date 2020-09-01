@@ -1,0 +1,26 @@
+#!/bin/bash
+#licence GPLv2 ; this scripts designed by IZAMUKARERA 2005.10.1 update 2017.7.29
+end(){
+	echo done
+	exit 0
+}
+echo -n "Input group:"
+read G
+if [ -z "$G" ] ; then echo group is empty ; end  ; fi
+echo -n "Input Nuber of creat user:"
+read M
+if [ -z "$M" ] ; then echo count is empty; end ; fi
+echo -n "Input Password every user's:"
+read P
+if [ -z "$P" ] ; then echo password is empty; end ; fi
+GR=`cat /etc/group|egrep $G|awk 'BEGIN {FS=":"};{printf("%s",$1)}'` 
+if [ $GR"X" != $G"X" ] ; then groupadd  $G ; fi
+C=1
+while [ "$M" -ge "$C" ]
+do
+ useradd -s /sbin/nologin $G$C -g $G
+ echo $P|passwd $G$C --stdin
+ echo adduser $G$C success!
+# cp -ap ~/.bash_profile /home/$G$C
+ C=`expr $C + 1`
+done

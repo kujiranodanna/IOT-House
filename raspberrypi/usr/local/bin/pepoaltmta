@@ -1,0 +1,34 @@
+# pepoaltmta
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2005.10.1 alternatives for MTA.
+# last up-date 2005.10.1
+#!/bin/bash
+if [ $# != 1 ] ; then
+	echo "usage; pepoaltmta sendmail OR pepoaltmta postfix"
+exit
+fi
+
+cat>/etc/alternatives/pepomtaex<<END
+#!/bin/bash
+rm -f mta
+rm -f mta-aliasesman
+rm -f mta-mailq
+rm -f mta-mailqman
+rm -f mta-newaliases
+rm -f mta-newaliasesman
+rm -f mta-rmail
+END
+ 
+if [  $1"X" == "postfixX" ] ;then
+        `ls -l /etc/alternatives/|awk 'BEGIN{FS=" "};/->/{sub(/\.sendmail/,".postfix",$11);print "ln -s " $11 " "$9}' >>/etc/alternatives/pepomtaex`
+        chmod 500 /etc/alternatives/pepomtaex
+elif [  $1"X" == "sendmailX" ] ;then
+	`ls -l /etc/alternatives/|awk 'BEGIN{FS=" "};/->/{sub(/\.postfix/,".sendmail",$11);print "ln -s " $11 " "$9}' >>/etc/alternatives/pepomtaex`
+	chmod 500 /etc/alternatives/pepomtaex
+else 
+	echo !bad usage: $0 $1
+	exit
+fi
+#exit
+(cd /etc/alternatives/;./pepomtaex)
+rm -f /etc/alternatives/pepomtaex
+echo "done pepoaltmta MTA-->"$1

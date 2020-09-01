@@ -1,0 +1,278 @@
+#!/bin/bash
+# pepostart_remote-hand ; start remote-hand for raspberry pi or zero
+# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2011.11.28 update 2019.12.11
+/etc/init.d/networking stop
+/etc/init.d/apache2 stop
+/etc/init.d/exim4 stop
+/etc/init.d/rsyslog stop
+WORKDIR=/www/remote-hand
+WORKDIR_TMP=/www/remote-hand/tmp
+MAIL_CONF_ORG="/etc/exim4/passwd.client.org"
+MAIL_CONF="/etc/exim4/passwd.client"
+tMAIL_CONF=${WORKDIR_TMP}/.passwd.client
+IOTHOSECONF_TMP=${WORKDIR_TMP}/iothouse_config.txt
+IOTHOSECONF=/boot/iothouse_config.txt
+WPA_CONF=/etc/wpa_supplicant/wpa_supplicant.conf
+tWPA_CONF=${WORKDIR_TMP}/wpa_supplicant.conf
+NETWORK_CONF=/etc/network/interfaces
+tNETWORK_CONF=${WORKDIR_TMP}/interfaces
+if [ ! -e ${WORKDIR} ];then
+  [ ! -e /www ] && mkdir -p /www
+  [ ! -e ${WORKDIR} ] && mkdir -p ${WORKDIR_TMP}
+  [ ! -e /www/tmp ] && mkdir -p /www/tmp
+  chmod 777 /www/tmp ;chmod +t /www/tmp/
+  if [ -e /usr/src/pepolinux/log.tar.gz ];then
+    cd /var ; rm -rf log ; tar xfz /usr/src/pepolinux/log.tar.gz
+    chown root.root /var/log
+  fi
+  if [ -e /usr/src/pepolinux/spool.tar.gz ];then
+    cd /www/ ; tar xfz /usr/src/pepolinux/spool.tar.gz
+    cd /var ; rm -rf spool ; ln -s /www/spool spool
+  fi
+  cd /usr/bin/ ; rm -f dio*
+  mkdir -p /www/pepolinux ; cd /www/pepolinux ; tar xfz /usr/src/pepolinux/pepolinux.tar.gz ; chown root.root /www/pepolinux
+  /etc/init.d/svscan start
+  cd /var ; rm -rf mail ; mkdir /www/mail ; chown mail.mail /www/mail ; ln -s /www/mail mail
+  cd /etc/exim4 ; cp -f passwd.client.org passwd.client
+  if [ -e /usr/src/pepolinux/back_up.tar.gz ];then
+    cd ${WORKDIR} ; tar xfz /usr/src/pepolinux/back_up.tar.gz
+    cd ${WORKDIR_TMP} ; rm -f LCK* .*.rrd .*start_time *.png *.mp4 *.jpg *.webm gpio_rrdfetch.txt
+  else
+    cd ${WORKDIR} ; tar xfz /usr/src/pepolinux/remote_pi.tar.gz
+    rm -f dio_sh.tar.gz
+  fi
+  sync
+  if [ -e ${WORKDIR}/dio_sh.tar.gz ];then
+    cd /usr/bin ; tar xfz ${WORKDIR}/dio_sh.tar.gz
+  fi
+  if [ -e /usr/src/pepolinux/startup.s ];then
+    /usr/src/pepolinux/startup.s
+  else
+    [ -e /usr/src/pepolinux/back_up.tar.gz ] && rm -f /usr/src/pepolinux/back_up.tar.gz
+    [ -e /usr/src/pepolinux/back_up_log.tar.gz ] && rm -f /usr/src/pepolinux/back_up_log.tar.gz
+    cat >${tMAIL_CONF}<<END
+# password file used when the local exim is authenticating to a remote
+# host as a client.
+#
+# see exim4_passwd_client(5) for more documentation
+#
+# Example:
+### target.mail.server.example:login:password
+gmail-smtp.l.google.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
+*.google.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
+smtp.gmail.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
+END
+    mv ${tMAIL_CONF} ${MAIL_CONF_ORG} ; cp ${MAIL_CONF_ORG} ${MAIL_CONF}
+    update-exim4.conf
+  fi
+  chown www-data.www-data ${WORKDIR} ${WORKDIR_TMP}
+  if [ -e ${WORKDIR_TMP}/.ping_watch.cron ];then
+    crontab -u www-data ${WORKDIR_TMP}/.ping_watch.cron
+  fi
+  if [ -e ${WORKDIR_TMP}/.pepogmail4dio.conf ];then
+    . ${WORKDIR_TMP}/.pepogmail4dio.conf
+    cat >/etc/exim4/passwd.client<<END
+gmail-smtp.l.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+*.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+smtp.gmail.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+END
+    update-exim4.conf
+  fi
+  WLAN0=`ip link |grep wlan0|wc -c`
+  ETH0=`ip link |grep eth0|wc -c`
+  ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
+  [ $WLAN0 != 0 ] && WLAN_YES_NO="YES" || WLAN_YES_NO="NO"
+  [ $ETH0 != 0 ] && ETH_YES_NO="YES" || ETH_YES_NO="NO"
+  [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
+  [ $ZEROW_YES_NO = "NO" ] && HOST_NAME=iot011 || HOST_NAME=iot000
+  if [ $ZEROW_YES_NO = "YES" -a $WLAN_YES_NO = "YES" ];then
+    WIFIADDR=`ifconfig wlan0|awk '/ether/{printf $2}'`
+  fi
+  if [ $ZEROW_YES_NO = "NO" -a $WLAN_YES_NO = "YES" ];then
+    WIFIADDR=`ifconfig wlan0|awk '/ether/{printf $2}'`
+  fi
+  if [ ! -e $IOTHOSECONF ];then
+    cat >$IOTHOSECONF_TMP<<EOF
+# Please describe the setting for IOTHouse below
+# Wireless address of this machine -->  ${WIFIADDR}
+# The following is an example of a static ip address
+#HOST_NAME=${HOST_NAME}
+#SSID=iothouse999
+#KEY=999iothouse
+#IP_ADDRESS=192.168.1.200/24
+#GATE_WAY=192.168.1.1
+#NAME_SERVER=8.8.8.8
+# end of an example
+
+# The following is an example of dynamic ip address
+# Access is ${HOST_NAME}.local
+#HOST_NAME=${HOST_NAME}
+#SSID=iothouse999
+#KEY=999iothouse
+#IP_ADDRESS=dhcp
+# end of an example
+
+HOST_NAME=
+SSID=
+KEY=
+IP_ADDRESS=
+GATE_WAY=
+NAME_SERVER=
+EOF
+    mv $IOTHOSECONF_TMP $IOTHOSECONF
+    if [ ${ETH_YES_NO} = "YES" ];then
+      cat >${tNETWORK_CONF}<<EOF
+auto lo
+iface lo inet loopback
+auto eth0
+allow-hotpulug eth0
+iface eth0 inet dhcp
+iface default inet dhcp
+EOF
+    fi
+    if [ $WLAN_YES_NO = "YES" ];then
+      cat >${tNETWORK_CONF}<<EOF
+auto lo
+iface lo inet loopback
+allow-hotpulug wlan0
+iface wlan0 inet dhcp
+wpa-conf ${WPA_CONF}
+iface default inet dhcp
+EOF
+    fi
+  else
+    . $IOTHOSECONF
+    cat >$IOTHOSECONF_TMP<<EOF
+# Please describe the setting for IOTHouse below
+# Wireless address of this machine -->  ${WIFIADDR}
+# The following is an example of a static ip address
+#HOST_NAME=${HOST_NAME}
+#SSID=iothouse999
+#KEY=999iothouse
+#IP_ADDRESS=192.168.1.200/24
+#GATE_WAY=192.168.1.1
+#NAME_SERVER=8.8.8.8
+# end of an example
+
+# The following is an example of dynamic ip address
+# Access is ${HOST_NAME}.local
+#HOST_NAME=${HOST_NAME}
+#SSID=iothouse999
+#KEY=999iothouse
+#IP_ADDRESS=dhcp
+# end of an example
+
+HOST_NAME=${HOST_NAME}
+SSID=${SSID}
+KEY=${KEY}
+IP_ADDRESS=${IP_ADDRESS}
+GATE_WAY=${GATE_WAY}
+NAME_SERVER=${NAME_SERVER}
+EOF
+    cp $IOTHOSECONF_TMP $IOTHOSECONF
+    if [ ${ETH_YES_NO} = "YES" ];then
+      if [ -z "${SSID}" -a -z "${KEY}" ];then
+        ifconfig wlan0 down
+        echo -en >${tWPA_CONF}
+        if [ "${IP_ADDRESS}" = "dhcp" -o "${IP_ADDRESS}" = "DHCP" -o -z "${IP_ADDRESS}" ];then
+          cat >${tNETWORK_CONF}<<EOF
+auto lo
+iface lo inet loopback
+auto eth0
+allow-hotpulug eth0
+iface eth0 inet dhcp
+iface default inet dhcp
+EOF
+        fi
+        if [ ! -z "${IP_ADDRESS}" -a ! -z "${GATE_WAY}" ];then
+          cat >${tNETWORK_CONF}<<EOF
+auto lo
+iface lo inet loopback
+auto eth0
+allow-hotpulug eth0
+iface eth0 inet static
+address ${IP_ADDRESS}
+gateway ${GATE_WAY}
+dns-nameservers ${NAME_SERVER}
+EOF
+        fi
+      fi
+    fi
+    if [ ${WLAN_YES_NO} = "YES" ];then
+      if [ ! -z "${SSID}" -a ! -z "${KEY}" ];then
+        cat >${tWPA_CONF}<<EOF
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+network={
+        scan_ssid=1
+        proto=WPA2
+        key_mgmt=WPA-PSK
+        pairwise=CCMP
+        group=CCMP
+EOF
+        wpa_passphrase $SSID $KEY  |awk '/#psk=/{next};/(ssid|psk=)/{printf("%s\n"),$0}' >>${tWPA_CONF}
+        echo "}" >>${tWPA_CONF}
+        iwconfig wlan0 power off
+        if [ "${IP_ADDRESS}" = "dhcp" -o "${IP_ADDRESS}" = "DHCP" -o -z "${IP_ADDRESS}" ];then
+          cat >${tNETWORK_CONF}<<EOF
+auto lo
+iface lo inet loopback
+auto wlan0
+allow-hotpulug wlan0
+iface wlan0 inet dhcp
+wpa-conf ${WPA_CONF}
+iface default inet dhcp
+EOF
+        fi
+        if [ ! -z "${IP_ADDRESS}" -a ! -z "${GATE_WAY}" ];then
+          cat >${tNETWORK_CONF}<<EOF
+auto lo
+iface lo inet loopback
+auto wlan0
+allow-hotpulug wlan0
+iface wlan0 inet static
+wpa-conf ${WPA_CONF}
+address ${IP_ADDRESS}
+gateway ${GATE_WAY}
+dns-nameservers ${NAME_SERVER}
+EOF
+        fi
+      else
+        echo -en >${tWPA_CONF}
+      fi
+    fi
+  fi
+  [ -e ${tNETWORK_CONF} ] && mv ${tNETWORK_CONF} ${NETWORK_CONF}
+  [ -e ${tWPA_CONF} ] && mv ${tWPA_CONF} ${WPA_CONF}
+  if [ ! -z "${HOST_NAME}" ];then
+    if [ $ZEROW_YES_NO = "YES" ];then
+      hostnamectl set-hostname ${HOST_NAME}
+    fi
+    if [ $ZEROW_YES_NO = "NO" ];then
+      hostname -b ${HOST_NAME}
+    fi
+    cat >/etc/hostname<<EOF
+${HOST_NAME}
+EOF
+      cat >/etc/hosts<<EOF
+:1		localhost ip6-localhost ip6-loopback
+fe00::0		ip6-localnet
+ff00::0		ip6-mcastprefix
+ff02::1		ip6-allnodes
+ff02::2		ip6-allrouters
+127.0.1.1	${HOST_NAME}
+EOF
+  fi
+else
+  echo remote-hand aredy running!
+fi
+/usr/local/bin/pepousbttyck
+echo -en >/home/pi/.bash_history
+echo -en >/root/.bash_history
+/etc/init.d/rsyslog restart
+/etc/init.d/networking restart
+/etc/init.d/ntp restart
+/etc/init.d/apache2 restart
+/etc/init.d/exim4 restart
+/etc/init.d/cron restart
+/etc/init.d/avahi-daemon restart
