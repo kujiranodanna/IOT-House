@@ -16,4 +16,4 @@ If it is judged that the outside air humidity is low and the underfloor exchange
 
 After playing with Raspberry Pi, let's practice home appliances and home security with IOT House.
 
-Binary image is available here　→ https://osdn.net/projects/pepolinux/releases/p15935
+Binary image "IOT-House_zero_w" is available here　→ https://osdn.net/projects/pepolinux/releases/p15935
