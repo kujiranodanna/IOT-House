@@ -1,6 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.15 update 2020.6.29
 # pepogpioi2crrdtool ; For lubuntu , and scripts to run the USB I2C Temperature&Humidity Data Base Create and Update.
-# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2018.1.15 update 2020.6.29
 # That to run a cron of 60 seconds interval.
 # add following 2 lines --> /etc/cron.d/pepogpioi2crrdtool
 #MAILTO=""
