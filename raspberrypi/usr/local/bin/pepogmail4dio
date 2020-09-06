@@ -2,7 +2,6 @@
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2020.7.27
 # pepogmail4dio ; For raspberry pi zero, and scripts to run the GPIO and other instructions in the G-mail.
-# licence GPLv3 ; the scripts designed by Isamu.Yamauchi, 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 #LANG=ja_JP.UTF-8
 RETRYTIME=10
