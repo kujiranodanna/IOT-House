@@ -1,6 +1,6 @@
 #! /bin/bash
-#
-## licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2018.6.30 update 2019.6.20 for raspberry pi zero W
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.6.30 update 2019.6.20
 # pepogpioctl for contorl gpio signal, input and output.
 # pepogpioctl $1:ch[0-9:b] [$2:0-f] [$3: timer->1 to 300000ms]
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
