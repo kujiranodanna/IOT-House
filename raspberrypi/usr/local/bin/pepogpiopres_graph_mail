@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Yamauchi Isamu 2019.7.18 update 2019.7.18
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.7.18 update 2019.7.18
 # pepogpiopres_graph_mail ; Get the GPIO pepogpiopres_graph_mail graph & send mail
 # pepogpiopres_graph_mail mail_to subject message
 MAILFROM=$1
