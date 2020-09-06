@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2018.1.8 update 2020.6.30
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2020.6.30
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
