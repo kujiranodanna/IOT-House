@@ -1,6 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2015.2.10 update 2018.2.24 for i386 & raspberry pi
-# pepotocsctl for contorl TWE-Lite DIP:Ver1.6 or later(Tocos wireless engine) digital-IN/digital-OUT signal.
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2018.2.24 for i386 & raspberry pi.
+# pepotocsctl for contorl TWE-Lite DIP:Ver1.6 or later(monowireless engine) digital-IN/digital-OUT signal.
 # pepotocsctl $1:ch[0-7] [$2:0-f] [$3: timer->1 to 300000ms]
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 usage(){
