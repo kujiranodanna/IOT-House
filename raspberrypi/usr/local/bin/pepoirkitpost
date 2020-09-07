@@ -1,8 +1,10 @@
 #!/bin/bash
 PATH=$PATH:/usr/local/bin
-# pepoirkitpost,Post of IR data for IRKit
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2014.10.17 update 2018.2.24
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.10.17 update 2018.2.24
 # pepoirkitpost ir_num timer
+# pepoirkitpost,Post of IR data for IRKit
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 
 DIR=/www/remote-hand/tmp
 IRKIT_IP=$DIR/.IRKit_IP
 DOCFILE=$DIR/irkit_out_document
