@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2020.6.30
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.7.15 update 2020.6.30
 # pepojsond is for daemon make json data
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
