@@ -1,7 +1,8 @@
 #!/bin/bash
-#This scripts sample for ppp chat 
-#licence GPLv2 ; this scripts designed by IZAMUKARERA 2007.3.18 ; update 2017.7.13
-#usage /usr/local/bin/epicon -l /dev/ttyACM0 -c /usr/local/bin/pepop2pchat
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2007.3.18 ; update 2017.7.13
+# This scripts sample for ppp chat 
+# usage /usr/local/bin/epicon -l /dev/ttyACM0 -c /usr/local/bin/pepop2pchat
 CLR="\x1b[2J"
 RED="\x1b[41m"
 BULE="\x1b[44m"
