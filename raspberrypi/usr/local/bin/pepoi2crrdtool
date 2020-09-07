@@ -1,6 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.5.3 update 2020.7.4
 # pepoi2crrdtool ; For raspberry pi or Iubuntu, and scripts to run the I2C Temperature&Humidity Data Base Create and Update.
-# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2016.5.3 update 2020.7.4
 # That to run a cron of 300 seconds interval.
 # add following 2 lines --> /etc/cron.d/pepoi2crrdtool
 #MAILTO=""
