@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2013.10.12 update 2020.7.27
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2020.7.27
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 #VIDEOPG=ffmpeg
