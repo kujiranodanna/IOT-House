@@ -1,6 +1,7 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2015.2.20 update 2020.8.22
-# Scan piface & CPU Temp ,GPIO Temper, I2C Hum&Temp for rasberry pi.
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.20 update 2020.8.22
+# Scan piface & CPU Temp ,GPIO , I2C Hum&Temp daemon for rasberry pi.
 # pepopifaced
 PIFACE_CTL="/usr/local/bin/pepopiface_local 8"
 PIFACE_CMD_1ST="/usr/local/bin/pepopiface_local"
@@ -131,11 +132,11 @@ while true; do
   fi
 #i2c Temperature,Humidity & CPU Temperature & GPIO Temperature convert to digital set
 if [ -e ${DIREADJSON} ];then
-  CPU_TEMP=`cat ${DIREADJSON} | jq -r .cpu_temp | awk '{gsub(/Åé/,"",$0);split($0,J,".");printf J[1]}'`
+  CPU_TEMP=`cat ${DIREADJSON} | jq -r .cpu_temp | awk '{gsub(/¬Å≈Ω/,"",$0);split($0,J,".");printf J[1]}'`
   if [ ! -z "$CPU_TEMP" -a ! -z "${slice_ai[16]}" ];then
     [ $CPU_TEMP -lt ${slice_ai[16]} ] && old[24]=0 || old[24]=1
   fi
-  GPIO_TEMP=`cat ${DIREADJSON} | jq -r .gpio_i2c.temp | awk '{gsub(/Åé/,"",$0);split($0,J,".");printf J[1]}'`
+  GPIO_TEMP=`cat ${DIREADJSON} | jq -r .gpio_i2c.temp | awk '{gsub(/¬Å≈Ω/,"",$0);split($0,J,".");printf J[1]}'`
   if [ ! -z "$GPIO_TEMP" -a ! -z "${slice_ai[17]}" ];then
     [ $GPIO_TEMP -lt ${slice_ai[17]} ] && old[25]=0 || old[25]=1
   fi
@@ -143,7 +144,7 @@ if [ -e ${DIREADJSON} ];then
   if [ ! -z "$GPIO_HUM" -a ! -z "${slice_ai[18]}" ];then
     [ $GPIO_HUM -lt ${slice_ai[18]} ] && old[26]=0 || old[26]=1
   fi
-  I2C_TEMP=`cat ${DIREADJSON} | jq -r .i2ctemp.temp | awk '{gsub(/Åé/,"",$0);split($0,I,".");printf I[1]}'`
+  I2C_TEMP=`cat ${DIREADJSON} | jq -r .i2ctemp.temp | awk '{gsub(/¬Å≈Ω/,"",$0);split($0,I,".");printf I[1]}'`
   if [ ! -z "$I2C_TEMP" -a ! -z "${slice_ai[19]}" ];then
     [ $I2C_TEMP -lt ${slice_ai[19]} ] && old[27]=0 || old[27]=1
   fi
