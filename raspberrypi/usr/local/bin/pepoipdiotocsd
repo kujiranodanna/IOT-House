@@ -1,6 +1,8 @@
 #!/bin/bash
-# pepoipdiotocsd ; For raspberry pi or i386, and scripts to run the Remote DIO and TOCOS .
-# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2017.7.23 update 2020.6.30
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.23 update 2020.6.30
+# pepoipdiotocsd ; For raspberry pi or i386, and scripts to run the Remote DIO and Twlite.
+# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 
 #
 RETRYTIME=20
 RETRY=1
