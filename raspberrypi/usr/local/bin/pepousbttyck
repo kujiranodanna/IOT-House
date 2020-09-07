@@ -1,7 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2017.11.5 update 2019.9.19
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.11.5 update 2019.9.19
 # pepousbttyck for detect ANDDIO,TOCOS,MODEM,CP2112
-#
 prog=pepousbttyck
 DIR=/www/remote-hand/tmp
 ALIAS_DI=$DIR/.alias_di
