@@ -1,6 +1,7 @@
 #!/bin/bash
-# pepoipdio ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
-# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2017.7.27 update 2020.1.14
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 2017.7.27 update 2020.1.14
+# pepoipdio ; For raspberry pi , and scripts to run the Remote DIO and Twelite.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 RETRYTIME=20
 RETRY=1
