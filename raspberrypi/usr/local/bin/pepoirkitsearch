@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2014.9.14 update 2018.2.24
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.9.14 update 2018.2.24
 # pepoirkitsearch is a tool to find the IRKit in rasberry_pi
 WORKFILE=/www/remote-hand/tmp/irkit_out_document
 prog=pepoirkitsearch
