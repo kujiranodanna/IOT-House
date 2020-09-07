@@ -1,6 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2016.1.2 update 2019.10.25
-# Tocos-TWELITE & ToCoStick wireless dio, ai, i2c, for rasberry pi.
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2019.10.25
+# monowireless TWELITE & ToCoStick wireless dio, ai, i2c, for rasberry pi.
 DIR=/www/remote-hand/tmp
 CMDWIREDIO="/usr/local/bin/pepotocosctl 0"
 CMDWIREAI="/usr/local/bin/pepotocosctl 6"
