@@ -1,5 +1,6 @@
 #!/bin/bash
-#licence GPLv2 ; this scripts designed by IZAMUKARERA 2010.12.12 update 2018.2.24
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2010.12.12 update 2018.2.24
 # get pepopodcastget mp3
 # XMLにpodcastのURLを登録
 #XML=http://podcast.1242.com/ps/index.xml
