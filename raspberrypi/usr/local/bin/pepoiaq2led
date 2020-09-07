@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2019.6.16 update 2019.7.28
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2019.7.28
 # Scan GPIO IAQ & LED Display for rasberry pi zero W.
 # pepoiaq2led
 DIR=/www/remote-hand/tmp
