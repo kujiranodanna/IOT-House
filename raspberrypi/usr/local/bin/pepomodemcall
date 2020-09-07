@@ -1,7 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.4.10 update 2019.9.18
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.4.10 update 2019.9.18
 # FOMA cellular phone or modem dial management for rasberry pi
-# /pepolinux/phone/run
 DIALDIR=/www/remote-hand/tmp
 CALL=/www/pepolinux/phone/phone_call
 DIALMODE=/etc/ppp/ppp-dailer-mode
