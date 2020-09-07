@@ -1,6 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2018.4.14 update 2018.4.14
-# pepomsgsendmail 
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.4.14 update 2018.4.14
+# pepomsgsendmail send mail 
 # pepomsgsendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpg
 if [ $# -lt 3 -o $# -gt 4 ];then
   echo "usage: $0 mail_to subject message | image(remote.mp4|remote.jpg)"
