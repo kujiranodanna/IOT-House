@@ -1,6 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2020.7.21
 # pepoliveserver ;  liveserver for raspberry pi
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2011.11.28 update 2020.7.21
 # pepoliveserver dev timer
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 WORKDIR=/www/remote-hand/tmp
