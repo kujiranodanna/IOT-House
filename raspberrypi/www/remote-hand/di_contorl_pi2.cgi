@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2020.6.29
+
 PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
