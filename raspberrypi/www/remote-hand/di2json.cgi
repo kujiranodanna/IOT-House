@@ -1,5 +1,7 @@
 #!/bin/bash
-#<META NAME="Build" content="2018.2.24">
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+
 DIRD=/www/remote-hand/tmp/.di_read_data
 JSONRD=/www/remote-hand/tmp/.di_read_data.json
 [ -e "$JSONRD" ] && rm -f $JSONRD && touch $JSONRD || touch $JSONRD
