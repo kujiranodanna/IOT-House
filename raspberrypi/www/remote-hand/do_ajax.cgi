@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
 DIOCMD=$DIR/do_ajax.pepocmd
