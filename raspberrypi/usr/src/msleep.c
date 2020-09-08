@@ -1,4 +1,8 @@
-/* licence GPLv2 ; this is milliseconds to sleep by Isamu.Yamauchi 2011.6.25 update 2017.12.2 */
+/*
+ The MIT License
+ Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.6.25 update 2017.12.2
+ milliseconds to sleep
+*/
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/time.h>
