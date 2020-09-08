@@ -1,3 +1,5 @@
+![IOT-House_20200831](https://user-images.githubusercontent.com/70492305/92525801-70698580-f25f-11ea-92f0-383490cd34c0.jpeg)
+
 We are developing home appliance automation, crime prevention, disaster prevention, and voice control systems.
 
 Check the temperature of the room and drive the cooler on the go.
