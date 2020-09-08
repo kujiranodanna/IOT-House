@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.10.28
+
 echo -en '
 <HTML>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
