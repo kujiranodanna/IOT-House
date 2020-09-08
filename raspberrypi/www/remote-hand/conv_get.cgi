@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2013.2.24 update 2018.10.14
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.2.24 update 2018.10.14
 # utilities for QUERY_STRING
 QUERY_CMD=/www/remote-hand/tmp/.QUERY_STRING.cmd
 #echo "$QUERY_STRING" >/www/remote-hand/tmp/QUERY_STRING
