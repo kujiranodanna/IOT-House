@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.7.9
+
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
@@ -9544,7 +9547,7 @@ web password
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./wait_for.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>
-<TR><TD><FONT SIZE="-1">&copy;2019-2022 pepolinux.com&nbsp;
+<TR><TD><FONT SIZE="-1">&copy;2020-2022 pepolinux.com&nbsp;
 <span id="server_time" style="text-align:left"></span>&nbsp;
 </TR>
 </TABLE>
