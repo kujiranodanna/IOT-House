@@ -1,5 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2012.7.11 update 2018.2.24
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2018.2.24
+
 # pepogmail4jpg.cgi ; get video or jpeg & send mail
 # pepogmail4jpg mail_to subject message
 # /usr/local/bin/peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.mp4
@@ -37,6 +39,8 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Video is being retrieved</TD></TR>
 </TABLE>
+<HR>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
