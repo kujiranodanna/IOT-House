@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.10.14
+
 WORKDIR=/www/remote-hand/tmp
 DSFILE=${WORKDIR}/.gpio_temp_hum.rrd
 FETCHDATA=${WORKDIR}/gpio_rrdfetch.txt
@@ -36,7 +39,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>GPIO rrdtool fetch create</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 if [ -e ${DSFILE} ];then
