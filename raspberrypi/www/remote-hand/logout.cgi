@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+
 PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
@@ -33,7 +36,7 @@ function blink() {
 </TABLE>
 <BR>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2018-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 
