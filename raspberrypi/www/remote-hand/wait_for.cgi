@@ -1,4 +1,6 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.12.15
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -72,7 +74,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 exit -1
