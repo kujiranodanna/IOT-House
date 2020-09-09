@@ -1,5 +1,7 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2015.5.17 update 2017.9.1
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.5.17 update 2017.9.1
+
 # podcastgets.cgi for podacasts auto get contorol 
 echo -en '
 <HTML>
@@ -33,7 +35,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>Podcast get set in</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
