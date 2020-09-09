@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.6.3
+
 echo -en '
 <HTML>
 <HEAD>
@@ -32,7 +35,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>GPIO Pressure graph create</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 WORKDIR=/www/remote-hand
