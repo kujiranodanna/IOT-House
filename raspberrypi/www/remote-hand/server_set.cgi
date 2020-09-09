@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.6.21
+
 echo -en '
 <HTML>
 <HEAD>
