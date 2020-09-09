@@ -1,7 +1,8 @@
-/* PepoLinux remote-hand_pi.js  ver0.11 2020.8.7
- * Copyright (c) 2019-2022 Yamauchi.Isamu
- * GPL v3
- * http://www.pepolinux.com
+/* 
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.8.7
+
+* remote-hand_pi.js  ver0.13 2020.8.7
 */
 function blink(){
   if (!document.all){ return; }
