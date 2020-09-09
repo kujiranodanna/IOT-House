@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.5.8
+
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 WORKDIR=/www/remote-hand/tmp
 CMD=$WORKDIR/liveserver.pepocmd
@@ -34,6 +37,8 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>動画配信中です</TD></TR>
 </TABLE>
+<HR>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
