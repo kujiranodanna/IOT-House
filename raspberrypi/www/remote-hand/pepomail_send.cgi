@@ -1,4 +1,7 @@
-﻿#!/bin/bash
+#!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2015.3.15
+
 # pepomail_send.cgi ; Attach the image file and send mail, use the mutt
 # licence GPLv3 ; this scripts designed by Yamauchi Isamu 2015.3.16 update 2018.2.24
 echo -en '
@@ -31,6 +34,8 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>メール送信中です。</TD></TR>
 </TABLE>
+<HR>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
