@@ -36,7 +36,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>DIO action-2 settings</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD></TR></TABLE>
 </BODY>'
 
 DIR=/www/remote-hand/tmp
