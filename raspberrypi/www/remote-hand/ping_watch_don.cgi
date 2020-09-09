@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2020.6.29
+
 echo -en '
 <HTML>
 <HEAD>
@@ -32,7 +35,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>Ping monitoring and digital output</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
