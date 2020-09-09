@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+
 PATH=$PATH:/usr/local/bin
 # irkit_reg.cgi,Registration of IR data for IRKit
 echo -en '
@@ -30,6 +33,8 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>IRKit It is of IR data registration</TD></TR>
 </TABLE>
+<HR>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
