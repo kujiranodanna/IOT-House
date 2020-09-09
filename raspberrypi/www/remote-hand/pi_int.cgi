@@ -7,7 +7,7 @@ DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
 DATE="2020.7.9"
-VERSION="ver:0.10&nbsp;$DATE"
+VERSION="ver:0.13&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
 if [ $ZEROW_YES_NO = "YES" ];then
