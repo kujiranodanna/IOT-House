@@ -1,6 +1,8 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.27 update 2020.5.14
+
 # ip_do_ajax ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
-# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2017.7.27 update 2020.5.14
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIOCMD=/www/remote-hand/tmp/ip_do_ajax.pepocmd
 LOCAL_DIR=/www/remote-hand/tmp
@@ -36,6 +38,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Digital -out is being modified</TD></TR>
 </TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
