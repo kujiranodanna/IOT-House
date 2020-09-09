@@ -1,4 +1,7 @@
 #!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.7.21
+
 # streming_start_stop.cgi
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -34,7 +37,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>Streming start_stop</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 
