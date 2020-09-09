@@ -1,7 +1,6 @@
 /* 
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.8.7
-
 * remote-hand_pi.js  ver0.13 2020.8.7
 */
 function blink(){
