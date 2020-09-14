@@ -1,23 +1,10 @@
 /*
-	pepoambme680.c read bme680 temperature,humidity,presure,gas
-	Copyright (C) 2019.5.13 Update 2019.6.10 Isamu.Yamauchi Mail:i.yamauchi@pepolinux.com
-	Download bme680.c bme680.h bme680_defs.h from https://github.com/BoschSensortec/BME680_driver
-	cc pepobme680.c bme680 -o pepobme680
+The MIT License
+Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.5.13 Update 2019.6.10 
+pepoambme680.c read bme680 temperature,humidity,presure,gas
 	
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 2 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-	MA 02110-1301 USA.
+Download bme680.c bme680.h bme680_defs.h from https://github.com/BoschSensortec/BME680_driver
+cc pepobme680.c bme680 -o pepobme680
 */
 
 #include <stdlib.h>
