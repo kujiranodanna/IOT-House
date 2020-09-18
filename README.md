@@ -21,3 +21,5 @@ After playing with Raspberry Pi, let's practice home appliances and home securit
 Binary image "IOT-House_zero_w" is available here　→ https://osdn.net/projects/pepolinux/releases/p15935
 
 IOT House voice control demo　→https://www.youtube.com/watch?v=14gvwZXbZJU
+
+IOT House Alexa demo →https://www.youtube.com/watch?v=iEQanwzqHak
