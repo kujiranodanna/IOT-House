@@ -18,8 +18,10 @@ If it is judged that the outside air humidity is low and the underfloor exchange
 
 After playing with Raspberry Pi, let's practice home appliances and home security with IOT House.
 
-Binary image "IOT-House_zero_w" is available here　→ https://osdn.net/projects/pepolinux/releases/p15935
+Binary image "IOT-House_zero_w" is available here → https://osdn.net/projects/pepolinux/releases/p15935
 
-IOT House voice control demo　→ https://www.youtube.com/watch?v=14gvwZXbZJU
+IOT House voice control demo → https://www.youtube.com/watch?v=14gvwZXbZJU
 
-IOT House Alexa demo  → https://www.youtube.com/watch?v=iEQanwzqHak
+IOT House Alexa demo → https://www.youtube.com/watch?v=iEQanwzqHak
+
+Email Raspberry Pi Security Camera Images on Alexa → https://iot-house.jpn.org/wp/2020/09/11/alexa%e3%81%a7%e3%83%a9%e3%82%ba%e3%83%91%e3%82%a4%e9%98%b2%e7%8a%af%e3%82%ab%e3%83%a1%e3%83%a9%e7%94%bb%e5%83%8f%e3%82%92%e3%83%a1%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b/
