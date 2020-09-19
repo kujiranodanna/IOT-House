@@ -366,14 +366,14 @@ cat >$PAGE1<<END
 <DIV  style="text-align:center"><FONT size="5" color="green">$DIST_NAME</FONT><FONT size="2">&nbsp;$VERSION</FONT></DIV>
 <DIV id="tab_cont_div">
 <UL id="tab">
-<LI><a href="#menu4dl" title="Sound Setting"><span>Sound Setting</span></a></LI>
-<LI><a href="#menu5dl" title="DIO Setting"><span>DIO Setting</span></a></LI>
-<LI><a href="#menu6dl" title="ping_DO Setting"><span>ping_DO Setting</span></a></LI>
-<LI><a href="#menu7dl" title="ping_mail Setting"><span>ping_mail Setting</span></a></LI>
-<LI><a href="#menu8dl" title="ping_tel Setting"><span>ping_tel Setting</span></a></LI>
+<LI><a href="#menu4dl" title="Sound Setting"><span>Sound Settings</span></a></LI>
+<LI><a href="#menu5dl" title="DIO Settings"><span>DIO Settings</span></a></LI>
+<LI><a href="#menu6dl" title="ping_DO Settings"><span>ping_DO Settings</span></a></LI>
+<LI><a href="#menu7dl" title="ping_mail Settings"><span>ping_mail Settings</span></a></LI>
+<LI><a href="#menu8dl" title="ping_tel Settings"><span>ping_tel Settings</span></a></LI>
 <LI><a href="#menu9dl" title="DIO Control-1"><span>DIO Control1</span></a></LI>
 <LI><a href="#menu10dl" title="DIO Control-2"><span>DIO Control2</span></a></LI>
-<LI><a href="#menu11dl" title="Mail Setting"><span>Mail Setting</span></a></LI>
+<LI><a href="#menu11dl" title="Mail Settings"><span>Mail Settings</span></a></LI>
 <LI><a href="#menu12dl" title="Auto Process"><span>Auto Process</span></a></LI>
 <LI><a href="#menu13dl" title="Server Control"><span>Server Control</span></a></LI>
 </UL>
@@ -381,7 +381,7 @@ END
 
 cat >>$PAGE1<<END
 <DL id="menu4dl">
-<DT><FONT SIZE="+1"><B>Setting Sound</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Settings Sound</B></FONT></DT>
 <DD>
 <FONT SIZE="3"><B>Sound Upload</B></FONT><BR>
 <FORM style="display: inline" id="menu4_form" NAME="menu4" ACTION="./sound_set.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
