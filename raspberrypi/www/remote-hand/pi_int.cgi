@@ -65,7 +65,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
   exit -1
@@ -282,7 +282,7 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2019-2022 pepolinux.com&nbsp;
+&copy;2020-2022 pepolinux.com&nbsp;
 </H1>
 </BODY>
 </HTML>
@@ -326,7 +326,7 @@ END
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
 <BR>
 <BR>
-&copy;2019-2022 pepolinux.com&nbsp;
+&copy;2020-2022 pepolinux.com&nbsp;
 <span id="server_time" style="text-align:left"></span>
 </H1>
 </BODY>
