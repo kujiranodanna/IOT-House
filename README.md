@@ -20,7 +20,7 @@ After playing with Raspberry Pi, let's practice home appliances and home securit
 
 Binary image "IOT-House_zero_w" is available here -> https://osdn.net/projects/pepolinux/releases/p15935
 
-INSTALL -> https://github.com/kujiranodanna/IOT-House/wiki#install
+INSTALL -> https://github.com/kujiranodanna/IOT-House/wiki/INSTALL#install
 
 Configuration -> https://github.com/kujiranodanna/IOT-House/wiki/Configuration#configuration
 
