@@ -454,10 +454,10 @@ LIVE_SERVER=`hostname -I`
 LIVE_SERVER=`echo -en $LIVE_SERVER`
 cat >>$PAGE1<<END
 <DL id="menu5dl">
-<DT><FONT SIZE="+1"><B>Settings DIO & IRKit & Tocos</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Settings DIO & IRKit & Twelite</B></FONT></DT>
 <DD>
 <FORM NAME="menu5" id="menu5_form" ACTION="./dio_set.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<B>Setting digital output terminal name</B>
+<B>Settings digital output terminal name</B>
 &nbsp;&nbsp;<INPUT style="text-align:center" TYPE="reset" VALUE="Reload" onClick="update_di(onload);"/>
 <div id="disp_menu5">Server Synchronized</div>
 <span id="do_0">
@@ -541,7 +541,7 @@ Output4<INPUT TYPE="text" size="3" id="vdo_3" name="vdo_3" readonly style="width
 </SELECT>
 <BR>
 <HR>
-<B>Setting IRKit</B>
+<B>Settings IRKit</B>
 <BR>
 IR1<span id="dosel_8">
 <SELECT onChange="update_do('irkitdo_0')" NAME="irkitdo_0">
@@ -677,7 +677,7 @@ IR6<span id="dosel_13">
 <BR>
 IRKit_IP<span id="irkit_ip"></span><INPUT TYPE="text" name="irkit_ip" style="width:100px;text-align:Left;" VALUE="none">&nbsp;<input type="button" value="Search_Set" onclick="irkit_search();"/>
 <HR>
-<B>Setting Twlite</B>
+<B>Settings Twlite</B>
 <SELECT NAME="TOCOS_TTY">
 <OPTION VALUE="${TOCOS_TTY}" SELECTED>${vTOCOS_TTY}
 <OPTION VALUE="none">none
@@ -748,7 +748,7 @@ TO3<INPUT TYPE="text" size="3" id="vdo_16" name="vdo_16" readonly style="width:3
 </SELECT>
 <BR>
 <HR>
-<B>Setting USB Modem Device</B>
+<B>Settings USB Modem Device</B>
 <SELECT NAME="modem">
 <OPTION VALUE="$modem_dev" SELECTED>$modem_dev
 <OPTION VALUE="none">none
@@ -793,7 +793,7 @@ State<span id="recognition_state" >Stop</span>
 <input type="button" value="Streaming stop" onclick="streaming_start_stop('vchiq','stop');"/>
 Server<input type="text" style="width:100px;" id="live_server" NAME="Server" VALUE="${LIVE_SERVER}">
 <HR>
-<B>Setting digital input terminal name</B>
+<B>Settings digital input terminal name</B>
 &nbsp;&nbsp;<INPUT style="text-align:center" TYPE="reset" VALUE="Reload" onClick="update_di(onload);"/>
 <BR>
 <span id="di_0">
@@ -838,7 +838,7 @@ Input4<INPUT TYPE="text"  size="1" readonly style="width:36px;text-align:center;
 </SELECT>
 <BR>
 <HR>
-<B>Setting Twlite DI & AI</B>
+<B>Settings Twlite DI & AI</B>
 <BR>
 <span id="di_8">
 TI1<INPUT TYPE="text" size="1" readonly style="width:36px;text-align:center;" VALUE="${DI[8]}">&nbsp;
@@ -1061,10 +1061,10 @@ END
 
 cat >>$PAGE1<<END
 <DL id="menu6dl">
-<DT><FONT SIZE="+1"><B>Setting ping monitoring and digital output action</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Settings ping monitoring and digital output action</B></FONT></DT>
 <DD>
 <FORM NAME="menu6" id="menu6_form" ACTION="./ping_watch_don.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<FONT SIZE="3"><B>Setting IP address and the digital Output for monitoring</B></FONT><BR>
+<FONT SIZE="3"><B>Settings IP address and the digital Output for monitoring</B></FONT><BR>
 IP1<INPUT TYPE="text" size="22" style="width:110px;" NAME="ip_0">&nbsp;
 &nbsp;DO<SELECT NAME="ping_don_0">
 <OPTION VALUE="none" SELECTED>none
@@ -1183,10 +1183,10 @@ END
 
 cat >>$PAGE1<<END
 <DL id="menu7dl">
-<DT><FONT SIZE="+1"><B>Setting ping monitoring and e-mail</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Settings ping monitoring and e-mail</B></FONT></DT>
 <DD>
 <FORM NAME="menu7" id="menu7_form" ACTION="./ping_watch_mail.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<FONT SIZE="3"><B>Setting IP address and FAIL at which monitoring</B></FONT><BR>
+<FONT SIZE="3"><B>Settings IP address and FAIL at which monitoring</B></FONT><BR>
 IP1<INPUT TYPE="text" size="22" style="width:110px;" NAME="ip_0">&nbsp;
 Email1<INPUT TYPE="text" NAME="mail_0">
 &nbsp;<SELECT NAME="reg_0">
@@ -1259,10 +1259,10 @@ END
 
 cat >>$PAGE1<<END
 <DL id="menu8dl">
-<DT><FONT SIZE="+1"><B>Setting ping monitoring and phone number</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Settings ping monitoring and phone number</B></FONT></DT>
 <DD>
 <FORM NAME="menu8" id="menu8_form" ACTION="./ping_watch_phone.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<FONT SIZE="3"><B>Setting IP address and at which monitoring</B></FONT><BR>
+<FONT SIZE="3"><B>Settings IP address and at which monitoring</B></FONT><BR>
 IP1<INPUT TYPE="text" size="22" style="width:110px;" NAME="ip_0">&nbsp;
 Phone1<INPUT TYPE="text" size="22" style="width:110px;" NAME="tel_0">
 &nbsp;<SELECT NAME="reg_0">
@@ -1430,7 +1430,7 @@ cat >>$PAGE1<<END
 <DT><FONT SIZE="+1"><B>Management DI(Digital Input)-1</B></FONT></DT>
 <DD>
 <FORM NAME="menu9" id="menu9_form" ACTION="./di_contorl_pi1.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<FONT SIZE="3"><B>Setting first action to the digital input</B></FONT>
+<FONT SIZE="3"><B>Settings first action to the digital input</B></FONT>
 <BR>
 <INPUT TYPE="text" readonly style="width:100px;" VALUE="${ALIAS_DI[0]}">
 <span id="menu90di_0">
@@ -2489,7 +2489,7 @@ cat >>$PAGE1<<END
 <DT><FONT SIZE="+1"><B>Management DI(Digital Input)-2</B></FONT></DT>
 <DD>
 <FORM NAME="menu10" id="menu10_form" ACTION="./di_contorl_pi2.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<FONT SIZE="3"><B>Setting second action to the digital input</B></FONT>
+<FONT SIZE="3"><B>Settings second action to the digital input</B></FONT>
 <BR>
 <INPUT TYPE="text" readonly style="width:100px;" VALUE="${ALIAS_DI[0]}">
 <span id="menu100di_0"><INPUT TYPE="text" readonly style="width:36px;text-align:center;" VALUE="${DI[0]}">&nbsp;
@@ -3401,9 +3401,9 @@ CONF="$DIR/.pepogmail4dio.conf"
 [ ! -z "$LOOPTIME" ] && vLOOPTIME="$LOOPTIME"
 cat >>$PAGE1<<END
 <DL id="menu11dl">
-<DT><FONT SIZE="+1"><B>Setting system Email</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Settings system Email</B></FONT></DT>
 <DD>
-<B>Setting operation in Gmail</B>
+<B>Settings operation in Gmail</B>
 <BR>
 <FORM NAME="menu11" id="menu11_form" ACTION="gmail_set.cgi" METHOD="post" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
 Gmail User<INPUT TYPE="text" style="width:80px;text-align:right;" VALUE="$vGMAILUSER" NAME="gmailuser">@gmail.com<BR>
@@ -3448,9 +3448,9 @@ done
 
 cat >>$PAGE1<<END
 <DL id="menu12dl">
-<DT><FONT SIZE="3"><B>Setting automated processing</B></FONT></DT>
+<DT><FONT SIZE="3"><B>Settings automated processing</B></FONT></DT>
 <DD>
-<FONT SIZE="2"><B>Setting MP3 file from URL</B></FONT>
+<FONT SIZE="2"><B>Settings MP3 file from URL</B></FONT>
 <FORM NAME="menu12" id="menu12_form" ACTION="podcastsget.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
 URL<INPUT TYPE="text" style="width:400px;text-align:left;" VALUE="${vWGET_VAL[0]}" NAME="wget_val_0">
 http://www3.nhk.or.jp/rj/podcast/rss/english.xml
@@ -4990,7 +4990,7 @@ done
  
 cat >>$PAGE1<<END
 <FORM NAME="menu12sub" id="menu12sub_form" ACTION="auto_porc_pi.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
-<FONT SIZE="2"><B>Setting digital Output</B></FONT>
+<FONT SIZE="2"><B>Settings digital Output</B></FONT>
 <BR>
 1&nbsp;
 <SELECT NAME="auto_act_con_0">
