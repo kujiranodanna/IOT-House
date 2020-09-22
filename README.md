@@ -22,7 +22,7 @@ Binary image "IOT-House_zero_w" is available here -> https://osdn.net/projects/p
 
 INSTALL -> https://github.com/kujiranodanna/IOT-House/wiki/INSTALL#install
 
-Configuration -> https://github.com/kujiranodanna/IOT-House/wiki/Configuration#configuration
+Configuration -> https://github.com/kujiranodanna/IOT-House/wiki/Configuration
 
 IOT House voice control demo -> https://www.youtube.com/watch?v=14gvwZXbZJU
 
