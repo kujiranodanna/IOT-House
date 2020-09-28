@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.7.9
-* remote-hand_pi.js  ver0.13 2020.7.9
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.9.28
+* remote-hand_pi.js  ver0.14 2020.9.28
 */
 function blink(){
   if (!document.all){ return; }
@@ -18,6 +18,8 @@ function blink(){
   }
   setTimeout("blink()",1000);
 }
+var smapho_reload_tm = 10000;
+var unsmapho_reload_tm = 60000;
 var recognition = new webkitSpeechRecognition();
 var recognition_state = "Stop"
 var recognizing = false;
@@ -38,8 +40,8 @@ function startWebVoiceRecognition(){
     }
    recognition.continuous = true;
 //   recognition.continuous = false;
-   
-// Do not process intermediate results  
+
+// Do not process intermediate results
    recognition.interimResults = false;
 // recognition.interimResults = true;
     recognition.start();
@@ -108,7 +110,7 @@ recognition.onresult = function(event){
       $("#recognition_state").text(recognition_state);
     },5000);
 */
-　 }
+  }
 }
 // End the speech recognition
 function stopWebVoiceRecognition(){
@@ -197,22 +199,22 @@ function irkit_reg(ir_num,ir_id){
   var ir_req = ir_id;
   switch (ir_reg){
     case 'irdata_0':
-      req_ir = "0"; 
+      req_ir = "0";
       break;
     case 'irdata_1':
-      req_ir = "1"; 
+      req_ir = "1";
       break;
     case 'irdata_2':
-      req_ir = "2"; 
+      req_ir = "2";
       break;
     case 'irdata_3':
-      req_ir = "3"; 
+      req_ir = "3";
       break;
     case 'irdata_4':
-      req_ir = "4"; 
+      req_ir = "4";
       break;
     case 'irdata_5':
-      req_ir = "5"; 
+      req_ir = "5";
       break;
   }
   $.ajax({
@@ -280,7 +282,7 @@ function disp_irdata(irdata,val){
     color_font = "#F0FFFF";
   }
   if (val == "none"){
-  // Background gray 
+  // Background gray
     color_bg = "#A9A9A9";
     color_font = "#000000";
   }
@@ -294,7 +296,7 @@ function irkit_search(){
   }
   $.ajax({
     url: "irkit_search.cgi",
-    dataType: "text", 
+    dataType: "text",
     type: "GET",
     cache: true,
     timeout : 1000,
@@ -314,11 +316,11 @@ function disp_di_log(url_di_log){
   var server_date = $("#server_time").val();
   $.ajax({
       url: disp_url,
-      dataType: "text", 
+      dataType: "text",
       type: "GET",
       cache: true,
       async: true,
-      timeout : 1000, 
+      timeout : 1000,
       success: function(data){
         $(function(){
           var di_log = window.open("","di_log","width=300,height=500,resizable=yes,scrollbars=yes");
@@ -361,7 +363,7 @@ function start_photo(dev){
           setTimeout(function(){
             live_photo.close();
           },live_close_timer);
-        },live_open_timer); 
+        },live_open_timer);
         return true;
       });
     },
@@ -369,7 +371,7 @@ function start_photo(dev){
       $("#disp_menu5").text("Server-Timout Live Photo!");
         return false;
     }
-  });  
+  });
 }
 
 // Processing of live video
@@ -398,11 +400,11 @@ function start_video(dev){
   live_timer = live_timer * 1000;
   if (video_dev == "vchiq"){
     live_open_timer = live_timer;
-    live_close_timer = live_timer * 2.0;  
+    live_close_timer = live_timer * 2.0;
   }
   else {
     live_open_timer = 5000;
-    live_close_timer = live_timer * 2.0;  
+    live_close_timer = live_timer * 2.0;
   }
   $.ajax({
     type: "get",
@@ -425,7 +427,7 @@ function start_video(dev){
           setTimeout(function(){
             live_video.close();
           },live_close_timer);
-        },live_open_timer); 
+        },live_open_timer);
         return true;
       });
     },
@@ -433,7 +435,7 @@ function start_video(dev){
       $("#disp_menu5").text("Server-Timout Live Video!");
         return false;
     }
-  });  
+  });
 }
 // Module Camera streaming start,stop
 function streaming_start_stop(dev,start_stop){
@@ -498,11 +500,11 @@ function s_phone_update_do(tdo_id){
   var tdo_time = "";
   $.ajax({
      url: ".di_read_data.json",
-     dataType: "json", 
+     dataType: "json",
      type: "get",
      cache: true,
      async: true,
-     timeout : 3000, 
+     timeout : 3000,
      success: function(di2json, status){
        if (status == "success"){
          switch (tdo_id){
@@ -619,7 +621,7 @@ function voice_do(do_sel,results_voice){
   var voice_src = results_voice;
   $.ajax({
     url: ".di_read_data.json",
-    dataType: "json", 
+    dataType: "json",
     type: "get",
     cache: true,
     async: true,
@@ -644,37 +646,37 @@ function voice_do(do_sel,results_voice){
       if (voice_str == "写真"　|| voice_str == "写真を撮って"　|| voice_str == "写真とって"　|| voice_str == "写真見せて"　||
       　　voice_str == "写真を見せて"　|| voice_str == "写真みせて"){
         tdo_val = "start_picture";
-      }            　
+      }
       if (voice_str == "動画" || voice_str == "動画を撮って" || voice_str == "動画撮って" ||  voice_str == "動画見せて" ||
         voice_str == "動画を見せて"　|| voice_str == "動画をみせて"){
         tdo_val = "start_video";
-      }          
+      }
       if (voice_str == "写真を送って" || voice_str == "写真送信して" || voice_str == "写真おくって"){
         tdo_val = "picture";
       }
-      if (voice_str == "動画を送って"　||　voice_str == "動画送って" || voice_str == "動画おくって"){ 
+      if (voice_str == "動画を送って"　||　voice_str == "動画送って" || voice_str == "動画おくって"){
         tdo_val = "video";
       }
       if (voice_str == "takepicture" || voice_str == "picture"){
         tdo_val = "start_picture";
       }
-      if (voice_str == "video" || voice_str == "avideo" || 
+      if (voice_str == "video" || voice_str == "avideo" ||
         voice_str == "takevideo" || voice_str == "takeavideo"){
-        tdo_val = "start_video"; 
+        tdo_val = "start_video";
       }
 // "send me photo","send me picture","take photo","take picture","picture"
       if (voice_str == "sendmephoto" || voice_str == "sendmepicture" || voice_str == "sendapicture" ||
         voice_str == "photo" || voice_str == "sepicture"){
-        tdo_val = "picture"; 
+        tdo_val = "picture";
       }
 // "send mep video","send me video","video","take video","video";
       if (voice_str == "sendmevideo" || voice_str == "sendmeavideo" || voice_str == "sendavideo"){
-        tdo_val = "video"; 
+        tdo_val = "video";
       }
       if (tdo_val == "picture" || tdo_val =="video"){
         var mail_address;
         mail_address = $('#di2json.voice_mail').val();
-        if (mail_ck(mail_address) != -1){ 
+        if (mail_ck(mail_address) != -1){
           sendmail_pic(tdo_val,mail_address);
         }
       else {
@@ -703,7 +705,7 @@ function voice_do(do_sel,results_voice){
         } else {
           voice_tmp = "動画表示";
         }
-        google_speak(voice_tmp,voice_lang);        
+        google_speak(voice_tmp,voice_lang);
         start_video("video0");
         return;
       }
@@ -811,13 +813,13 @@ function voice_do(do_sel,results_voice){
         tvoice_ck = str　+ "ON";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
-                break;
+            break;
           }
         tvoice_ck = str　+ "音";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
-        }  
+        }
         tvoice_ck = str　+ "をつけて";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
@@ -897,12 +899,12 @@ function voice_do(do_sel,results_voice){
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
-        }  
+        }
         tvoice_ck = str　+ "を消灯";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
-        } 
+        }
         tvoice_ck = str　+ "消灯";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
@@ -1091,7 +1093,7 @@ function voice_do(do_sel,results_voice){
           }
           else if (i >= 36 && i <= 47){ // IRKit
             tdo_val = "1";
-          }        
+          }
           else if (i >= 14 && i <= 16){ // Tocos
             tdo_val = "half";
           }
@@ -1340,7 +1342,7 @@ function voice_do(do_sel,results_voice){
       }
       if (i == 71){
         tdo_ch = array_voice_alias[71];
-        tdo_id = di2json.cpu_temp;        
+        tdo_id = di2json.cpu_temp;
       }
       if (i == 72){
         tdo_ch = array_voice_alias[72];
@@ -1349,7 +1351,7 @@ function voice_do(do_sel,results_voice){
       if (i == 73){
         tdo_ch = array_voice_alias[73];
         tdo_id = di2json.gpio_i2c.hum;
-      }      
+      }
       if (i == 74){
         tdo_ch = array_voice_alias[74];
         tdo_id = di2json.i2ctemp.temp;
@@ -1474,7 +1476,7 @@ function voice_do(do_sel,results_voice){
           if (voice_lang == "en"){
             voice_tmp = "turn off the" + voice_str;
           }
-          else { 
+          else {
             voice_tmp = voice_str + "、おふ";
           }
         }
@@ -1496,7 +1498,7 @@ function voice_do(do_sel,results_voice){
     }
   }); // end of ajax
   return;
-} 
+}
 // Digital output process
 function update_do(do_sel,results_voice){
   var tdo_val = "none";
@@ -1700,16 +1702,16 @@ function update_di(item){
       color_font = "#F0FFFF";
       break;
     }
-    if (val_v == "high" || val_v == "low" || val_v == "none"){ 
+    if (val_v == "high" || val_v == "low" || val_v == "none"){
       $(di_v).html(disp_v + '<INPUT TYPE="text" size="1" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:36px;text-align:center" VALUE="' + val_v + '">');
     } else if (document.getElementById("s_phone_temp_hum") != null){
-      $(di_v).html('<INPUT TYPE="text" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:200px;text-align:center" VALUE="' + val_v + '">');  
+      $(di_v).html('<INPUT TYPE="text" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:200px;text-align:center" VALUE="' + val_v + '">');
     } else {
       $(di_v).html(disp_v + '<INPUT TYPE="text" size="1" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:36px;text-align:center" VALUE="' + val_v + '">');
     }
   }
   function diocount(t_item, t_reset, t_update, t_count, t_log_id){
-   if (t_update === undefined) t_update = ""; 
+   if (t_update === undefined) t_update = "";
     $(t_item).html('Count:<INPUT TYPE="text" readonly style="width:36px;text-align:right;" VALUE="' + t_count + '">&nbsp;' + t_reset + ' ～ ' + t_update);
     var disp_log = '#' + t_log_id;
     $(disp_log).html('<input type="button" value="Log display" onclick="disp_di_log(\'' + t_log_id + '\');"/>');
@@ -1759,14 +1761,14 @@ function update_di(item){
     if (br == "" || br === undefined){
       $(di_span).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:' + wid + "px" + ';text-align:center" VALUE="' + di_name + " " + di_val + '" onClick="window.open(\'' + di_cgi + '\',\'\',\'width=600,height=200\')"><BR><BR>');
     } else {
-      $(di_span).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:' + wid + "px" + ';text-align:center" VALUE="' + di_name + " " + di_val + '" onClick="window.open(\'' + di_cgi + '\',\'\',\'width=600,height=200\')">');        
+      $(di_span).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:' + wid + "px" + ';text-align:center" VALUE="' + di_name + " " + di_val + '" onClick="window.open(\'' + di_cgi + '\',\'\',\'width=600,height=200\')">');
     }
   }
   $(function(){
     var val = "";
     var val_alias = "";
     var do_item　= "";
-    var do_alias = "";  
+    var do_alias = "";
     var reset = "";
     var count = "";
     var update = "";
@@ -1775,35 +1777,47 @@ function update_di(item){
     var dummy = (new Date().getTime()).toString();
     var di_get_url = ".di_read_data.json?" + dummy;
     $.ajax({
-       url: di_get_url,
-       dataType: "json", 
-       type: "get",
-       cache: true,
-       async: true,
-       timeout : 3000, 
-       success: function(di2json, status){
-         val = status;
-         $("#disp_menu5").text("di2json status " + val);
+      url: di_get_url,
+      dataType: "json",
+      type: "get",
+      cache: true,
+      async: true,
+      timeout : 3000,
+      success: function(di2json, status){
+        val = status;
+        $("#disp_menu5").text("di2json status " + val);
+          if (di2json.hp_timestamp){
+            var date = new Date() ; // now time
+            var now_m = date.getTime();
+            var fstamp_m = di2json.hp_timestamp * 1000;
+            var time_lag = Math.abs(now_m - fstamp_m) ; // mili second calculation of time
+            var reload_tm = unsmapho_reload_tm + 2000;
+ //             console.log({time_lag});
+ //             console.log({reload_tm});
+            if (time_lag <  reload_tm) {
+              setTimeout(function(){
+                location.reload();
+              },reload_tm);
+            }
+         }
          if (di2json.voice_req){
            val = di2json.voice_req;
            if ( val == "high" ){
              startWebVoiceRecognition();
            } else {
-                if ( val != "none" ){
-                  update_do("voice_sel",val);
-                }
-             setTimeout(function(){
+               if ( val != "none" ){
+                 update_do("voice_sel",val);
+               }
+               setTimeout(function(){
                $.ajax({
                   type: "get",
                   url: "voice_req_del.cgi",
                   timeout : 3000,
-                  dataType: "text", 
-                  async: true,
-                  data: "none"
-               });             
+                  async: true
+               });
              },1000);
            }
-         } 
+         }
          if (di2json.do0){
            val = di2json.do0;
            color_set("#do_0", "Output1", val);
@@ -1814,7 +1828,7 @@ function update_di(item){
                do_alias = "alias_do_0";
                s_phone_do_color_set("#s_phone_do0",val_alias,val,do_item,do_alias);
              }
-           }  
+           }
          }
          if (di2json.do1){
            val = di2json.do1;
@@ -1914,7 +1928,7 @@ function update_di(item){
                s_phone_do_color_set("#s_phone_do8",val_alias,val,do_item,do_alias);
              }
            }
-         }           
+         }
          if (di2json.irdata_1){
            val = di2json.irdata_1;
            disp_irdata("#irdata_1",val);
@@ -1925,11 +1939,11 @@ function update_di(item){
                  val = "low"
                } else {val = "none"}
                do_item = "irkitdo_1";
-                do_alias = "alias_do_9";
+               do_alias = "alias_do_9";
                s_phone_do_color_set("#s_phone_do9",val_alias,val,do_item,do_alias);
-            }
+             }
            }
-         }           
+         }
          if (di2json.irdata_2){
            val = di2json.irdata_2;
            disp_irdata("#irdata_2",val);
@@ -1944,7 +1958,7 @@ function update_di(item){
                s_phone_do_color_set("#s_phone_do10",val_alias,val,do_item,do_alias);
              }
            }
-         }           
+         }
          if (di2json.irdata_3){
            val = di2json.irdata_3;
            disp_irdata("#irdata_3",val);
@@ -1959,7 +1973,7 @@ function update_di(item){
                s_phone_do_color_set("#s_phone_do11",val_alias,val,do_item,do_alias);
              }
            }
-         }           
+         }
          if (di2json.irdata_4){
            val = di2json.irdata_4;
            disp_irdata("#irdata_4",val);
@@ -1974,7 +1988,7 @@ function update_di(item){
                s_phone_do_color_set("#s_phone_do12",val_alias,val,do_item,do_alias);
              }
            }
-         }           
+         }
          if (di2json.irdata_5){
            val = di2json.irdata_5;
            disp_irdata("#irdata_5",val);
@@ -2030,14 +2044,14 @@ function update_di(item){
            val = di2json.i2ctemp;
            if (val == "none"){
              $("#i2ctemp").text(val);
-             $("#i2c_temp_disp").text("");             
+             $("#i2c_temp_disp").text("");
              $("#i2c_hum_disp").text("");
-             $("#s_phone_i2c_temp_disp").text("");             
+             $("#s_phone_i2c_temp_disp").text("");
              $("#s_phone_i2c_hum_disp").text("");
              $("#s_phone_tocos_hum_disp").text("");
            }
            else {
-             var tval = new Array(3);            
+             var tval = new Array(3);
              tval[1] = val.temp;
              tval[2] = val.hum;
              tval[3] = val.date + " " + val.temp + " " + val.hum;
@@ -2457,7 +2471,7 @@ function update_di(item){
              tval[3] = val.pres;
              tval[4] = val.gas;
              tval[5] = val.iaq;
-             $("#gpio_temp_val").text(tval[1]); 
+             $("#gpio_temp_val").text(tval[1]);
              $("#gpio_hum_val").text(tval[2]);
              $("#gpio_pres_val").text(tval[3]);
              $("#gpio_gas_val").text(tval[4]);
@@ -2477,7 +2491,7 @@ function update_di(item){
                } else if ( iaq_val > 300) {
                  iaq_color = "very_bad";
                }
-             }               
+             }
              if (document.getElementById("s_phone_temp_hum") != null){
                if (di2json.date){
                  var tdate = di2json.date;
@@ -2801,12 +2815,12 @@ function update_di(item){
 */
     if (browser_os == "iPhone" || browser_os == "Android"){
       if (document.getElementById("s_phone_temp_hum") != null){
-        Update_di_Timer = setTimeout("update_di('onload')",60000); // Temp&Hum Disp information update time (milliseconds)
+        Update_di_Timer = setTimeout("update_di('onload')",unsmapho_reload_tm); // Temp&Hum Disp information update time (milliseconds)
       } else {
-        Update_di_Timer = setTimeout("update_di('onload')",10000); // DIO information update time (milliseconds)
+        Update_di_Timer = setTimeout("update_di('onload')",smapho_reload_tm); // DIO information update time (milliseconds)
       }
     } else {
-      Update_di_Timer = setTimeout("update_di('onload')",60000); // DIO information update time (milliseconds)
+      Update_di_Timer = setTimeout("update_di('onload')",unsmapho_reload_tm); // DIO information update time (milliseconds)
     }
   }
   if (item == "onunload"){
@@ -2826,11 +2840,11 @@ function kana_ck(){
 
 function keypress(){
 /*  Enter key invalid */
-    if(window.event.keyCode == 13){ 
-        return false; 
-    }   
-    return true;   
-}   
+    if(window.event.keyCode == 13){
+        return false;
+    }
+    return true;
+}
 window.document.onkeydown= keypress;
 
 function alpha_ck(str){
@@ -2913,7 +2927,7 @@ function password_ck(pass){
   }
   return 1;
 }
- 
+
 function user_ck(user,pass){
 /* Alphanumeric check */
   if(user.length == 0 || pass.length == 0){
@@ -3145,8 +3159,8 @@ function menu5_ck(){
   array_slice[11] = document.menu5.slice_ai_23.value;
   array_slice[12] = document.menu5.slice_ai_24.value;
   document.addEventListener('click', function (e){
-    var target = e.target;   
-    var form = target.form;  
+    var target = e.target;
+    var form = target.form;
     if (target.tagName === 'INPUT' && target.type === 'button'){
       switch (target.id){
         case 'menu5_jikkou':
@@ -3231,13 +3245,13 @@ function menu7_ck (){
   array_mail[3] = document.menu7.mail_3.value;
   for (var i=0 ; i <=3 ; i++){
     if (array_reg[i] == "del" && array_ip[i] != ""){
-      check++; 
+      check++;
       if (ipaddr_ck(array_ip[i]) == -1){
         error_ct++;
       }
     }
     if (array_reg[i] == "reg" && array_ip[i] != "" && array_mail[i] != ""){
-      check++; 
+      check++;
       if (ipaddr_ck(array_ip[i]) == -1){
         error_ct++;
       }
@@ -3281,13 +3295,13 @@ function menu8_ck (){
   array_tel[3] = document.menu8.tel_3.value;
   for (var i=0 ; i <=3 ; i++){
     if (array_reg[i] == "del" && array_ip[i] != ""){
-      check++; 
+      check++;
       if (ipaddr_ck(array_ip[i]) == -1){
         error_ct++;
       }
     }
     if (array_reg[i] == "reg" && array_ip[i] != "" && array_tel[i] != ""){
-      check++; 
+      check++;
       if (ipaddr_ck(array_ip[i]) == -1){
         error_ct++;
       }
@@ -3485,7 +3499,7 @@ function menu9_ck (){
       if (array_di_act[i] != "phone" && array_di_act[i] != "mail"){
         check++;
         if (array_don_time[i] != "" && timer_ck(array_don_time[i]) == -1){
-          error_ct++; 
+          error_ct++;
         }
       }
     }
@@ -3680,7 +3694,7 @@ function menu10_ck (){
       if (array_di_act[i] != "phone" && array_di_act[i] != "mail"){
         check++;
         if (array_don_time[i] != "" && timer_ck(array_don_time[i]) == -1){
-          error_ct++; 
+          error_ct++;
         }
       }
     }
@@ -3731,7 +3745,7 @@ function menu11_ck (){
     var jump_location = "gmail_set.cgi?" + "gmailuser=" + gmailuser + "&gmailpassword=" + gmailpassword + "&gwebuser=" + "&permitmail=" + permitmail + "&keyword=" + keyword + "&jitter=" + jitter + "&looptime=" + looptime + "&reg=" + reg;
     location.href=jump_location;
     return;
-  } 
+  }
   else {
     if (check < 6){
       alert("There is an error in the item or Input content that has not been Input");
@@ -3828,7 +3842,7 @@ function cron_ck(ck_array,ct){
         alert(str + "← There is an error in the Input");
       }
       else check++;
-    }        
+    }
     switch(i){
       case 1:
         if (str == "none"){
@@ -3838,7 +3852,7 @@ function cron_ck(ck_array,ct){
         else check++;
         break;
       case 2:
-        if (str != ""){ 
+        if (str != ""){
           if (timer_ck(str) == -1){
             error_ct++;
             alert(str + "← There is an error in the Input");
@@ -3939,7 +3953,7 @@ function cron_ck(ck_array,ct){
           if (str < 0 || str > 7)　{
             error_ct++;
             alert(str + "← There is an error in the Input");
-          }    
+          }
           else check++;
         }
         break;
@@ -4148,7 +4162,7 @@ function menu15_ck(item){
       }
     }
     else {
-      return false 
+      return false
     }
   }
 }

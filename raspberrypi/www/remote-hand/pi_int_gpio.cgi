@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.9.20
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.9.28
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2020.9.20"
-VERSION="ver:0.13&nbsp;$DATE"
+DATE="2020.9.28"
+VERSION="ver:0.14&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
 if [ $ZEROW_YES_NO = "YES" ];then
@@ -683,7 +683,7 @@ IRKit_IP<span id="irkit_ip"></span><INPUT TYPE="text" name="irkit_ip" style="wid
 <OPTION VALUE="none">none
 <OPTION VALUE="ttyUSBTWE-Lite">ttyUSBTWE-Lite
 </SELECT>&nbsp;&nbsp;
-tocos_ip<INPUT TYPE="text" style="width:120px;" NAME="tocos_ip" VALUE="${tocos_ip}">&nbsp;
+Twlite_ip<INPUT TYPE="text" style="width:120px;" NAME="tocos_ip" VALUE="${tocos_ip}">&nbsp;
 &nbsp;I2C_Temperature&Humidity
 <span id="i2ctemp"></span>
 <BR>
