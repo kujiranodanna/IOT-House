@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.12.21
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.9.28
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,7 +9,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2019.12.21">
+<META NAME="build" content="2020.9.28">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>DIO settings</TITLE>
@@ -236,8 +236,12 @@ rm -f /www/remote-hand/pepopiface
 ln -s /usr/local/bin/pepopiface_local /www/remote-hand/pepopiface
 END
 fi
-cat >$MODEM_DEV<<END
+CMD=$DIR/dio_set_modem.pepocmd
+cat >$CMD<<END
+#!/bin/bash
+cat >$MODEM_DEV<<EOF
 modem_dev=$modem
+EOF
 END
 echo -en '
 </HTML>'
