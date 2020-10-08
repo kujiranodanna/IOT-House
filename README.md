@@ -2,6 +2,10 @@
 
 We are developing home appliance automation, crime prevention, disaster prevention, and voice control systems.
 
+IOT-House's IOT is an input and output technology, of course IOT is also the Internet of Things.
+
+Many functions of IOT-House can be operated even in an environment without the Internet.
+
 Check the temperature of the room and drive the cooler on the go.
 
 If you decide it's dark outside in the evening, turn on the lights in the entrance and room.
