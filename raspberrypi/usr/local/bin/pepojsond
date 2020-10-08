@@ -1,6 +1,5 @@
 #!/bin/bash
-# The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.7.15 update 2020.6.30
+# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2020.9.27
 # pepojsond is for daemon make json data
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
@@ -21,6 +20,7 @@ TEMPERFILE=$DIR/temperature
 TCOSWD=$DIR/.tocos_write_data
 TCOSRD=$DIR/.tocos_read_data
 SOUND_FILE_NAME=$DIR/.sound_file_name
+HOMEPAGE=/www/remote-hand/pi_int.html
 prog=pepojsond
 pidfile=/var/run/$prog.pid
 echo -en $$ >$pidfile
@@ -379,7 +379,9 @@ END
   else
     voice_req=`cat ${tVOICEREQ}`
   fi
-  echo -e \"voice_req\":\"${voice_req}\" >>$tJSONRD
+  echo -e \"voice_req\":\"${voice_req}\", >>$tJSONRD
+  HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
+  echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\" >>$tJSONRD
   echo "}" >>$tJSONRD
   mv $tJSONRD $JSONRD
   chown www-data.www-data $JSONRD

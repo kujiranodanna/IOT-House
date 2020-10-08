@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.9.28
-* remote-hand_pi.js  ver0.14 2020.9.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.10.7
+* remote-hand_pi.js  ver0.14 2020.10.7
 */
 function blink(){
   if (!document.all){ return; }
@@ -186,9 +186,12 @@ function google_speak_none(voice_t,voice_l){
     var search_val = voice_t;
     voice_t = voice_t + "、が理解できないのでgoogleで検索しました";
   }
-    var child_url = "https://www.google.com/search?q=" + search_val;
+  var child_url = "https://www.google.com/search?q=" + search_val;
     var google_search = window.open(child_url,"width=640,height=480,resizable=yes,scrollbars=no");
-    speak_main(voice_t,voice_l);
+    setTimeout(function () {
+      google_search .close();
+    },10000);
+  speak_main(voice_t,voice_l);
 }
 
 // IR data registration processing of IRKit
@@ -1374,10 +1377,8 @@ function voice_do(do_sel,results_voice){
       }
       if (i == 78){
         tdo_ch = array_voice_alias[78];
-        tdo_id = di2json.gpio_i2c;
+        tdo_id = di2json.gpio_i2c.iaq;
         if (tdo_id != "none"){
-          var tmp_do_id = tdo_id.split(" ");
-          tdo_id = tmp_do_id[5];
           var iaq_val = tdo_id;
           var iaq_color = "";
           if ( iaq_val <= 50) {
@@ -2055,7 +2056,9 @@ function update_di(item){
              tval[1] = val.temp;
              tval[2] = val.hum;
              tval[3] = val.date + " " + val.temp + " " + val.hum;
-             $("#i2ctemp").text(val);
+             $("#i2c_temp_val").text(tval[1]);
+             $("#i2c_hum_val").text(tval[2]);
+             $("#i2ctemp").text(tval[3]);
              if (document.getElementById("s_phone_tocos_temp_hum") != null){
                $("#s_phone_tocos_temp_hum").html('<HR><input type="button" NAME="i2c_temp_disp" VALUE="' + tval[1] + '" onClick="window.open(\'./i2c_temp_disp_day.cgi\',\'\',\'width=600,height=200\')">&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" NAME="i2c_hum_disp" VALUE="' + tval[2] + '"  onClick="window.open(\'./i2c_hum_disp_day.cgi\',\'\',\'width=600,height=200\')">');
              } else {
@@ -2475,6 +2478,7 @@ function update_di(item){
              $("#gpio_hum_val").text(tval[2]);
              $("#gpio_pres_val").text(tval[3]);
              $("#gpio_gas_val").text(tval[4]);
+             $("#gpio_iaq_val").text(val.iaq)
              var iaq_val = tval[5];
              var iaq_color = "none";
              if (iaq_val != "none"){
