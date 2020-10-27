@@ -19,5 +19,5 @@ fi
 
 #pepo
 /usr/local/bin/pepostart_remote-hand >/dev/null 2>&1
-#echo pepostart_remote-hand start
+iptables-restore < /etc/iptables/rules.v4
 exit 0
