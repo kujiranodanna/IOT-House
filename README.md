@@ -39,3 +39,4 @@ After playing with Raspberry Pi, let's practice home appliances and home securit
 <b>IOT House Alexa demo</b> -> https://www.youtube.com/watch?v=iEQanwzqHak
 
 <b>Email Raspberry Pi Security Camera Images on Alexa</b> → https://iot-house.jpn.org/wp/2020/09/11/alexa%e3%81%a7%e3%83%a9%e3%82%ba%e3%83%91%e3%82%a4%e9%98%b2%e7%8a%af%e3%82%ab%e3%83%a1%e3%83%a9%e7%94%bb%e5%83%8f%e3%82%92%e3%83%a1%e3%83%bc%e3%83%ab%e3%81%99%e3%82%8b/
+
