@@ -1,5 +1,5 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2020.9.27
+# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2020.11.25
 # pepojsond is for daemon make json data
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
@@ -11,6 +11,8 @@ ALIAS_VDO=$DIR/.alias_vdo
 DIORD=$DIR/.di_read_data
 DIOWD=$DIR/.do_write_data
 GPIORD=$DIR/.gpiodi_read_data
+SLICE_AI=$DIR/.slice_ai
+tSLICE_AI=$DIR/.slice_ai_tmp
 VOICEREQ=$DIR/.voice_req
 tVOICEREQ=$DIR/.voice_req.tmp
 JSONRD=/www/remote-hand/.di_read_data.json
@@ -37,10 +39,10 @@ trap error SIGTERM SIGHUP SIGKILL SIGINT
 [ -e "$tJSONRD" ] && rm -f $tJSONRD
 [ -e $pidfile ] && rm -f $pidfile
 
-# loop for gpio polling read 
+# loop for gpio polling read
 while true
 do
-  unset di do alias_di alias_do alias_vdo sound_file piface_ip tocos_ip 
+  unset di do alias_di alias_do alias_vdo sound_file piface_ip tocos_ip
   [ -e $ALIAS_DI ] && . $ALIAS_DI
   [ -e $ALIAS_DO ] && . $ALIAS_DO
   if [ ! -z  $piface_ip ];then
@@ -371,7 +373,7 @@ END
   echo -e \"cpu_temp\":\"$CPU_TEMP\", >>$tJSONRD
   voice_req="none"
   if [ ! -e "${tVOICEREQ}" ];then
-    if [ -e ${VOICEREQ} ];then 
+    if [ -e ${VOICEREQ} ];then
       mv ${VOICEREQ} ${tVOICEREQ}
       voice_req=`cat ${tVOICEREQ}`
       [ -z "${voice_req}" ] && voice_req="none"
@@ -385,5 +387,51 @@ END
   echo "}" >>$tJSONRD
   mv $tJSONRD $JSONRD
   chown www-data.www-data $JSONRD
+#i2c Temperature,Humidity & CPU Temperature & GPIO Temperature convert to digital set
+  JSON_RAW=`cat ${JSONRD}`
+  for i in 24 25 26 27 28 33 34 35; do old[$i]="-1" ;done
+  CPU_TEMP=`echo ${JSON_RAW} | jq -r .cpu_temp | awk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
+  if [ ! -z "$CPU_TEMP" -a ! -z "${slice_ai[16]}" ];then
+    [ $CPU_TEMP -lt ${slice_ai[16]} ] && old[24]=0 || old[24]=1
+  fi
+  GPIO_TEMP=`echo ${JSON_RAW} | jq -r .gpio_i2c.temp | awk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
+  if [ ! -z "$GPIO_TEMP" -a ! -z "${slice_ai[17]}" ];then
+    [ $GPIO_TEMP -lt ${slice_ai[17]} ] && old[25]=0 || old[25]=1
+  fi
+  GPIO_HUM=`echo ${JSON_RAW} | jq -r .gpio_i2c.hum | awk '{gsub(/%/,"",$0);split($0,J,".");printf J[1]}'`
+  if [ ! -z "$GPIO_HUM" -a ! -z "${slice_ai[18]}" ];then
+    [ $GPIO_HUM -lt ${slice_ai[18]} ] && old[26]=0 || old[26]=1
+  fi
+  I2C_TEMP=`echo ${JSON_RAW} | jq -r .i2ctemp.temp | awk '{gsub(/Ž/,"",$0);split($0,I,".");printf I[1]}'`
+  if [ ! -z "$I2C_TEMP" -a ! -z "${slice_ai[19]}" ];then
+    [ $I2C_TEMP -lt ${slice_ai[19]} ] && old[27]=0 || old[27]=1
+  fi
+  I2C_HUM=`echo ${JSON_RAW} | jq -r .i2ctemp.hum | awk '{gsub(/%/,"",$0);split($0,J,".");printf J[1]}'`
+  if [ ! -z "$I2C_HUM" -a ! -z "${slice_ai[20]}" ];then
+    [ $I2C_HUM -lt ${slice_ai[20]} ] && old[28]=0 || old[28]=1
+  fi
+  GPIO_PRES=`echo ${JSON_RAW} | jq -r .gpio_i2c.pres | awk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
+  if [ ! -z "$GPIO_TEMP" -a ! -z "${slice_ai[21]}" ];then
+    [ $GPIO_PRES -lt ${slice_ai[21]} ] && old[33]=0 || old[33]=1
+  fi
+  GPIO_GAS=`echo ${JSON_RAW} | jq -r .gpio_i2c.gas | awk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
+  if [ ! -z "$GPIO_GAS" -a ! -z "${slice_ai[22]}" ];then
+    [ $GPIO_GAS -lt ${slice_ai[22]} ] && old[34]=0 || old[34]=1
+  fi
+  GPIO_IAQ=`echo ${JSON_RAW} | jq -r .gpio_i2c.iaq | awk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
+  if [ ! -z "$GPIO_IAQ" -a ! -z "${slice_ai[23]}" ];then
+    [ $GPIO_IAQ -lt ${slice_ai[23]} ] && old[35]=0 || old[35]=1
+  fi
+  cat >${tSLICE_AI}<<END
+old[24]=${old[24]}
+old[25]=${old[25]}
+old[26]=${old[26]}
+old[27]=${old[27]}
+old[28]=${old[28]}
+old[33]=${old[33]}
+old[34]=${old[34]}
+old[35]=${old[35]}
+END
+  mv ${tSLICE_AI} ${SLICE_AI}
   msleep ${POLLTIME}
 done
