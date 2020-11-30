@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.12.21
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.11.30
 
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2019.12.21">
+<META NAME="Build" content="2020.11.30">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital-in)</TITLE>
@@ -78,6 +78,7 @@ di_clear() {
     cat > $file <<EOF
 #!/bin/bash
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -105,6 +106,7 @@ irkit_exec() {
 cat > $file <<EOF
 #!/bin/bash
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -136,6 +138,7 @@ tocos_high_low() {
   cat > $file <<EOF
 #!/bin/bash
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -147,7 +150,7 @@ if [ -e $count ];then
   chown www-data.www-data $count $log
 fi
 high_low=$high_low
-if [ $invert != "none" ];then 
+if [ $invert != "none" ];then
   [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
   [ \${do[$do_ch]} -eq 0 ] && high_low="1" || high_low="0"
 fi
@@ -171,6 +174,7 @@ do_high_low() {
   cat > $file <<EOF
 #!/bin/bash
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -182,7 +186,7 @@ if [ -e $count ];then
   chown www-data.www-data $count $log
 fi
 high_low=$high_low
-if [ $invert != "none" ];then 
+if [ $invert != "none" ];then
   [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
   [ \${do[$ch]} -eq 0 ] && high_low="1" || high_low="0"
 fi
@@ -204,6 +208,7 @@ di_tel() {
 #!/bin/bash
 echo $tel >$tel_file
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -232,6 +237,7 @@ di_wgetmail() {
   cat >$file<<EOF
 #!/bin/bash
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -253,7 +259,7 @@ if [ -e $count ];then
   unset WTMP
   if [ $IMAGE = "mail" ];then
     WGETMAIL=/usr/local/bin/peposendmail
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE	
+    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
   elif [ $IMAGE = "mail_message" ];then
     WGETMAIL=/usr/local/bin/pepomsgsendmail
     MSG_BOX=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
@@ -295,6 +301,7 @@ Subject:$msg
 END
 nkf -j --overwrite \$msg_file
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -323,6 +330,7 @@ di_sound(){
   cat > $file <<EOF
 #!/bin/bash
 if [ -e $count ];then
+  [ -e "${count}.tmp" ] && exit
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
   cat $count |awk '/^\#[0-9]+/{N=\$1;gsub(/\#/,"",N); N++ ;print "#"N }' >>${count}.tmp
@@ -343,7 +351,7 @@ del_all() {
   local file log
   di_count $1
 #  file=$DIR/"$1"
-  file=/usr/bin/"$1" 
+  file=/usr/bin/"$1"
   count=$DIR/."$1".count
   log=$DIR/."$1".log
   CMD=$DIR/dio_control_del_$1.pepocmd
@@ -376,7 +384,7 @@ while [ $n -lt 22 ];do
         echo "di_mail_message[$n]=""${di_mail_message[$n]}" >>"$DICH"
         echo "di_mail_message[$n]=""${di_mail_message[$n]}" >>"$sDICH"
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$DICH"
-        echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$sDICH"        
+        echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$sDICH"
       elif [ "${di_act[$n]}" = "mail" -o "${di_act[$n]}" = "web_camera_video" -o "${di_act[$n]}" = "mod_camera_still" -o "${di_act[$n]}" = "mod_camera_video" ];then
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$DICH"
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$sDICH"
@@ -689,13 +697,13 @@ if [ -e "$sDICH" ];then
           ARG2="${don_time[$n]}"
           di_sound "$FIL" "$ARG1" "$ARG2"
         ;;
-      esac 
+      esac
     fi
     if [ "${di_change_reg[$n]}" = "del" ];then
-      del_all "$FIL" 
+      del_all "$FIL"
     fi
     if [ "${di_change_reg[$n]}" = "clr" ];then
-      di_clear "$FIL" 
+      di_clear "$FIL"
     fi
     n=$(($n + 1))
   done
