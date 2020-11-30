@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2020.7.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2020.11.30
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 #VIDEOPG=ffmpeg
@@ -8,6 +8,7 @@ RASPICAMERA=/dev/vchiq
 RASPIVID=raspivid
 RASPISTILL=raspistill
 VIDEOPG=avconv
+KILLTIMER=20
 if [ $# != 3 ];then
  echo  "$0 video-dev xxx.jpg|xxx.mp4 ppid"
  exit -1
@@ -39,17 +40,21 @@ trap error SIGINT SIGTERM SIGHUP SIGKILL SIGCHLD
 
 while [ -e ${pidfile} ];do
   VIDEOPGTIME=`ps ax | grep -v grep|grep ${VIDEOPG} | awk '{split($4,I,":");printf("%2d",I[2])}'`
-  if [ "${VIDEOPGTIME}" -gt 10 ];then
-    pid=`cat ${pidfile}`
-    kill -HUP ${pid}
-    pkill -HUP ${VIDEOPG}
-    msleep 100
-    rm -f ${pidfile}
-    rm -f ${ppidfile}
+  if [ ! -z "$VIDEOPGTIME" ];then
+    if [ "${VIDEOPGTIME}" -gt $KILLTIMER ];then
+      pid=`cat ${pidfile}`
+      kill -HUP ${pid}
+      pkill -HUP ${VIDEOPG}
+      msleep 100
+      rm -f ${pidfile}
+      rm -f ${ppidfile}
+      rm -f ${WORKIMAGE}
+      exit
+    fi
   fi
 done
 while [ ! -z `pgrep ${VIDEOPG}` ];do
-  TIMEOUT=`ps ax | grep -v grep|grep avconv | awk '{split($4,I,":");if (I[2] > 10){printf $1}}'`
+  TIMEOUT=`pgrep ${VIDEOPG}`
   if [ ! -z "${TIMEOUT}" ];then
     kill -HUP ${TIMEOUT}
     msleep 100
@@ -63,10 +68,14 @@ if [ -e ${DEV} ];then
     ${VIDEOPG} -f video4linux2 -i ${DEV} ${OPT} -y ${WORKIMAGE} >/dev/null 2>&1
   else
     if [ $MP4 != "YES" ];then
+      TIMEOUT=`pgrep ${RASPISTILL}`
+      [ ! -z "${TIMEOUT}" ] && kill -HUP $$
       $RASPISTILL -t 1000 -vf -hf -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
     else
+      TIMEOUT=`pgrep ${RASPIVID}`
+      [ ! -z "${TIMEOUT}" ] && kill -HUP $$
 #      $RASPIVID -vf -hf -o - -w 640 -h 480 -t 10000 -fps 5 |${VIDEOPG} -f h264 -r 5 -i - -vcodec mpeg4 -y ${WORKIMAGE} >/dev/null 2>&1
-      $RASPIVID -vf -hf -o ${WORKIMAGE}.tmp -w 640 -h 480 -t 10000 -fps 5 
+      $RASPIVID -vf -hf -o ${WORKIMAGE}.tmp -w 640 -h 480 -t 10000 -fps 5
       cat ${WORKIMAGE}.tmp |${VIDEOPG} -f h264 -r 5 -i - -vcodec mpeg4 -y ${WORKIMAGE} >/dev/null 2>&1
       rm ${WORKIMAGE}.tmp
     fi
