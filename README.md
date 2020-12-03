@@ -22,13 +22,21 @@ If it is judged that the outside air humidity is low and the underfloor exchange
 
 After playing with Raspberry Pi, let's practice home appliances and home security with IOT House.
 
-<b>Binary image</b> "IOT-House_zero_w" is available here -> https://osdn.net/projects/pepolinux/releases/p15935
+<b>Hardware</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Hardware
+  
+<b>Binary image</b> -> "IOT-House_zero_w" is available here -> https://osdn.net/projects/pepolinux/releases/p15935
 
 <b>INSTALL</b> -> https://github.com/kujiranodanna/IOT-House/wiki/INSTALL#install
 
 <b>Configuration</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Configuration
 
-<b>Advanced-configuration</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Advanced-configuration
+<b>Advanced configuration</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Advanced-configuration
+
+<b>BME680 environment sensor</b> -> https://github.com/kujiranodanna/IOT-House/wiki/BME680-environment-sensor
+
+<b>Use Doppler sensor as a security sensor RCWL-0516</b> -> https://github.com/kujiranodanna/IOT-House/wiki/RCWL%E3%83%BC0516
+
+<b>Alexa about voice control</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Alexa
 
 <b>News & Other</b> -> https://github.com/kujiranodanna/IOT-House/wiki/News
 
