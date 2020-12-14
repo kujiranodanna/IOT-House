@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.10.7
-* remote-hand_pi.js  ver0.14 2020.10.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.14
+* remote-hand_pi.js  ver0.15 2020.12.14
 */
 function blink(){
   if (!document.all){ return; }
@@ -341,15 +341,15 @@ function disp_di_log(url_di_log){
       }
    });
 }
-
 // Processing of live photo
 function start_photo(dev){
   var ip = $("#live_server").val();
   var live_close_timer = 60000;
-  var live_open_timer = 10000;
+  var live_open_timer = 30000;
   var live_timer = 0;
   var video_dev = dev;
   var livefile = "/remote-hand/tmp/remote-hand.jpg";
+  var wait_url ="/remote-hand/please_wait.html";
   $.ajax({
     type: "get",
     url: "pepoliveserver.cgi",
@@ -360,9 +360,12 @@ function start_photo(dev){
     success: function(){
       $("#disp_menu5").text("Server-Success!");
       $(function(){
+        var child_url = "http://" + ip + wait_url;
+        var wait_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
         setTimeout(function(){
-          var child_url = "http://" + ip + livefile;
-          var live_photo = window.open(child_url,dev,"width=320,height=240,resizable=yes,scrollbars=no");
+          wait_photo,close();
+          child_url = "http://" + ip + livefile;
+          var live_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
           setTimeout(function(){
             live_photo.close();
           },live_close_timer);
@@ -376,7 +379,6 @@ function start_photo(dev){
     }
   });
 }
-
 // Processing of live video
 function start_video(dev){
   var ip = $("#live_server").val();
@@ -385,6 +387,7 @@ function start_video(dev){
   var live_open_timer;
   var video_dev = dev;
   var live_url = '/remote-hand/tmp/remote-hand.webm'
+  var wait_url ="/remote-hand/please_wait.html";
   if (video_dev == "video0"){
     live_timer = $('#live_timer0').val();
   }
@@ -406,8 +409,8 @@ function start_video(dev){
     live_close_timer = live_timer * 2.0;
   }
   else {
-    live_open_timer = 5000;
-    live_close_timer = live_timer * 2.0;
+    live_open_timer = live_timer * 3.0;
+    live_close_timer = live_timer * 4.0;
   }
   $.ajax({
     type: "get",
@@ -419,7 +422,15 @@ function start_video(dev){
     success: function(){
       $("#disp_menu5").text("Server-Success!");
       $(function(){
+        var child_url = "http://" + ip + wait_url;
+        if (video_dev=="vchiq"){
+          var wait_live = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
+        }
+        else {
+          var wait_live = window.open(child_url,dev,"width=320,height=240,resizable=yes,scrollbars=no");
+        }
         setTimeout(function(){
+          wait_live,close();
           var child_url = "http://" + ip + live_url;
           if (video_dev=="vchiq"){
             var live_video = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
