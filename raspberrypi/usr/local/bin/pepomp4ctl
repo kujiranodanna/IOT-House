@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2020.11.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2020.12.4
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 #VIDEOPG=ffmpeg
@@ -22,7 +22,7 @@ ppid=$3
 if [ $MP4 = "YES" ];then
   OPT="-ss 3 -s 320x240 -r 5 -vcodec mpeg4 -t 10"
 else
-    OPT="-ss 3 -s 640x480"
+    OPT="-ss 1 -s 640x480"
 fi
 prog=pepomp4ctl
 pidfile=/var/run/${prog}.pid
