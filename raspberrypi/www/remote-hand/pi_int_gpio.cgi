@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.16
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
