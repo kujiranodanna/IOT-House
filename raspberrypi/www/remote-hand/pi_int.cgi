@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.10.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.16
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2020.10.8"
-VERSION="ver:0.14&nbsp;$DATE"
+DATE="2020.12.16"
+VERSION="ver:0.15&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
 if [ $ZEROW_YES_NO = "YES" ];then
@@ -98,22 +98,22 @@ ALIAS_VDO=$DIR/.alias_vdo
 [ -e "$DOWD" ] && . "$DOWD"
 [ -e "$ALIAS_DI" ] && . "$ALIAS_DI"
 [ -e "$ALIAS_DO" ] && . "$ALIAS_DO"
-[ -e "$ALIAS_VDO" ] && . "$ALIAS_VDO" 
+[ -e "$ALIAS_VDO" ] && . "$ALIAS_VDO"
 for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25;do
   DI[$n]="none"
   DO[$n]="none"
   if [ "${di[$n]}" = "1" ];then
     DI[$n]="high"
   elif [ "${di[$n]}" = "0" ];then
-    DI[$n]="low" 
+    DI[$n]="low"
   fi
   if [ "${do[$n]}" = "1" ];then
-    DO[$n]="high" 
+    DO[$n]="high"
   elif [ "${do[$n]}" = "0" ];then
     DO[$n]="low"
   fi
   if [ "${ai[$n]}" = "1" ];then
-    ai[$n]="high" 
+    ai[$n]="high"
   elif [ "${ai[$n]}" = "0" ];then
     ai[$n]="low"
   fi
@@ -452,7 +452,7 @@ if [ ! -z "${TOCOS_TTY}" ];then
     ttyUSBTWE-Lite) vTOCOS_TTY="ttyUSBTWE-Lite" ;;
     none) vTOCOS_TTY="none" ;;
   esac
-else 
+else
   vTOCOS_TTY="none" ; TOCOS_TTY="none"
 fi
 if [ -n "${DI_TTY}" ];then
@@ -461,7 +461,7 @@ if [ -n "${DI_TTY}" ];then
     piface) vTTY="piface" ;;
     none) vTTY="none" ;;
   esac
-else 
+else
    DI_TTY="gpio" ; vTTY="gpio"
 fi
 MODEM=$DIR/.modem
@@ -874,15 +874,14 @@ State<span id="recognition_state" >Stop</span>
 <input type="button" value="Camera_1 photo" onclick="start_photo('video0');"/>&nbsp
 <input type="button" value="Camera_2 photo" onclick="start_photo('video1');"/>&nbsp
 <input type="button" value="Camera_3 photo" onclick="start_photo('video2');"/>&nbsp
+<input type="button" value="Module_Camera photo" onclick="start_photo('vchiq');"/>
 <BR>
-<input type="button" value="Web Camera1" onclick="start_video('video0');"/>
+<input type="button" value="Camera_1 video" onclick="start_video('video0');"/>
 <input id="live_timer0" type="text" style="width:20px;" NAME="live_timer0" VALUE="10">Sec&nbsp;
-<input type="button" value="Web Camera2" onclick="start_video('video1');"/>
+<input type="button" value="Camera_2 video" onclick="start_video('video1');"/>
 <input id="live_timer1" type="text" style="width:20px;" NAME="live_timer1" VALUE="10">Sec&nbsp;
-<input type="button" value="Web Camera3" onclick="start_video('video1');"/>
+<input type="button" value="Camera_3 video" onclick="start_video('video2');"/>
 <input id="live_timer2" type="text" style="width:20px;" NAME="live_timer2" VALUE="10">Sec&nbsp
-<input type="button" value="Module Camera" onclick="start_video('vchiq');"/>
-<input id="live_timer3" type="text" style="width:20px;" NAME="live_timer3" VALUE="10">Sec&nbsp;
 <BR>
 <input type="button" value="Streaming start" onclick="streaming_start_stop('vchiq','start');"/>
 <input type="button" value="Streaming stop" onclick="streaming_start_stop('vchiq','stop');"/>
@@ -3274,7 +3273,7 @@ while [ $n -lt 22 ];do
   unset di_act[$n]
   unset don_time[$n]
   unset di_mail[$n]
-  unset di_mail_message[$n]  
+  unset di_mail_message[$n]
   unset di_tel[$n]
   unset vdi_change[$n]
   unset vdi_act[$n]
@@ -5034,7 +5033,7 @@ for n in 0 1 2 3 4 5 6 7 8 9;do
       3) vWGET_VAL[$n]="Wed" ;;
       4) vWGET_VAL[$n]="Thu" ;;
       5) vWGET_VAL[$n]="Fri" ;;
-      6) vWGET_VAL[$n]="Sat" ;; 
+      6) vWGET_VAL[$n]="Sat" ;;
     esac
   fi
 done
@@ -5097,7 +5096,7 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
   vAUTO_ACT_CON[$n]="Enable"
   [ ! -z "${auto_act_con[$n]}" ] && vAUTO_ACT_CON[$n]=${auto_act_con[$n]} || auto_act_con[$n]="Enable"
   case ${auto_act_con[$n]} in
-    "DI_ON_0")  vAUTO_ACT_CON[$n]=${ALIAS_DI[0]}high  ;; 
+    "DI_ON_0")  vAUTO_ACT_CON[$n]=${ALIAS_DI[0]}high  ;;
     "DI_OFF_0")  vAUTO_ACT_CON[$n]=${ALIAS_DI[0]}low  ;;
     "DI_ON_1")  vAUTO_ACT_CON[$n]=${ALIAS_DI[1]}high  ;;
     "DI_OFF_1")  vAUTO_ACT_CON[$n]=${ALIAS_DI[1]}low  ;;
@@ -5143,7 +5142,7 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
     "DI_OFF_22")  vAUTO_ACT_CON[$n]=${ALIAS_DI[22]}low  ;;
     "DI_ON_23")  vAUTO_ACT_CON[$n]=${ALIAS_DI[23]}high  ;;
     "DI_OFF_23")  vAUTO_ACT_CON[$n]=${ALIAS_DI[23]}low  ;;
-  esac  
+  esac
   case $n in
     0)
       for m in 0 1 2 3 4 5 6 7 8 9;do
@@ -5183,30 +5182,30 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[7]}high ;;
         DOFF_7)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[7]}low ;;
-        IREXEC_0)  
+        IREXEC_0)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[8]}low ;;
-        IREXEC_0)  
+        IREXEC_0)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[8]}low ;;
-        IREXEC_1)  
+        IREXEC_1)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[9]}low ;;
-        IREXEC_2)  
+        IREXEC_2)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[10]}low ;;
-        IREXEC_3)  
+        IREXEC_3)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[11]}low ;;
-        IREXEC_4)  
+        IREXEC_4)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[12]}low ;;
-        IREXEC_5)  
+        IREXEC_5)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[13]}low ;;
         TON_0)
-          vAUTO_ACT0_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT0_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT0_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT0_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT0_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT0_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT0_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5273,30 +5272,30 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[7]}high ;;
         DOFF_7)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[7]}low ;;
-        IREXEC_0)  
+        IREXEC_0)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[8]}low ;;
-        IREXEC_0)  
+        IREXEC_0)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[8]}low ;;
-        IREXEC_1)  
+        IREXEC_1)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[9]}low ;;
-        IREXEC_2)  
+        IREXEC_2)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[10]}low ;;
-        IREXEC_3)  
+        IREXEC_3)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[11]}low ;;
-        IREXEC_4)  
+        IREXEC_4)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[12]}low ;;
-        IREXEC_5)  
+        IREXEC_5)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[13]}low ;;
         TON_0)
-          vAUTO_ACT1_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT1_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT1_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT1_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT1_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT1_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT1_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5363,30 +5362,30 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[7]}high ;;
         DOFF_7)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[7]}low ;;
-        IREXEC_0)  
+        IREXEC_0)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[8]}low ;;
-        IREXEC_0)  
+        IREXEC_0)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[8]}low ;;
-        IREXEC_1)  
+        IREXEC_1)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[9]}low ;;
-        IREXEC_2)  
+        IREXEC_2)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[10]}low ;;
-        IREXEC_3)  
+        IREXEC_3)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[11]}low ;;
-        IREXEC_4)  
+        IREXEC_4)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[12]}low ;;
-        IREXEC_5)  
+        IREXEC_5)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[13]}low ;;
         TON_0)
-          vAUTO_ACT2_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT2_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT2_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT2_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT2_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT2_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT2_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5466,15 +5465,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT3_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT3_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT3_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT3_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT3_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT3_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT3_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT3_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT3_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT3_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5554,15 +5553,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT4_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT4_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT4_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT4_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT4_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT4_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT4_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT4_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT4_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT4_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5642,15 +5641,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT5_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT5_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT5_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT5_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT5_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT5_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT5_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT5_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT5_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT5_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5730,15 +5729,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT6_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT6_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT6_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT6_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT6_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT6_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT6_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT6_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT6_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT6_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5818,15 +5817,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT7_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT7_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT7_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT7_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT7_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT7_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT7_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT7_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT7_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT7_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5906,15 +5905,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT8_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT8_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT8_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT8_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT8_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT8_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT8_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT8_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT8_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT8_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -5994,15 +5993,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT9_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT9_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT9_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT9_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT9_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT9_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT9_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT9_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT9_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT9_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6082,15 +6081,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT10_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT10_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT10_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT10_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT10_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT10_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT10_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT10_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT10_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT10_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6170,15 +6169,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT11_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT11_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT11_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT11_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT11_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT11_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT11_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT11_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT11_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT11_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6258,15 +6257,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT12_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT12_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT12_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT12_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT12_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT12_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT12_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT12_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT12_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT12_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6346,15 +6345,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT13_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT13_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT13_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT13_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT13_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT13_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT13_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT13_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT13_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT13_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6434,15 +6433,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT14_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT14_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT14_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT14_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT14_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT14_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT14_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT14_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT14_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT14_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6522,15 +6521,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT15_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT15_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT15_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT15_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT15_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT15_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT15_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT15_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT15_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT15_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6610,15 +6609,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT16_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT16_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT16_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT16_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT16_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT16_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT16_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT16_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT16_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT16_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6698,15 +6697,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT17_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT17_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT17_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT17_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT17_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT17_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT17_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT17_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT17_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT17_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6786,15 +6785,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT18_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT18_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT18_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT18_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT18_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT18_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT18_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT18_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT18_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT18_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6874,15 +6873,15 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
         IREXEC_5)
           vAUTO_ACT19_VAL[0]="${ALIAS_DO[13]}" ;;
         TON_0)
-          vAUTO_ACT19_VAL[0]=${ALIAS_DO[14]}high ;; 
+          vAUTO_ACT19_VAL[0]=${ALIAS_DO[14]}high ;;
         TOFF_0)
           vAUTO_ACT19_VAL[0]=${ALIAS_DO[14]}low ;;
         TON_1)
-          vAUTO_ACT19_VAL[0]=${ALIAS_DO[15]}high ;; 
+          vAUTO_ACT19_VAL[0]=${ALIAS_DO[15]}high ;;
         TOFF_1)
           vAUTO_ACT19_VAL[0]=${ALIAS_DO[15]}low ;;
         TON_2)
-          vAUTO_ACT19_VAL[0]=${ALIAS_DO[16]}high ;; 
+          vAUTO_ACT19_VAL[0]=${ALIAS_DO[16]}high ;;
         TOFF_2)
           vAUTO_ACT19_VAL[0]=${ALIAS_DO[16]}low ;;
         SOUND_0)
@@ -6912,7 +6911,7 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
       esac
     esac
 done
- 
+
 cat >>$PAGE1<<END
 <FORM NAME="menu12sub" id="menu12sub_form" ACTION="auto_porc_pi.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
 <FONT SIZE="2"><B>Settings digital Output</B></FONT>
@@ -9508,7 +9507,7 @@ END
 
 tSTARTUP=$DIR/.startup.s.tmp
 [ -e $tSTARTUP ] && . $tSTARTUP
-[ ! -z $vWEBPASSWORD ] && vWEBPASSWORD="*" 
+[ ! -z $vWEBPASSWORD ] && vWEBPASSWORD="*"
 cat >>$PAGE1<<END
 <DL id="menu13dl">
 <DT><FONT SIZE="+1"><B>Server configuration and save</B></FONT></DT>
