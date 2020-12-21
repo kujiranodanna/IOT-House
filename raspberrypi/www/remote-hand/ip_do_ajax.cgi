@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.27 update 2020.10.25
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.27 update 2020.12.21
 
 # ip_do_ajax ; For raspberry pi , and scripts to run the remote voice command or dio [dioXXlow|dioXXhigh] or DIO and TOCOS .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -14,7 +14,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2020.10.25">
+<META NAME="build" content="2020.12.21">
 <META http-equiv="Refresh" content="0;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>ip_do_ajax running</TITLE>
@@ -61,7 +61,7 @@ if [ "$ch" = "voice_req" ];then
 END
   exit
 fi
-if [ $ch -gt 7 -a $ch -lt 13 ];then
+if [ $ch -gt 7 -a $ch -lt 14 ];then
   cmd=/usr/local/bin/pepoirkitpost
   ch=$(($ch - 8))
   if [ ! -z $time ];then
