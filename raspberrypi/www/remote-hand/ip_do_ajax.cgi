@@ -86,3 +86,4 @@ cat>$DIOCMD<<END
 #!/bin/bash
 $cmd $ch $val $time >/dev/null 2>&1
 END
+
