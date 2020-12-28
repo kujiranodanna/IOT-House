@@ -1,0 +1,32 @@
+#!/bin/bash
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2005.10.1
+#usage; pepouseraddcsv USERDATA.csv  
+#USERDATA.csv --> epicon@pepolinux.com,password OR epicon@pepolinux.com
+#if password is null then use username.
+end(){
+	exit 0
+}
+if [ $# != 1 ]; then
+	echo usage: pepouseraddcsv USERDATA.csv
+	end
+fi
+echo -n "Input group:"
+read G
+if [ -z $G ] ; then echo group is empty ; end  ; fi
+GR=`cat /etc/group|egrep $G|awk 'BEGIN {FS=":"};{printf("%s",$1)}'`
+if [ $GR"X" != $G"X" ] ; then groupadd  $G ; fi
+cat $1|awk -v G=$G 'BEGIN {FS=","};
+                        {split($1,A,"@")
+			USER = A[1]
+			if ( $2 != ""  ) { PASS = $2 }
+			else { PASS = A[1] }
+                        print "useradd "USER" -g "G;
+			print "echo "PASS"|passwd "USER" --stdin"; 
+			print "mkdir /home/"USER"/public_html";
+			print "chown "USER" /home/"USER"/public_html";
+			print "chgrp "G" /home/"USER"/public_html";
+			print "chmod 777 /home/"USER"/public_html";
+			print "echo adduser "USER" success!"}'>/root/ST
+chmod 777 /root/ST
+/root/ST
+rm /root/ST

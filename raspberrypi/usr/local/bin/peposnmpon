@@ -1,0 +1,198 @@
+#!/bin/bash
+#This scripts get SNMP-agent repeats at time "minutes".
+#licence GPLv2 ; this scripts designed by IZAMUKARERA 2000.9.10 ; update 2004.9.20
+#H=HOST L=LOGfile P=path R=cron_run CT=in/out_counter EX=EXCEL.CSV
+#TMP=temp_file NU=null_dev B=awk_path
+#このスクリプトは　snmpwalk　コマンドを使用し指定された間隔でSNMPエージェント
+ALLOW=$U\
+S\
+E\
+R
+#よりデータを収集します。
+#最高１０インターフェース迄入出力データを収集しEXCELで加工出来る様にします。
+#使用方法は　peposnmpon　ホストアドレス　コミニティ名　収集間隔(分)
+#停止方法は　peposnmpoff
+
+if [ $# != 3 ]
+then
+echo "usage_example peposnmpon 192.168.100.1 public 5"
+echo "              peposnmpon host community at_5_minutes"
+exit
+fi
+
+H=$1
+CM=$2
+TM=$3
+B=/usr/local/bin
+NU=/dev/null
+P=$PWD
+L=$P/NODE_STATUS
+R=$P/.get_in_out
+C=$P/.min.cron
+CT=$P/.SNMP_LOG
+EX=$P/EXCEL.CSV
+SP=$P/.SPEED
+NEW=$P/.NEW
+OLD=$P/.OLD
+SNMPWALK=/usr/bin/snmpwalk
+rm $L $R $C $CT $EX $SP $NEW $OLD .speed.awk .in_out.awk .sum.awk 2>$NU
+ALLOW=`echo $ALLOW|cut -c 1-4`
+if [ $ALLOW != pepo ]
+then
+echo "Please login pepo and try it again."
+exit
+fi
+$SNMPWALK -v1 $H -c $CM system >$L
+awk 'BEGIN {TMP=0} /^An error occurred, Quitting/\
+{TMP=1} END{print "TMP="TMP}' $L >ST
+chmod +x ST
+. ST
+if [ $TMP != 0 ]
+then
+echo "Unreachable!! host down or bad communty"
+rm $L ST
+exit
+fi
+cat>$P/.speed.awk<<Z
+#!/bin/awk
+#This scripts cut-in speed parameter.
+#Copyright IZAMU.KARERA 2000.9.10 2004.9.20
+#このスクリプトは　snmpwalk　コマンドでgetしたデータよりインターフェーススピード
+#部分を切り出します。
+BEGIN {SP=1}
+/^IF-MIB::ifSpeed./{gsub(\\
+"IF-MIB::ifSpeed.[0-9] = Gauge32: ","",\$0)
+ifSpeed[SP++]= \$0}
+END{
+        printf ("ifSpeed");
+        for (i=1 ;SP>i; i++){
+        printf (",%d",ifSpeed[i])
+        }
+        printf ("\\n");
+}
+Z
+chmod +x $P/.speed.awk
+
+cat>$P/.in_out.awk<<Z
+#!/bin/awk
+#
+#this scripts for make status to in-out status cutter.
+#copyright IZAMU.KARERA 2000.9.10
+#このスクリプトは　snmpwalk　コマンドでgetしたデータよりイン／アウトのデータ
+#部分を切り出します。
+BEGIN {IN=1;OUT=1}
+/^[SMTWTF][a-z][a-z]/{printf "/"\$1"/"\$2"/"\$3"/"\$4}
+/^IF-MIB::ifInOctets/{gsub(\\
+"IF-MIB::ifInOctets.[0-9] = Counter32: ","",\$0);
+ifInOctets[IN++]= \$0}
+/^IF-MIB::ifOutOctets/{gsub(\\
+"IF-MIB::ifOutOctets.[0-9] = Counter32: ","",\$0);
+ifOutOctets[OUT++]= \$0}
+END{
+	printf ("\\nifInOctets");
+	for (i=1 ;IN>i; i++){
+	printf (",%d",ifInOctets[i])
+	}
+	printf ("\nifOutOctets");
+	for (i=1 ;OUT>i; i++){
+	printf (",%d",ifOutOctets[i])
+	}
+	printf ("\\n");
+}
+Z
+chmod +x $P/.in_out.awk
+
+#!/usr/local/bin/awk
+#This scripts for SNMP sum (new_in_out - old_in_out)/GIVE_TIME/60sec/portspeed.
+#sum.awk
+cat>$P/.sum.awk<<Z
+BEGIN{FS=","}
+{
+        if (match(FILENAME,/SPEED/)){
+                CT=NF;
+                for (i=2;i<=CT;i++) SP[i]=\$i
+                }
+        }
+
+        {
+        if (match(FILENAME,/OLD/)){
+                if (/^ifInOctets/) { for (i=2;i<=CT;i++) INOLD[i]=\$i}
+                if (/^ifOutOctets/) { for (i=2;i<=CT;i++) OUTOLD[i]=\$i}
+                }
+        }
+        {
+        if (match(FILENAME,/NEW/)){
+                if (/^[0-9]*\\//) DATE=substr(\$0,6,12)
+                if (/^ifInOctets/) { for (i=2;i<=CT;i++) INNEW[i]=\$i}
+                if (/^ifOutOctets/) { for (i=2;i<=CT;i++) OUTNEW[i]=\$i}
+        }
+}
+END{ for (i=2;i<=CT;i++) {
+        if (INNEW[i]!=0 && OUTNEW[i]!=0 && INOLD[i]!=0 && OUTOLD[i]!=0 && \\
+        SP[i]!=0 ) {
+	        if (INNEW[i]>INOLD[i]) {
+		 SUMI[i]=(((INNEW[i]-INOLD[i])*8*100/$TM/60)/SP[i])
+		}
+		else SUMI[i]=0
+		if (OUTNEW[i]>OUTOLD[i]) {
+	        SUMO[i]=(((OUTNEW[i]-OUTOLD[i])*8*100/$TM/60)/SP[i])
+	        }
+	        else SUMO[i]=0
+        }
+	else {SUMI[i]=0;SUMO[i]=0}
+        }
+	printf (DATE)
+        {
+        for (i=2;i<=CT;i++){printf (",%.2g,%.2g",SUMI[i],SUMO[i])}
+        }
+        printf ("\n")
+}
+Z
+chmod +x $P/.sum.awk
+
+date>$L
+$SNMPWALK -v1 $H -c $CM system >>$L
+$SNMPWALK -v1 $H -c $CM interface >>$L
+chmod 666 $L
+awk -f $P/.in_out.awk $L >$NEW
+cp $NEW $OLD
+
+cat>$R<<Z
+#!/bin/bash
+cp $NEW $OLD
+date>$CT
+$SNMPWALK -v1 $H -c $CM IF-MIB::ifInOctets >>$CT
+$SNMPWALK -v1 $H -c $CM IF-MIB::ifOutOctets >>$CT
+awk -f $P/.in_out.awk $CT >$NEW
+awk -f $P/.sum.awk $SP $OLD $NEW >>$EX
+Z
+
+chmod +x $R
+
+#make crontab
+# min hour day month command
+cat>$C<<Z
+*/$TM * * * * $R
+Z
+chmod +x $C
+
+cat>$P/ST<<Z
+/IF-MIB::ifNumber.0 = INTEGER: /{gsub("IF-MIB::ifNumber.0 = INTEGER: "\
+,"",\$0);print "IFCT="\$0}
+Z
+
+chmod +x $P/ST
+awk -f $P/ST $L>$CT
+chmod +x $CT
+. $CT
+
+awk -v IFCT=$IFCT '
+BEGIN {
+printf("DATE");for (i=1;i<=IFCT;i++)
+{printf (",IN"i);printf (",OUT"i)}printf ("\n")}
+'>$EX
+chmod 666 $EX
+awk -f $P/.speed.awk $L >$SP
+
+#run cron
+crontab $C

@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.16
-* remote-hand_pi.js  ver0.15 2020.12.16
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.28
+* remote-hand_pi.gpio.js  ver0.16 2020.12.28
 */
 function blink(){
   if (!document.all){ return; }
@@ -2781,7 +2781,7 @@ function update_di(item){
             $("#irkit_ip").text(ip);
           }
         else {
-            $("#irkit_ip").text("none");
+            $("#irkit_ip").text("");
         }
 // Disp Sound File
         if (di2json.disp_sound_0){

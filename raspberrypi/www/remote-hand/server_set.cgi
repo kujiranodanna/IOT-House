@@ -33,7 +33,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Setting server initial data</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2019-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 

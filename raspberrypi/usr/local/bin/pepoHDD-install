@@ -1,0 +1,96 @@
+#!/bin/bash
+# pepousb-install ; install for PepoLinux form CD to HDD devices
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2008.2.12 update 2017.7.13
+NU=/dev/null
+MNT=/var/tmp/pepotmp
+MNT1=/var/tmp/pepotmps
+echo This is a very dangerous act of installing PepoLinux in DISK.
+echo -n "Please input HDD device name default:\"/dev/sda1\" or -->"
+read G
+
+error () {
+echo "
+The HDD installation of PepoLinux terminated abnormally or cannceled. 
+Please confirm whether the ext4 format of $HDDDV ends.
+"
+umount $MNT $MNT1 1>$NU 2>$NU
+rm -rf $MNT $MNT1 1>$NU 2>$NU
+exit
+}
+
+if [ -z "$G" ] ;then
+	HDDDV="/dev/sda1"
+else HDDDV="$G"
+fi
+CDMNT=`cat /etc/mtab|awk '/iso9660/{print $2}'`
+if [ -z "$CDMNT" ] ;then
+	echo "Please mount PepoLinux-CD and try once!"
+	exit
+fi
+mkdir -p $MNT $MNT1
+mount -t ext4 $HDDDV $MNT || error
+HDD=`cat /etc/mtab|awk '/ext4/{print $2}'`
+if [  "X$HDD" != "X$MNT" ] ;then
+        echo "Please $HDDDV format ext4 or device not found or manually mount or etc.--> try once!"
+        error
+fi
+umount $MNT 1>$NU 2>$NU
+echo -n "Next step $HDDDV device all files destroy (yes/no)-->"
+read G
+[ "Xyes" != "X$G" ] && error
+#make HDD-PepoLinux
+mount -t ext4 $HDDDV $MNT 1>$NU 2>$NU
+rm -rf $MNT/*
+echo "copy root file system"
+tar zxpf $CDMNT/isolinux/pepo.tgz -C $MNT/
+cp -ap $CDMNT/isolinux/linux26 $MNT/boot
+cp -ap $CDMNT/README/* $MNT/var/www/html/
+cp -ap $CDMNT/pepo.ico $MNT/
+cp -ap $CDMNT/grub $MNT/
+cp -ap $CDMNT/isolinux $MNT/
+mount -t squashfs $CDMNT/BIN $MNT1 -o ro,loop 1>$NU 2>$NU
+cp -ap $MNT1/* $MNT/
+cp -ap $MNT/etc/inittab.rpm_save $MNT/etc/inittab
+umount $MNT1
+
+#make grub.conf
+cat >$MNT/boot/grub/grub.conf<<Z
+#boot=/dev/$HDDDV
+default=0
+timeout=10
+splashimage=(hd0,0)/boot/grub/splash.xpm.gz
+hiddenmenu
+title CentOS (PepoLinux)
+        root (hd0,0)
+        kernel /boot/linux26 ro root=/
+        initrd /boot/pepo.img
+title Other
+        rootnoverify (hd0,0)
+        chainloader +1
+Z
+
+# make fstab 
+cat >$MNT/etc/fstab<<Z
+LABEL=/                 /                       ext4    defaults        1 1
+tmpfs                   /dev/shm                tmpfs   defaults        0 0
+devpts                  /dev/pts                devpts  gid=5,mode=620  0 0
+sysfs                   /sys                    sysfs   defaults        0 0
+proc                    /proc                   proc    defaults        0 0
+Z
+
+echo "copy usr file system"
+mount -t squashfs $CDMNT/USR $MNT1 -o ro,loop 1>$NU 2>$NU
+mkdir -p $MNT/usr
+cp -ap $MNT1/* $MNT/usr/ || error
+sync
+tHDDDV=`echo -en $HDDDV | sed s/[0-9]$//`
+cat /boot/grub/device.map | grep -v hda | echo "(hd0) $tHDDDV" >$MNT/boot/grub/device.map
+grub-install --no-floppy --root-directory=$MNT $tHDDDV
+sync 
+umount $MNT $MNT1
+rm -rf $MNT $MNT1
+echo "next step -->please following command
+chroot $MNT
+mkinitrd $MNT/boot/pepo.img `uname -r`"
+echo "The operation normally end." 
+echo done!
