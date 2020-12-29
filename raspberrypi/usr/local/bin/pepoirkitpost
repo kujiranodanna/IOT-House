@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH=$PATH:/usr/local/bin
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.10.17 update 2020.12.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.10.17 update 2020.12.29
 # pepoirkitpost ir_num timer
 # pepoirkitpost,Post of IR data for IRKit
 DIR=/www/remote-hand/tmp
@@ -44,9 +44,10 @@ else
   echo IRKit Device not found!
   exit
 fi
-USERAGENT="Chrome/87.0.4280.88"
-curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
+USERAGENT="X-Requested-With: Chrome/87.0.4280.88"
+curl -s -m $RETRYTIME --retry $RETRY --header "${USERAGENT}" -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
 if [ ${TIMER}X != "X" ];then
   msleep ${TIMER}
-  curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
+  curl -s -m $RETRYTIME --retry $RETRY --header "${USERAGENT}" -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
 fi
+[ -e ${DOCFILE} ] && rm ${DOCFILE}
