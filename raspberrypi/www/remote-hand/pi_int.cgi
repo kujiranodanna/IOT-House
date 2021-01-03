@@ -1,12 +1,12 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.4
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2020.12.28"
+DATE="2021.1.4"
 VERSION="ver:0.16&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -353,12 +353,14 @@ cat >$PAGE1<<END
 <script src="remote-hand_pi.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
-\$(function() {
-  \$('#tab_cont_div > ul').tabs({selected: 1});
+  \$(function() {
+    \$("#tabs").tabs();
+  });
+  \$(function() {
+    \$("#tabs").tabs("option","active",1);
   });
 // -->
 </script>
-
 <TITLE>$DIST_NAME Control Panel</TITLE>
 </HEAD>
 <BODY id="tab_cont_body" BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
