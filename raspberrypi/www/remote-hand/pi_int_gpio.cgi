@@ -347,7 +347,7 @@ cat >$PAGE1<<END
 <TITLE>$DIST_NAME Control Panel</TITLE>
 </HEAD>
 <BODY id="tab_cont_body" BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
-<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int.cgi">
+<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int_gpio.cgi">
 <DIV id="tabs">
 <DIV  style="text-align:center"><FONT size="5" color="green">$DIST_NAME</FONT><FONT size="2">&nbsp;$VERSION</FONT></DIV>
 <DIV id="tab_cont_div">
