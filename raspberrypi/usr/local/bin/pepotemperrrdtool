@@ -1,0 +1,51 @@
+#!/bin/bash
+# pepotemperrrdtool ; For raspberry pi , and scripts to run the CPU Temperature Data Base Create and Update.
+# That to run a cron of 600 seconds interval.
+# */10 * * * * root /usr/local/bin/pepotemperrrdtool --> /etc/cron.d/pepotemperrrdtool
+# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2016.6.9 update 2018.4.26
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+WORKDIR=/www/remote-hand
+DSFILE=${WORKDIR}/tmp/.temper.rrd
+RRDSTART=${WORKDIR}/tmp/.temper_start_time
+DIREADJSON=${WORKDIR}/.di_read_data.json
+TEMPER=/usr/local/bin/temper
+TEMPERFILE=${WORKDIR}/tmp/temperature
+DEVTEMPER=0c45:7401
+TEMPER_YES_NO=`lsusb |grep ${DEVTEMPER}|wc -c`
+if [ ${TEMPER_YES_NO} = 0  ];then
+  [ -e ${TEMPERFILE} ] && rm -f ${TEMPERFILE}
+  [ -e ${DSFILE} ] && rm -f  ${DSFILE}
+  [ -e  ${RRDSTART} ] && rm -f ${RRDSTART}
+  exit
+fi
+if [ ${TEMPER_YES_NO} != 0  ];then
+  NOWDATE=`date +"%H:%M"`
+  echo -en ${NOWDATE}" " > ${TEMPERFILE}
+  ${TEMPER} |awk '{split($2,I,",");printf ("%s℃",substr(I[2],1,4))}' >> ${TEMPERFILE}
+  msleep 4000
+  if [ ! -e ${DSFILE} ];then
+    TEMP=`cat ${DIREADJSON} |awk '/temper/{gsub(/"/,"",$0);gsub(/,/," ",$0);gsub(/temper,:|℃/,"",$0);split($0,I," ");printf I[2]}'`
+    if [ -n "${TEMP}" ];then
+# db create
+      START=`date "+%Y%m%d %H:%M:00"`
+      START=`date -d "${START}" +%s`
+      echo -en "START=${START}" > ${RRDSTART}
+      rrdtool create ${DSFILE} --start ${START} --step 300 DS:temper:GAUGE:600:U:U RRA:MAX:0.5:1:1200
+      UPTIME=`date "+%Y%m%d %H:%M:00"`
+      UPTIME=`date -d "${UPTIME}" +%s`
+# db update
+      rrdtool update ${DSFILE} --template temp ${UPTIME}:${TEMP}
+      exit
+    else
+	  exit
+	fi
+  else
+    TEMP=`cat ${DIREADJSON} |awk '/temper/{gsub(/"/,"",$0);gsub(/,/," ",$0);gsub(/temper,:|℃/,"",$0);split($0,I," ");printf I[2]}'`
+    if [ -n "${TEMP}" ];then
+      UPTIME=`date "+%Y%m%d %H:%M:00"`
+      UPTIME=`date -d "${UPTIME}" +%s`
+# db update
+      rrdtool update ${DSFILE} --template temper ${UPTIME}:${TEMP}
+    fi
+  fi
+fi

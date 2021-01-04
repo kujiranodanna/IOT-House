@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2020.12.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2020.12.28
 # pepo_alexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 RETRYTIME=20
@@ -15,7 +15,7 @@ REMOTE_CGI=$REMOTE_DIR/ip_do_ajax.cgi
 WORK=$LOCAL_DIR/.pepoalexado
 tWORK=$LOCAL_DIR/.pepoalexado_tmp
 ALIAS_DI=$LOCAL_DIR/.alias_di
-USERAGENT="Chrome/86.0.4240.111"
+USERAGENT="Chrome/87.0.4280.88"
 GETSIZE="1024"
 usage(){
   echo "usage $0 host user password [write->chno:0-17 [DO:0|1] [timer->1 to 300000ms] | dio dioXXhigh|dio dioXXlow | voice_req voice_val] | read->json_name" >/dev/stderr

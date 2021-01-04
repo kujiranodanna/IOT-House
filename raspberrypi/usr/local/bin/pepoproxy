@@ -1,0 +1,42 @@
+#!/bin/bash
+#get request target www server content,if down redirect another www server.
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2004.9.20
+SV=$1
+SV1=$2
+SV2=$3
+CFLAG=1
+SLEEP=10
+cat>www.pl<<END
+#!/usr/bin/perl -w
+require LWP::UserAgent;
+my \$url = shift(@ARGV);
+my \$ua = LWP::UserAgent->new;
+\$ua->timeout(1);
+# \$ua->env_proxy;
+ 
+ my \$response = \$ua->get("http://\$url/");
+ 
+ if (\$response->is_success) {
+	exit 0
+#     print \$response->content;  # or whatever
+ }
+ else {
+	exit 1
+#     die \$response->status_line;
+ }
+END
+ST=`perl www.pl $SV;echo $?`
+if [ "$ST" = 1 ] ; then
+	{
+	iptables-save>TMP1
+	sed "s/$SV1/$SV2/" TMP1>TMP2
+	iptables-restore < TMP2 
+}
+else 
+	{
+	iptables-save>TMP1
+        sed "s/$SV2/$SV1/" TMP1>TMP2
+        iptables-restore < TMP2 
+}
+rm -f TMP1 TMP2
+fi

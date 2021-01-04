@@ -1,0 +1,31 @@
+#!/bin/bash
+# licence GPLv3 ; this scripts designed by Yamauchi Isamu 2014.7.21 update 2018.2.24
+# pepogmail4temper ; Get the temperature & send mail
+# pepogmail4temper mail_to subject message
+# wget_mail.sh $1:mail_to, $2:subject, $3:message 
+
+WORKDIR=/www/remote-hand/tmp
+WORKIMAGE=${WORKDIR}/${IMAGE}
+MUA=/usr/local/bin/peposendmail
+USBTEMP=$WORKDIR/temperature
+MAIL_TO=$1
+if [ $# = 0 ];then
+  echo "usage :$0 mail_to | subject | message"
+  exit
+fi
+[ ! -z $2 ] && SUBJECT="$2"
+[ -z $2 ] && SUBJECT="remote_hand+$HOSTNAME+report"
+[ ! -z $3 ] && MESSAGE="$3"
+error(){
+  exit 0
+}
+trap error SIGINT SIGTERM SIGHUP SIGKILL
+NOWDATE=`date '+%Y/%m/%d' |awk '{printf("%s",$1)}'`
+if [ -e $USBTEMP ];then
+  NOWTEMP=`cat $USBTEMP |awk '{gsub(" ","+",$0);printf $1}'`
+  MESSAGE="USB+Thermometer+${NOWDATE}+$NOWTEMP"
+else
+  NOWTEMP="no+USB+Thermometer"
+  MESSAGE="${MESSAGE}+${NOWTEMP}"
+fi
+$MUA $MAIL_TO $SUBJECT $MESSAGE

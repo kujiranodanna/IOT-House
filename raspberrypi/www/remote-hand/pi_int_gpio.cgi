@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.16
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.4
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2020.12.14"
-VERSION="ver:0.15&nbsp;$DATE"
+DATE="2021.1.4"
+VERSION="ver:0.16&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
 if [ $ZEROW_YES_NO = "YES" ];then
@@ -145,7 +145,7 @@ if [ $SMART_PHONE = "YES" ];then
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
-<script src="jquery-1.8.1.min.js" type="text/javascript"></script>
+<script src="jquery-3.5.1.min.js" type="text/javascript"></script>
 <script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
 <TITLE>$DIST_NAME Smart Phone Control</TITLE>
 </HEAD>
@@ -286,7 +286,7 @@ END
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
-<script src="jquery-1.8.1.min.js" type="text/javascript"></script>
+<script src="jquery-3.5.1.min.js" type="text/javascript"></script>
 <script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
 <TITLE>IOT-House Temperature&Humidity</TITLE>
 </HEAD>
@@ -330,23 +330,25 @@ cat >$PAGE1<<END
 <META name="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
-<link rel="stylesheet" href="ui.tabs.css" type="text/css" media="print, projection, screen">
-<script src="jquery-1.8.1.min.js" type="text/javascript"></script>
-<script src="ui.core.js" type="text/javascript"></script>
-<script src="ui.tabs.js" type="text/javascript"></script>
+<link rel="stylesheet" href="pepo_ui.tabs.css" type="text/css" media="print, projection, screen">
+<script src="jquery-3.5.1.min.js" type="text/javascript"></script>
+<script src="jquery-ui.min.js" type="text/javascript"></script>
 <script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
-\$(function() {
-  \$('#tab_cont_div > ul').tabs({selected: 1});
+  \$(function() {
+    \$("#tabs").tabs();
+  });
+  \$(function() {
+    \$("#tabs").tabs("option","active",1);
   });
 // -->
 </script>
-
 <TITLE>$DIST_NAME Control Panel</TITLE>
 </HEAD>
 <BODY id="tab_cont_body" BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
-<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int.cgi">
+<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int_gpio.cgi">
+<DIV id="tabs">
 <DIV  style="text-align:center"><FONT size="5" color="green">$DIST_NAME</FONT><FONT size="2">&nbsp;$VERSION</FONT></DIV>
 <DIV id="tab_cont_div">
 <UL id="tab">
@@ -675,7 +677,7 @@ IR6<span id="dosel_13">
 <OPTION VALUE="reg">reg
 </SELECT>
 <BR>
-IRKit_IP<span id="irkit_ip"></span><INPUT TYPE="text" name="irkit_ip" style="width:100px;text-align:Left;" VALUE="none">&nbsp;<input type="button" value="Search_Set" onclick="irkit_search();"/>
+IRKit_IP:<span id="irkit_ip"></span><INPUT TYPE="text" name="irkit_ip" style="width:100px;text-align:Left;" VALUE="none">&nbsp;<input type="button" value="Search_Set" onclick="irkit_search();"/>
 <HR>
 <B>Settings Twlite</B>
 <SELECT NAME="TOCOS_TTY">
@@ -7308,6 +7310,7 @@ web password
 <span id="server_time" style="text-align:left"></span>&nbsp;
 </TR>
 </TABLE>
+</DIV>
 </DIV>
 </BODY>
 </HTML>

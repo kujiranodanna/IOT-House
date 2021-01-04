@@ -1,0 +1,276 @@
+#!/bin/bash
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.10.7 update 2018.2.24
+# pepodiod for daemon contorl digital-Input to ANDDIO
+DIOCTL="/usr/local/bin/pepodioctl 9"
+USR_BIN=/usr/bin/dio
+EXEC_CMD=/usr/local/bin/pepodiodexec
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+DIR=/www/remote-hand/tmp
+DIORD=$DIR/.di_read_data
+DIOWD=$DIR/.do_write_data
+tDIORD=$DIR/.di_read_data.tmp
+tDIOWD=$DIR/.do_write_data.tmp
+JSONRD=/www/remote-hand/.di_read_data.json
+tJSONRD=/www/remote-hand/.di_read_data.json.tmp
+prog=pepodiod
+pidfile=/var/run/$prog.pid
+echo -en $$ >$pidfile
+POLLTIME=2000
+error(){
+  [ -e $tDIORD ] && rm -f $tDIORD
+  [ -e $DIORD ] && rm -f $DIORD
+  [ -e $DIOWD ] && rm -f $DIOWD
+  [ -e $tDIOWD ] && rm -f $tDIOWD
+  [ -e "$JSONRD" ] && rm -f $JSONRD
+  [ -e "$tJSONRD" ] && rm -f $tJSONRD
+  [ -e $pidfile ] && rm -f $pidfile
+  exit 0
+}
+exec_cmd() {
+# dio read & High or Low exec command
+# exec_dio ch low or high
+#  echo ${USR_BIN}${1}${2} >/dev/tty1
+  if [ -e ${USR_BIN}${1}${2} ];then
+    $EXEC_CMD ${USR_BIN}${1}${2} >/dev/null 2>&1
+  fi
+}
+trap error SIGTERM SIGHUP SIGKILL
+
+# dio read data initialize
+RD="-1"
+RD=`$DIOCTL 2>&1`
+if [ $RD != "-1" ];then
+  for i in 1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192; do
+    case "$i" in
+      1) tRD="$(($((0x$RD & 1)) / 1))" ;j=0 ;;
+      2) tRD="$(($((0x$RD & 2)) / 2))" ;j=1 ;;
+      4) tRD="$(($((0x$RD & 4)) / 4))" ;j=2 ;;
+      8) tRD="$(($((0x$RD & 8)) / 8))" ;j=3 ;;
+      16) tRD="$(($((0x$RD & 16)) / 16))" ;j=4 ;;
+      32) tRD="$(($((0x$RD & 32)) / 32))" ;j=5 ;;
+      64) tRD="$(($((0x$RD & 64)) / 64))" ;j=6 ;;
+      128) tRD="$(($((0x$RD & 128)) / 128))" ;j=7 ;;
+      256) tRD="$(($((0x$RD & 256)) / 256))" ;j=8 ;;
+      512) tRD="$(($((0x$RD & 512)) / 512))" ;j=9 ;;
+      1024) tRD="$(($((0x$RD & 1024)) / 1024))" ;j=10 ;;
+      2048) tRD="$(($((0x$RD & 2048)) / 2048))" ;j=11 ;;
+      4096) tRD="$(($((0x$RD & 4096)) / 4096))" ;j=12 ;;
+      8192) tRD="$(($((0x$RD & 8192)) / 8192))" ;j=13 ;;
+    esac
+    old[$j]=$tRD
+  done
+else
+  for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13;do
+    old[$i]="-1"
+  done
+fi
+cat>$tDIORD<<END
+di[0]=${old[0]}
+di[1]=${old[1]}
+di[2]=${old[2]}
+di[3]=${old[3]}
+di[4]=${old[4]}
+di[5]=${old[5]}
+di[6]=${old[6]}
+di[7]=${old[7]}
+END
+mv $tDIORD $DIORD
+cat>$tDIOWD<<END
+do[0]=${old[8]}
+do[1]=${old[9]}
+do[2]=${old[10]}
+do[3]=${old[11]}
+do[4]=${old[12]}
+do[5]=${old[13]}
+END
+
+mv $tDIOWD $DIOWD
+chown apache.apache $DIORD
+chown apache.apache $DIOWD
+# loop for dio polling read 
+while true
+do
+  RD="-1"
+  RD=`$DIOCTL 2>&1`
+  if [ "$RD" != "-1" ];then
+     for i in 1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384; do
+    case "$i" in
+      1) tRD="$(($((0x$RD & 1)) / 1))" ;j=0 ;;
+      2) tRD="$(($((0x$RD & 2)) / 2))" ;j=1 ;;
+      4) tRD="$(($((0x$RD & 4)) / 4))" ;j=2 ;;
+      8) tRD="$(($((0x$RD & 8)) / 8))" ;j=3 ;;
+      16) tRD="$(($((0x$RD & 16)) / 16))" ;j=4 ;;
+      32) tRD="$(($((0x$RD & 32)) / 32))" ;j=5 ;;
+      64) tRD="$(($((0x$RD & 64)) / 64))" ;j=6 ;;
+      128) tRD="$(($((0x$RD & 128)) / 128))" ;j=7 ;;
+      256) tRD="$(($((0x$RD & 256)) / 256))" ;j=8 ;;
+      512) tRD="$(($((0x$RD & 512)) / 512))" ;j=9 ;;
+      1024) tRD="$(($((0x$RD & 1024)) / 1024))" ;j=10 ;;
+      2048) tRD="$(($((0x$RD & 2048)) / 2048))" ;j=11 ;;
+      4096) tRD="$(($((0x$RD & 4096)) / 4096))" ;j=12 ;;
+      8192) tRD="$(($((0x$RD & 8192)) / 8192))" ;j=13 ;;
+    esac
+    new[$j]=$tRD
+    done
+  else
+    for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13;do
+      new[$i]="-1"
+    done
+  fi
+  for i in 0 1 2 3 4 5 6 7;do
+    [ ${new[$i]} = "-1" ] && break
+    if [ "${old[$i]}" != "${new[$i]}" ];then
+      if [ "${old[$i]}" = "1" ];then
+        old[$i]=${new[$i]}
+        exec_cmd $i low
+        j=`expr $i + 8`
+        exec_cmd $j low
+      elif [ "${old[$i]}" = "0" ];then
+        old[$i]=${new[$i]}
+        exec_cmd $i high
+        j=`expr $i + 8`
+        exec_cmd $j high
+      else
+        old[$i]=${new[$i]}
+      fi
+    fi
+  done
+cat>$tDIORD<<END
+di[0]=${new[0]}
+di[1]=${new[1]}
+di[2]=${new[2]}
+di[3]=${new[3]}
+di[4]=${new[4]}
+di[5]=${new[5]}
+di[6]=${new[6]}
+di[7]=${new[7]}
+END
+cat>$tDIOWD<<END
+do[0]=${new[8]}
+do[1]=${new[9]}
+do[2]=${new[10]}
+do[3]=${new[11]}
+do[4]=${new[12]}
+do[5]=${new[13]}
+END
+  mv $tDIORD $DIORD
+  mv $tDIOWD $DIOWD
+  chown apache.apache $DIORD
+  chown apache.apache $DIOWD
+  [ -e $DIORD ] && . $DIORD
+  [ -e $DIOWD ] && . $DIOWD
+  for n in 0 1 2 3 4 5 6 7;do
+    case "$n" in
+    0)
+      [ "${di[$n]}" = "1" ] && di0="high"
+      [ "${di[$n]}" = "0" ] && di0="low"
+      [ "${di[$n]}" = "-1" ] && di0="none"
+    ;;
+    1)
+      [ "${di[$n]}" = "1" ] && di1="high"
+      [ "${di[$n]}" = "0" ] && di1="low"
+      [ "${di[$n]}" = "-1" ] && di1="none"
+    ;;
+    2)
+      [ "${di[$n]}" = "1" ] && di2="high"
+      [ "${di[$n]}" = "0" ] && di2="low"
+      [ "${di[$n]}" = "-1" ] && di2="none"
+    ;;
+    3)
+      [ "${di[$n]}" = "1" ] && di3="high"
+      [ "${di[$n]}" = "0" ] && di3="low"
+      [ "${di[$n]}" = "-1" ] && di3="none"
+    ;;
+    4)
+      [ "${di[$n]}" = "1" ] && di4="high"
+      [ "${di[$n]}" = "0" ] && di4="low"
+      [ "${di[$n]}" = "-1" ] && di4="none"
+    ;;
+    5)
+      [ "${di[$n]}" = "1" ] && di5="high"
+      [ "${di[$n]}" = "0" ] && di5="low"
+      [ "${di[$n]}" = "-1" ] && di5="none"
+    ;;
+    6)
+      [ "${di[$n]}" = "1" ] && di6="high"
+      [ "${di[$n]}" = "0" ] && di6="low"
+      [ "${di[$n]}" = "-1" ] && di6="none"
+    ;;
+    7)
+      [ "${di[$n]}" = "1" ] && di7="high"
+      [ "${di[$n]}" = "0" ] && di7="low"
+      [ "${di[$n]}" = "-1" ] && di7="none"
+    ;;
+    esac
+  done
+  for n in 0 1 2 3 4 5;do
+    case "$n" in
+    0)
+      [ "${do[$n]}" = "1" ] && do0="high"
+      [ "${do[$n]}" = "0" ] && do0="low"
+      [ "${do[$n]}" = "-1" ] && do0="none"
+    ;;
+    1)
+      [ "${do[$n]}" = "1" ] && do1="high"
+      [ "${do[$n]}" = "0" ] && do1="low"
+      [ "${do[$n]}" = "-1" ] && do1="none"
+    ;;
+    2)
+      [ "${do[$n]}" = "1" ] && do2="high"
+      [ "${do[$n]}" = "0" ] && do2="low"
+      [ "${do[$n]}" = "-1" ] && do2="none"
+    ;;
+    3)
+      [ "${do[$n]}" = "1" ] && do3="high"
+      [ "${do[$n]}" = "0" ] && do3="low"
+      [ "${do[$n]}" = "-1" ] && do3="none"
+    ;;
+    4)
+      [ "${do[$n]}" = "1" ] && do4="high"
+      [ "${do[$n]}" = "0" ] && do4="low"
+      [ "${di[$n]}" = "-1" ] && do4="none"
+    ;;
+    5)
+      [ "${do[$n]}" = "1" ] && do5="high"
+      [ "${do[$n]}" = "0" ] && do5="low"
+      [ "${do[$n]}" = "-1" ] && do5="none"
+    ;;
+    esac
+  done
+  NOWDATE=`date +"%Y/%m/%d %T"`
+  cat>$tJSONRD<<END
+{
+"di0":"$di0",
+"di1":"$di1",
+"di2":"$di2",
+"di3":"$di3",
+"di4":"$di4",
+"di5":"$di5",
+"di6":"$di6",
+"di7":"$di7",
+"do0":"$do0",
+"do1":"$do1",
+"do2":"$do2",
+"do3":"$do3",
+"do4":"$do4",
+"do5":"$do5",
+END
+CT=`ls -a $DIR/|egrep '.dio[0-7][low|high]+.count+$'`
+if [ -n `echo $CT | wc -w` ];then
+  for DIO in $CT ; do
+    DIOCONT=$DIR/$DIO
+tDIO=`echo -en $DIO |awk '{gsub("\\\.","");sub("count","");print $0}'`
+echo -en \"$tDIO\":{ >>$tJSONRD
+cat $DIOCONT |awk '
+  /^Reset/{printf("%creset%c:%c%s %s%c,",34,34,34,$2,$3,34)}
+  /^Update/{printf("%cupdate%c:%c%s %s%c,",34,34,34,$2,$3,34)}
+  /^#/{sub("#","");printf("%ccount%c:%c%s%c},\n",34,34,34,$1,34)}
+' >>$tJSONRD
+  done
+fi
+echo -e \"date\":\"$NOWDATE\" >>$tJSONRD
+echo "}" >>$tJSONRD
+  mv $tJSONRD $JSONRD
+  chown apache.apache $JSONRD
+  msleep ${POLLTIME}
+done

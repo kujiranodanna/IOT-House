@@ -49,8 +49,8 @@ START_STOP="$start_stop"
 if [ "$START_STOP" != "stop" ];then
 cat >${START_STOP_CMD}<<END
 #/bin/bash
-raspivid -vf -hf -o - -t 0 -w 640 -h 480 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8554}' :demux=h264 >/dev/null 2>&1 &
-#raspivid -o - -t 0 -w 640 -h 480 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8554}' :demux=h264 >/dev/null 2>&1 &
+#raspivid -vf -hf -o - -t 0 -w 640 -h 480 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8554}' :demux=h264 >/dev/null 2>&1 &
+raspivid -o - -t 0 -w 640 -h 480 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8554}' :demux=h264 >/dev/null 2>&1 &
 END
 else
 cat >${START_STOP_CMD}<<END

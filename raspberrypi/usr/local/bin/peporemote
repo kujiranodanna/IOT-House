@@ -1,0 +1,70 @@
+#!/bin/bash
+#This script composes the arrival of a message of the FOMA cellular phone of the automatic operation.
+# -->#c56:5:respawn:/usr/local/bin/epicon -l /dev/ttyACM0 -c /usr/local/bin/pepop2pchat
+#licence GPLv2 ; this scripts designed by IZAMUKARERA 2007.8.31 update 207.7.13
+
+CLR="\x1b[2J"
+RED="\x1b[41m"
+BULE="\x1b[44m"
+NORC="\x1b[39m"
+NORB="\x1b[49m"
+CR="\n"
+LF="\r"
+HOME="\x1b[r"
+POS="\x1b[20C\x1b[10B"
+
+MSG1="
+#######################################$LF
+#                                     #$LF
+#   Detected Disconnect FOMA          #$LF
+#   Removed driver complete!          #$LF
+#                                     #$LF
+#######################################$LF
+"
+while [ 1 ]
+do
+# epicon_socket not used is deleted
+	EP=`ps ax|awk 'BEGIN{FS=" "}/epicon/{print $1}'`
+	FS=`ls /var/tmp/|grep "epicon_socket"|grep -v "$EP"`
+	for DELFS in $FS ; do
+		rm -rf "/var/tmp/$DELFS"
+	done
+	FOMA=`ls /dev/|awk 'BEGIN{I=0};/ttyACM0/{I=1};END{print I}'`
+	if [ "$FOMA" = "1" ];then
+		{
+		IT=`cat /etc/inittab | awk 'BEGIN{J=0};/pepop2pchat$/ && /^#/{J=1};END{print J}'`
+		if [ "$IT" = "0" ];then
+			{
+			sleep 1
+			PEPO=`ps ax|awk 'BEGIN{J=0};/pepop2pchat$/{J=1};END{print J}'`
+			if [ "$PEPO" = "0" ] ; then
+				exec /sbin/init q
+			fi
+			}
+		fi
+		if [ "$IT" = "1" ];then
+			{ 
+			cat /etc/inittab | awk '/pepop2pchat$/{gsub(/^#/,"")};{print $0}'>/etc/inittab.new
+			mv /etc/inittab.new /etc/inittab
+			sleep 1
+			exec /sbin/init q
+			}
+		fi
+		}
+	else	{
+		IT=`cat /etc/inittab | awk 'BEGIN{J=0};/pepop2pchat$/ && !/^#/{J=1};END{print J}'` 
+		if [ "$IT" = "1" ];then
+			{ 
+			cat /etc/inittab | awk '/pepop2pchat$/{gsub(/^/,"#")};{print $0}'>/etc/inittab.new
+			mv /etc/inittab.new /etc/inittab
+			sleep 1
+			(exec /sbin/rmmod -fw acm_FOMA 1 2>/dev/null;exit 0)
+			echo -en "$CLR$HOME$BULE" >/dev/tty1
+			echo -en "$MSG1$CR$LF$NORC$NORB" >/dev/tty1
+			exec /sbin/init q
+			}
+		fi
+		}
+	fi
+sleep 5
+done
