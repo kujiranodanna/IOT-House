@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.28
-* remote-hand_pi.gpio.js  ver0.16 2020.12.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.14
+* remote-hand_pi.js  ver0.17 2021.1.14
 */
 function blink(){
   if (!document.all){ return; }
@@ -1518,147 +1518,113 @@ function update_do(do_sel,results_voice){
   var tdo_time = "none";
   switch (do_sel){
     case 'dosel_0':
-      $(function(){
-        tdo_val = $('#dosel_0 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "0";
-        tdo_time = $('#don_time_0').val();
-      });
+      tdo_val = $('#dosel_0 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "0";
+      tdo_time = $('#don_time_0').val();
       break;
     case 'dosel_1':
-      $(function(){
-        tdo_val = $('#dosel_1 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "1";
-        tdo_time = $('#don_time_1').val();
-      });
+      tdo_val = $('#dosel_1 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "1";
+      tdo_time = $('#don_time_1').val();
       break;
     case 'dosel_2':
-      $(function(){
-        tdo_val = $('#dosel_2 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "2";
-        tdo_time = $('#don_time_2').val();
-      });
+      tdo_val = $('#dosel_2 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "2";
+      tdo_time = $('#don_time_2').val();
       break;
     case 'dosel_3':
-      $(function(){
-        tdo_val = $('#dosel_3 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "3";
-        tdo_time = $('#don_time_3').val();
-      });
+      tdo_val = $('#dosel_3 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "3";
+      tdo_time = $('#don_time_3').val();
       break;
     case 'dosel_4':
-      $(function(){
-        tdo_val = $('#dosel_4 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "4";
-        tdo_time = $('#don_time_4').val();
-      });
+      tdo_val = $('#dosel_4 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "4";
+      tdo_time = $('#don_time_4').val();
       break;
     case 'dosel_5':
-      $(function(){
-        tdo_val = $('#dosel_5 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "5";
-        tdo_time = $('#don_time_5').val();
-      });
+      tdo_val = $('#dosel_5 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "5";
+      tdo_time = $('#don_time_5').val();
       break;
     case 'dosel_6':
-      $(function(){
-        tdo_val = $('#dosel_6 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "6";
-        tdo_time = $('#don_time_6').val();
-      });
+      tdo_val = $('#dosel_6 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "6";
+      tdo_time = $('#don_time_6').val();
       break;
     case 'dosel_7':
-      $(function(){
-        tdo_val = $('#dosel_7 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "7";
-        tdo_time = $('#don_time_7').val();
-      });
+      tdo_val = $('#dosel_7 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "7";
+      tdo_time = $('#don_time_7').val();
       break;
     case 'irkitdo_0':
-      $(function(){
-        tdo_val = $('#dosel_8 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "8";
-        tdo_time = $('#don_time_8').val();
-      });
+      tdo_val = $('#dosel_8 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "8";
+      tdo_time = $('#don_time_8').val();
       break;
     case 'irkitdo_1':
-      $(function(){
-        tdo_val = $('#dosel_9 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "9";
-        tdo_time = $('#don_time_8').val();
-      });
+      tdo_val = $('#dosel_9 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "9";
+      tdo_time = $('#don_time_8').val();
       break;
     case 'irkitdo_2':
-      $(function(){
-        tdo_val = $('#dosel_10 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "10";
-        tdo_time = $('#don_time_10').val();
-      });
+      tdo_val = $('#dosel_10 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "10";
+      tdo_time = $('#don_time_10').val();
       break;
     case 'irkitdo_3':
-      $(function(){
-        tdo_val = $('#dosel_11 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "11";
-        tdo_time = $('#don_time_11').val();
-      });
+      tdo_val = $('#dosel_11 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "11";
+      tdo_time = $('#don_time_11').val();
       break;
     case 'irkitdo_4':
-      $(function(){
-        tdo_val = $('#dosel_12 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "12";
-        tdo_time = $('#don_time_12').val();
-      });
+      tdo_val = $('#dosel_12 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "12";
+      tdo_time = $('#don_time_12').val();
       break;
     case 'irkitdo_5':
-      $(function(){
-        tdo_val = $('#dosel_13 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "13";
-        tdo_time = $('#don_time_13').val();
-      });
+      tdo_val = $('#dosel_13 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "13";
+      tdo_time = $('#don_time_13').val();
       break;
     case 'tocosdo_1':
-     $(function(){
-        tdo_val = $('#dosel_14 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "14";
-        tdo_time = $('#don_time_14').val();
-      });
+      tdo_val = $('#dosel_14 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "14";
+      tdo_time = $('#don_time_14').val();
       break;
     case 'tocosdo_2':
-     $(function(){
-        tdo_val = $('#dosel_15 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "15";
-        tdo_time = $('#don_time_15').val();
-      });
+      tdo_val = $('#dosel_15 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "15";
+      tdo_time = $('#don_time_15').val();
       break;
     case 'tocosdo_3':
-     $(function(){
-        tdo_val = $('#dosel_16 option:selected').val();
-        if (tdo_val == "none") return;
-        tdo_ch = "16";
-        tdo_time = $('#don_time_16').val();
-      });
+      tdo_val = $('#dosel_16 option:selected').val();
+      if (tdo_val == "none") return;
+      tdo_ch = "16";
+      tdo_time = $('#don_time_16').val();
       break;
     case 'voice_sel':
       if (results_voice === undefined){
         var results_voice = $('#voice_val').val();
       if (results_voice == "") return;
       }
-        voice_do(do_sel,results_voice);
+      voice_do(do_sel,results_voice);
       break;
   }
   if (tdo_val != "none"){
@@ -1666,7 +1632,6 @@ function update_do(do_sel,results_voice){
   }
   return;
 }
-
 function update_di(item){
   function color_set(di_v, disp_v, val_v){
     var color_bg;
@@ -3429,15 +3394,15 @@ function menu9_ck (){
   for (var i=0 ; i<=21 ;i++){
     if (array_change[i] == "reg"){
       if (array_mail[i] != ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           check++;
           if (mail_ck(array_mail[i]) == -1){
             error_ct++;
           }
         }
       }
- if (array_mail[i] == ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+      if (array_mail[i] == ""){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           alert("here are places that have not been Input to the email address field");
           error_ct++;
           return false;
@@ -3572,7 +3537,7 @@ function menu10_ck (){
   for (var i=0 ; i<=21 ;i++){
     if (array_change[i] == "reg"){
       if (array_mail[i] != ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           check++;
           if (mail_ck(array_mail[i]) == -1){
             error_ct++;
@@ -3580,7 +3545,7 @@ function menu10_ck (){
         }
       }
       if (array_mail[i] == ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           alert("here are places that have not been Input to the email address field");
           error_ct++;
           return false;
