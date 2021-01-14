@@ -1,12 +1,12 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.14
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2021.1.13"
+DATE="2021.1.14"
 VERSION="ver:0.17&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -1394,6 +1394,8 @@ while [ $n -lt 22 ];do
       vdi_act[$n]="Email" ;;
     "mail_message")
       vdi_act[$n]="Email_messageage" ;;
+    "web_camera_still")
+      vdi_act[$n]="Web_camera Still" ;;
     "web_camera_video")
       vdi_act[$n]="Web_camera Video" ;;
     "mod_camera_still")
@@ -1464,6 +1466,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1531,6 +1534,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1598,6 +1602,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1665,6 +1670,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1732,6 +1738,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1799,6 +1806,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1866,6 +1874,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -1933,6 +1942,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2000,6 +2010,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2067,6 +2078,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2134,6 +2146,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2201,6 +2214,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2268,6 +2282,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2335,6 +2350,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2453,6 +2469,8 @@ while [ $n -lt 22 ];do
       vdi_act[$n]="Email" ;;
     "mail_message")
       vdi_act[$n]="Email_messageage" ;;
+    "web_camera_still")
+      vdi_act[$n]="Web_camera Still" ;;
     "web_camera_video")
       vdi_act[$n]="Web_camera Video" ;;
     "mod_camera_still")
@@ -2522,6 +2540,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2586,6 +2605,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2650,6 +2670,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2714,6 +2735,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2777,6 +2799,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2841,6 +2864,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2905,6 +2929,7 @@ Action:low→high
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -2969,6 +2994,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -3033,6 +3059,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -3097,6 +3124,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -3161,6 +3189,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -3224,6 +3253,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -3288,6 +3318,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video
@@ -3352,6 +3383,7 @@ Action:high→low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
 <OPTION VALUE="mail_message">Email_messageage
+<OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
 <OPTION VALUE="mod_camera_video">Mod_camera Video

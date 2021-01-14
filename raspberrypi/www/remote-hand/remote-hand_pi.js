@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.13
-* remote-hand_pi.js  ver0.17 2021.1.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.14
+* remote-hand_pi.js  ver0.17 2021.1.14
 */
 function blink(){
   if (!document.all){ return; }
@@ -3446,15 +3446,15 @@ function menu9_ck (){
   for (var i=0 ; i<=21 ;i++){
     if (array_change[i] == "reg"){
       if (array_mail[i] != ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           check++;
           if (mail_ck(array_mail[i]) == -1){
             error_ct++;
           }
         }
       }
- if (array_mail[i] == ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+      if (array_mail[i] == ""){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           alert("here are places that have not been Input to the email address field");
           error_ct++;
           return false;
@@ -3637,7 +3637,7 @@ function menu10_ck (){
   for (var i=0 ; i<=21 ;i++){
     if (array_change[i] == "reg"){
       if (array_mail[i] != ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           check++;
           if (mail_ck(array_mail[i]) == -1){
             error_ct++;
@@ -3645,7 +3645,7 @@ function menu10_ck (){
         }
       }
       if (array_mail[i] == ""){
-        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_video"  || array_di_act[i] == "mod_camera_still"  || array_di_act[i] == "mod_camera_video"){
+        if (array_di_act[i] == "mail" || array_di_act[i] == "mail_message" || array_di_act[i] == "web_camera_still" || array_di_act[i] == "web_camera_video" || array_di_act[i] == "mod_camera_still" || array_di_act[i] == "mod_camera_video"){
           alert("here are places that have not been Input to the email address field");
           error_ct++;
           return false;
