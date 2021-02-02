@@ -22,21 +22,21 @@ If it is judged that the outside air humidity is low and the underfloor exchange
 
 After playing with Raspberry Pi, let's practice home appliances and home security with IOT House.
 
-<b>Hardware</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Hardware
+<b>Hardware</b> -> https://kujiranodanna.github.io/tags/hardware
 
 <b>Binary image</b> -> "IOT-House_zero_w" is available here -> https://osdn.net/projects/pepolinux/releases/p15935
 
-<b>INSTALL</b> -> https://github.com/kujiranodanna/IOT-House/wiki/INSTALL#install
+<b>INSTALL</b> -> https://kujiranodanna.github.io/tags/Installation
 
-<b>Configuration</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Configuration
+<b>Configuration</b> -> https://kujiranodanna.github.io/tags/basic-setting/
 
-<b>Advanced configuration</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Advanced-configuration
+<b>Advanced configuration</b> -> https://kujiranodanna.github.io/tags/I-O-event-settings/
 
-<b>BME680 environment sensor</b> -> https://github.com/kujiranodanna/IOT-House/wiki/BME680-environment-sensor
+<b>BME680 environment sensor</b> -> https://kujiranodanna.github.io/tags/Environmental-gas-sensor-BME680/
 
-<b>Use Doppler sensor as a security sensor RCWL-0516 and switching between photos and videos during the day with the Raspberry Pi Module camera</b> -> https://github.com/kujiranodanna/IOT-House/wiki/RCWL%E3%83%BC0516
+<b>Use Doppler sensor as a security sensor RCWL-0516 and switching between photos and videos during the day with the Raspberry Pi Module camera</b> -> https://kujiranodanna.github.io/tags/Security-camera/
 
-<b>Alexa about voice control</b> -> https://github.com/kujiranodanna/IOT-House/wiki/Alexa
+<b>Alexa about voice control</b> -> https://kujiranodanna.github.io/categories/source/pepoalexado/
 
 <b>News & Other</b> -> https://github.com/kujiranodanna/IOT-House/wiki/News
 
