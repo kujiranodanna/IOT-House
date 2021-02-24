@@ -1,6 +1,6 @@
 /* epicon.h epicon incude heder file
 epicon is Copyright Isamu.Yamauchi 2002-2021.
-o 2021.2.24 "/var/tmp/" -> "/var/run/locak/", add <arpa/inet.h>
+o 2021.2.24 "/var/tmp/" -> "/var/run/lock/", add <arpa/inet.h>
 o 2017.4.20 curses.h,term.h remove
 o 2011.10.16 Enhanced file locking, changed the function msleep.
 o 2011.9.27 On quiet mode, delete 'Disconnected message'.
