@@ -36,6 +36,10 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #  include <config.h>
 #endif
 
+#ifdef HAVE_TERMIOS_H
+#  define HAVE_TERMIOS
+#endif
+
 #include "epicon.h"
 
 char esc[2];                    /* escape charctor */
