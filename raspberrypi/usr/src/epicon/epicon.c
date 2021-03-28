@@ -40,9 +40,9 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "epicon.h"
 
-long int *mem_buff;                 /* external memory buffer */
+extern long int *mem_buff;          /* external memory buffer */
 char esc[2] = { ESC, '\0' };        /* escape charctor */
-pid_t ck_pid = 0;                   /* check to process id */
+extern pid_t ck_pid;                /* check to process id */
 char *LOG_file = '\0';              /* console log file */
 char *SF_file = '\0';               /* send character file name with delay */
 char *CM_file = '\0';               /* external command file */

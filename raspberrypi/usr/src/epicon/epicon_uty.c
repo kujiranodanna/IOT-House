@@ -44,33 +44,32 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #endif
 
 #include "epicon.h"
-char esc[2];                    /* escape charctor */
-int com_port_fd;                /* com_port file descriptor */
-int fp1,fp2,fp3;                /* tmp file descriptor */
-int net_flag;                   /* ip net connect flag */
-int server_ip_flag;             /* ip server flag */
-char com_port[64];              /* tty_dev name */
-int Twostop;                    /* 2 stop bit */
-int Datalen;                    /* data bit length */
-int Parity;                     /* parity setting */
-int Bin_flag;                   /* binary mode flag cannot escape */
-int ip_socket_bufsize;          /* ip socket buffer size */
-int SB_flag;                    /* send binary file flag */
-int CM_flag;                    /* external command option flag */
-int LOG_flag;                   /* log flag */
-FILE *LOG_fp;                   /* log file descriptor */
-char *argv_redirect;            /* redirect file */
+extern char esc[2];             /* escape charctor */
+extern int com_port_fd;         /* com_port file descriptor */
+extern int net_flag;            /* ip net connect flag */
+extern int server_ip_flag;      /* ip server flag */
+extern char com_port[64];       /* tty_dev name */
+extern int Twostop;             /* 2 stop bit */
+extern int Datalen;             /* data bit length */
+extern int Parity;              /* parity setting */
+extern int Bin_flag;            /* binary mode flag cannot escape */
+extern int ip_socket_bufsize;   /* ip socket buffer size */
+extern int SB_flag;             /* send binary file flag */
+extern int CM_flag;             /* external command option flag */
+extern int LOG_flag;            /* log flag */
+extern FILE *LOG_fp;            /* log file descriptor */
+extern char *argv_redirect;     /* redirect file */
 void end_process();             /* call end process */
-int CON_flag;                   /* console flag */
-unsigned int Char_delay;        /* external send charcacter delay value */
-unsigned int CR_delay;          /* external send CR delay value */
-char Epicon_Socket[128];        /* external AF_Socket */
-int Quiet_flag;                 /* quiet flag */
+extern int CON_flag;            /* console flag */
+extern unsigned int Char_delay; /* external send charcacter delay value */
+extern unsigned int CR_delay;   /* external send CR delay value */
+extern char Epicon_Socket[128]; /* external AF_Socket */
+extern int Quiet_flag;          /* quiet flag */
 int console_save_flag =0;       /* com_port save flag */
 int redirect_flag = 0;          /* redirect flag */
-int t_result;                   /* tmp int result */
-char *c_result;                 /* tmp char result */
-FILE *f_result = 0;             /* tmp FILE result */
+static int t_result;            /* tmp int result */
+static char *c_result;          /* tmp char result */
+static FILE *f_result = 0;      /* tmp FILE result */
 void set_console_mode();
 
 int msleep(int msec)
