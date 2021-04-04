@@ -40,9 +40,9 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "epicon.h"
 
-long int *mem_buff;                 /* external memory buffer */
+extern long int *mem_buff;          /* external memory buffer */
 char esc[2] = { ESC, '\0' };        /* escape charctor */
-pid_t ck_pid = 0;                   /* check to process id */
+extern pid_t ck_pid;                /* check to process id */
 char *LOG_file = '\0';              /* console log file */
 char *SF_file = '\0';               /* send character file name with delay */
 char *CM_file = '\0';               /* external command file */
@@ -283,13 +283,29 @@ sigtype dev_timeout()
 }
 
 
+#if !defined(B38400) || (B38400 != 38400)
 typedef struct {
   char *spc;
   int  spi;
 } spd;
 spd zspeed[] = {
+#ifdef B50
+  {"50",B50},
+#endif
+#ifdef B75
+  {"75",B75},
+#endif
 #ifdef B110
   {"110",B110},
+#endif
+#ifdef B134
+  {"134",B134},
+#endif
+#ifdef B150
+  {"150",B150},
+#endif
+#ifdef B200
+  {"200",B200},
 #endif
 #ifdef B300
   {"300",B300},
@@ -299,6 +315,9 @@ spd zspeed[] = {
 #endif
 #ifdef B1200
   {"1200",B1200},
+#endif
+#ifdef B1800
+  {"1800",B1800},
 #endif
 #ifdef B2400
   {"2400",B2400},
@@ -327,6 +346,39 @@ spd zspeed[] = {
 #ifdef B460800
   {"460800", B460800},
 #endif
+#ifdef B500000
+  {"500000", B500000},
+#endif
+#ifdef B576000
+  {"576000", B576000},
+#endif
+#ifdef B921600
+  {"921600", B921600},
+#endif
+#ifdef B1000000
+  {"1000000", B1000000},
+#endif
+#ifdef B1152000
+  {"1152000", B1152000},
+#endif
+#ifdef B1500000
+  {"1500000", B1500000},
+#endif
+#ifdef B2000000
+  {"2000000", B2000000},
+#endif
+#ifdef B2500000
+  {"2500000", B2500000},
+#endif
+#ifdef B3000000
+  {"3000000", B3000000},
+#endif
+#ifdef B3500000
+  {"3500000", B3500000},
+#endif
+#ifdef B4000000
+  {"4000000", B4000000},
+#endif
 #ifdef EXTA
   {"19200", B19200},
 #endif
@@ -347,6 +399,15 @@ register char *sp;
     return i->spi;
   return EOF;
 }
+#else
+int convert_speed(sp)
+register char *sp;
+{
+  if(sp == NULL) return EOF;
+  if(*sp == 0) return EOF;
+  return atoi(sp);	
+}
+#endif
 
 int convert_mode(arg)
 register char *arg;

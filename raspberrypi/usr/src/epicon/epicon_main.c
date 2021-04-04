@@ -36,31 +36,35 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #  include <config.h>
 #endif
 
+#ifdef HAVE_TERMIOS_H
+#  define HAVE_TERMIOS
+#endif
+
 #include "epicon.h"
 
-char esc[2];                    /* escape charctor */
-pid_t ck_pid;                   /* check to process id */
-int com_port_fd;                /* com_port file descriptor */
-int console_fd;                 /* console file descriptor */
-int net_flag;                   /* ip net connect flag */
-int server_ip_flag;             /* ip server flag */
-char *ip_addr;                  /* ip net connect addres */
-char *ip_port;                  /* ip net connect port */
-char *server_ip_port;           /* default server port */
-char com_port[64];              /* tty_dev name */
-int Bin_flag;                   /* binary mode cannot escape */
-int Echo_flag;                  /* input echo flag mode */
-int AZ_flag;                    /* auto call rz flag default auto */
+extern char esc[2];             /* escape charctor */
+pid_t ck_pid = 0;               /* check to process id */
+extern int com_port_fd;         /* com_port file descriptor */
+extern int console_fd;          /* console file descriptor */
+extern int net_flag;            /* ip net connect flag */
+extern int server_ip_flag;      /* ip server flag */
+extern char *ip_addr;           /* ip net connect addres */
+extern char *ip_port;           /* ip net connect port */
+extern char *server_ip_port;    /* default server port */
+extern char com_port[64];       /* tty_dev name */
+extern int Bin_flag;            /* binary mode cannot escape */
+extern int Echo_flag;           /* input echo flag mode */
+extern int AZ_flag;             /* auto call rz flag default auto */
 int ip_socket_bufsize = 1024*1024;  /* ip socket buffer size */
-int SB_flag;                    /* send binary file flag */
-char *SB_file;                  /* send binary file name */
-int SF_flag;                    /* send character file flag with delay*/
-char *SF_file;                  /* send character file name with delay */
-int CM_flag;                    /* external command option flag */
-char *CM_file;                  /* external command file */
-unsigned int Char_delay;        /* external send charcacter delay value */
-unsigned int CR_delay;          /* external send CR delay value */
-char Epicon_Socket[128];        /* AF_UNIX socket for Communication of parents & child */
+extern int SB_flag;             /* send binary file flag */
+extern char *SB_file;           /* send binary file name */
+extern int SF_flag;             /* send character file flag with delay*/
+extern char *SF_file;           /* send character file name with delay */
+extern int CM_flag;             /* external command option flag */
+extern char *CM_file;           /* external command file */
+extern unsigned int Char_delay; /* external send charcacter delay value */
+extern unsigned int CR_delay;   /* external send CR delay value */
+extern char Epicon_Socket[128]; /* AF_UNIX socket for Communication of parents & child */
 void win_size_update();         /* windows size send for telnet */
 void display_console();         /* open message */
 long int incount,outcount,*mem_buff;
@@ -86,8 +90,8 @@ int send_ttype_flag = 0;  /* Telnet'opt terminal type */
 int sb_flag = 0;          /* Telnet'opt subnegotiation flag */
 int my_width = 0;         /* Telnet'opt windows size width */
 int my_height = 0;        /* Telnet'opt windows size height */
-char *c_result;           /* tmp char result */
-int t_result = 0;         /* tmp int result */
+static char *c_result;    /* tmp char result */
+static int t_result;      /* tmp int result */
 unsigned int len_ip,ip1,ip2,ip3,ip4,ip_port_list;
 unsigned long int ip_list;
 char *f1,*f2,f3[128],ch,c,ch1,ch2,ch3,*ch4;
