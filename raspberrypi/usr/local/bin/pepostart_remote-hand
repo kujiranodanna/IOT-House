@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2019.12.11
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2021.4.16
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 /etc/init.d/networking stop
 /etc/init.d/apache2 stop
@@ -267,7 +267,9 @@ EOF
 else
   echo remote-hand aredy running!
 fi
-/usr/local/bin/pepousbttyck
+if [ ! -e /usr/src/pepolinux/startup.s ];then
+  /usr/local/bin/pepousbttyck
+fi
 echo -en >/home/pi/.bash_history
 echo -en >/root/.bash_history
 /etc/init.d/rsyslog restart
