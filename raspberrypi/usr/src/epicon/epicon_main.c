@@ -46,6 +46,7 @@ extern char esc[2];             /* escape charctor */
 pid_t ck_pid = 0;               /* check to process id */
 extern int com_port_fd;         /* com_port file descriptor */
 extern int console_fd;          /* console file descriptor */
+extern int ip_addr_family;      /* ip address family */
 extern int net_flag;            /* ip net connect flag */
 extern int server_ip_flag;      /* ip server flag */
 extern char *ip_addr;           /* ip net connect addres */
@@ -92,7 +93,7 @@ int my_width = 0;         /* Telnet'opt windows size width */
 int my_height = 0;        /* Telnet'opt windows size height */
 static char *c_result;    /* tmp char result */
 static int t_result;      /* tmp int result */
-unsigned int len_ip,ip1,ip2,ip3,ip4,ip_port_list;
+unsigned int len_ip,ip_port_list;
 unsigned long int ip_list;
 char *f1,*f2,f3[128],ch,c,ch1,ch2,ch3,*ch4;
 char ck_newline = 1;
@@ -322,6 +323,14 @@ void send_break()
   #endif
 }
 
+int ipv6_address(str)
+char *str;
+{
+  int c = 0;
+  for(; *str; str++) if (*str == ':') c++;
+  return c > 1; /* IPv6 address has at least two colons(:) */
+}
+
 void check_char_1()
 {
   ch &= (char)0377;
@@ -486,17 +495,22 @@ void check_char_2()
 void epicon_main()
 {
   struct timeval timeout;
-  struct sockaddr_in server_ip_address;
-  struct sockaddr_in client_ip_address;
+  struct sockaddr_storage server_ip_address;
+  struct sockaddr_storage client_ip_address;
   struct sockaddr_un server_address;
   struct sockaddr_un client_address;
-  struct sockaddr_in address_ip;
+  struct sockaddr_storage address_ip;
+  struct addrinfo hints,*res0,*res;
   struct linger ling;
   f1="/dev/stdin";
   f2=com_port;
   console_fd = fileno(stdin);
   fp1=console_fd;
   signal(SIGUSR1,into_shell);
+  memset(&hints,0,sizeof(hints));
+  hints.ai_family = ip_addr_family;
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_flags = AI_NUMERICSERV;
 /* AF_UNIX,SOCK_STREAM read & write nonblock set */
   server_sockfd = socket(AF_UNIX,SOCK_STREAM,0);
   server_address.sun_family = AF_UNIX;
@@ -506,9 +520,22 @@ void epicon_main()
 /* server process. waitting port */
   if (net_flag && server_ip_flag) {
     int on = 1;
+    char sep,ipstr[INET6_ADDRSTRLEN];
+    struct sockaddr_in *in;
+    struct sockaddr_in6 *in6;
     display_ip_open_msg();
+    hints.ai_flags |= AI_PASSIVE;
+    if (getaddrinfo(NULL, server_ip_port, &hints, &res)) {
+      perror("\r\ngetaddrinfo");
+      end_process();
+    }
+    else {
+      ip_addr_family = res->ai_family;
+      memcpy(&server_ip_address, res->ai_addr, server_ip_len = res->ai_addrlen);
+      freeaddrinfo(res);
+    }
     set_console_mode(1);
-    server_ip_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    server_ip_sockfd = socket(ip_addr_family, SOCK_STREAM, 0);
     if (setsockopt(server_ip_sockfd, SOL_SOCKET, SO_REUSEADDR,(char *) &on ,sizeof(on))<0) perror("server_ip_sockfd,SOL_SOCKET,SO_REUSEADDR");
     setsockopt(server_ip_sockfd ,SOL_SOCKET,SO_SNDBUF,&ip_socket_bufsize,sizeof(ip_socket_bufsize));
     setsockopt(server_ip_sockfd ,SOL_SOCKET,SO_RCVBUF,&ip_socket_bufsize,sizeof(ip_socket_bufsize));
@@ -518,10 +545,6 @@ void epicon_main()
     if (setsockopt(server_ip_sockfd , SOL_SOCKET, SO_LINGER,(char *) &ling, sizeof(struct linger))<0) perror("setsockopt(server_ip_sockfd , SOL_SOCKET, SO_LINGER");
     if (setsockopt(server_ip_sockfd ,SOL_SOCKET,SO_KEEPALIVE, &on ,sizeof(on))<0) perror("server_ip_sockfd ,SOL_SOCKET,SO_KEEPALIVE");
 
-    server_ip_address.sin_family = AF_INET;
-    server_ip_address.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_ip_address.sin_port = htons(atoi(server_ip_port));
-    server_ip_len = sizeof(server_ip_address);
     bind(server_ip_sockfd, (struct sockaddr *)&server_ip_address, server_ip_len);
     listen(server_ip_sockfd, 5);
     read_block_flag_net = fcntl(server_ip_sockfd,F_GETFL,0);
@@ -530,7 +553,7 @@ void epicon_main()
     fprintf(stderr,"\n\rServer waitting for client. Listen port = %d",atoi(server_ip_port));
     fprintf(stderr,"\n\rHit any key then end\n\r");
     while (1) {
-      client_ip_len =  sizeof(client_ip_address);
+      client_ip_len =  server_ip_len;
       client_ip_sockfd = accept(server_ip_sockfd,(struct sockaddr *)&client_ip_address,&client_ip_len);
       if (client_ip_sockfd  > 0 ) break;
       if (read(fp1, &ch, 1) >0) {
@@ -541,32 +564,53 @@ void epicon_main()
     }
     set_console_mode(2);
     /* display client ip,port address */
-    ip_list = ntohl(client_ip_address.sin_addr.s_addr);
-    ip1 = (ip_list >> 24) & 0xff;
-    ip2 = (ip_list >> 16) & 0xff;
-    ip3 = (ip_list >> 8)  & 0xff;
-    ip4 = ip_list         & 0xff;
-    ip_port_list = ntohs(client_ip_address.sin_port);
-    fprintf(stderr,"\r\nJust connected !\r\nClient ip:port --> %d.%d.%d.%d:%d\r\n",ip1,ip2,ip3,ip4,ip_port_list);
+    switch (ip_addr_family) {
+      case AF_INET:
+        sep = ':';
+        in = (struct sockaddr_in *)&client_ip_address;
+        inet_ntop(ip_addr_family, (char *)&in->sin_addr, ipstr, client_ip_len);
+        ip_port_list = ntohs(in->sin_port);
+        break;
+      case AF_INET6:
+        sep = '.';
+        in6 = (struct sockaddr_in6 *)&client_ip_address;
+        inet_ntop(ip_addr_family, (char *)&in6->sin6_addr, ipstr, client_ip_len);
+        ip_port_list = ntohs(in6->sin6_port);
+        break;
+      default:
+        sep = ':';
+        sprintf(ipstr, "unknown");
+        ip_port_list = 0;
+        break;
+    }
+    fprintf(stderr,"\r\nJust connected !\r\nClient ip%cport --> %s%c%d\r\n",sep,ipstr,sep,ip_port_list);
     fp2 = client_ip_sockfd;
     sprintf(f3,"\r\n***** Welcome to epicon ip_net server just connected ! ******\r\n");
     t_result = write(fp2,&f3,strlen(f3));
-    sprintf(f3,"      Your ip:port --> %d.%d.%d.%d:%d\r\n",ip1,ip2,ip3,ip4,ip_port_list);
+    sprintf(f3,"      Your ip%cport --> %s%c%d\r\n",sep,ipstr,sep,ip_port_list);
     t_result = write(fp2,&f3,strlen(f3));
   }
 /* ip client process let' try connect to epicon server */
   if (net_flag  && ! server_ip_flag) {
     display_ip_open_msg();
     set_console_mode(2);
-    sockfd_ip = socket(AF_INET, SOCK_STREAM, 0);
-    address_ip.sin_family = AF_INET;
-    address_ip.sin_addr.s_addr = inet_addr(ip_addr);
-    address_ip.sin_port = htons(atoi(ip_port));
-    len_ip = sizeof(address_ip);
-    result_ip = connect(sockfd_ip, (struct sockaddr *)&address_ip, len_ip);
+    if (getaddrinfo(ip_addr, ip_port, &hints, &res0)) {
+      result_ip = -1;
+    }
+    else {
+      for (res = res0; res; res = res->ai_next) {
+        ip_addr_family = res->ai_family;
+        memcpy(&address_ip, res->ai_addr, len_ip = res->ai_addrlen);
+        sockfd_ip = socket(ip_addr_family, SOCK_STREAM, 0);
+        result_ip = connect(sockfd_ip, (struct sockaddr *)&address_ip, len_ip);
+        if (result_ip == 0) break;
+        close(sockfd_ip);
+      }
+      freeaddrinfo(res0);
+    }
     if(result_ip == -1) {
       perror("\r\ncannot connect");
-      fprintf(stderr,"\r%s:%s\r\n",ip_addr,ip_port);
+      fprintf(stderr,"\r%s%c%s\r\n",ip_addr,ipv6_address(ip_addr) ? '.' : ':',ip_port);
       set_console_mode(0);
       end_process();
     }

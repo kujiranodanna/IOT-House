@@ -56,6 +56,7 @@ char *client_ip_port = "23";        /* default client port */
 char com_port[64];                  /* tty_dev name */
 int com_port_fd;                    /* com_port file descriptor */
 int console_fd;                     /* console file descriptor */
+int ip_addr_family = AF_UNSPEC;     /* ip address family */
 int net_flag = 0;                   /* ip net connect flag */
 int server_ip_flag = 0;             /* ip server flag */
 int Twostop = 0;                    /* 2 stop bit */
@@ -84,6 +85,7 @@ void com_port_unuse();
 int com_port_use_check();
 void set_com_port_mode();
 void epicon_main();
+int ipv6_address();
 
 sigtype end_process();
 sigtype dev_timeout();
@@ -120,8 +122,14 @@ char *argv[];
   strcpy(com_port, COMPORT);
   argv_redirect = argv[argc];
   speed = convert_speed(SPEED);
-  while((i = getopt(argc, argv,"bmMs:d:D:l:e:n:L:f:F:c:pqvzx:")) != EOF) {
+  while((i = getopt(argc, argv,"46bmMs:d:D:l:e:n:L:f:F:c:pqvzx:")) != EOF) {
     switch(i) {
+      case '4':
+        ip_addr_family = AF_INET; /* use IPv4 */
+        break;
+      case '6':
+        ip_addr_family = AF_INET6; /* use IPv6 */
+        break;
       case 'b':
         Bin_flag = 1; /* cannot escape flag set */
         break;
@@ -163,22 +171,30 @@ char *argv[];
         break;
       case 'n':
         ip_addr = ip_port = optarg;
-        wc = strtok(ip_addr,":");
-        wc1 = strtok(NULL,":");
-        if ( wc1 != NULL ) {  /* exp; epicon -n 127.0.0.1:80 */
-          ip_port = wc1 ; /* 80 */
+        if (ipv6_address(ip_addr)) {
+          ip_addr_family = AF_INET6;
+          wc = strtok(ip_addr,"."); /* exp; epicon -n 2001:db8::1.80 */
+          wc1 = strtok(NULL,".");
+        }
+        else {
+          wc = strtok(ip_addr,":"); /* exp; epicon -n 127.0.0.1:80 */
+          wc1 = strtok(NULL,":");
+        }
+        if ( wc1 != NULL ) {
+          ip_port = wc1;  /* 80 */
           ip_addr = wc;   /* 127.0.0.1 */
         }
         else {
           ip_port = client_ip_port;
         }
-          strncpy(com_port, ip_addr, sizeof(com_port));
-          server_ip_flag = 0;
-          net_flag = 1;
-          epicon_main();
-          end_process();
+        strncpy(com_port, ip_addr, sizeof(com_port));
+        server_ip_flag = 0;
+        net_flag = 1;
+        epicon_main();
+        end_process();
         break;
       case 'p':
+        if (ip_addr_family == AF_UNSPEC) ip_addr_family = AF_INET;
         if (argv[optind] != NULL) server_ip_port = argv[optind];
         server_ip_flag = 1;
         net_flag = 1;
