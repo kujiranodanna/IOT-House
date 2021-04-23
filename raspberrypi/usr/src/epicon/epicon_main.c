@@ -67,7 +67,8 @@ extern unsigned int CR_delay;   /* external send CR delay value */
 extern char Epicon_Socket[128]; /* AF_UNIX socket for Communication of parents & child */
 void win_size_update();         /* windows size send for telnet */
 void display_console();         /* open message */
-long int incount,outcount,*mem_buff;
+char *mem_buff = NULL;          /* external memory buffer */
+long int incount,outcount;
 int speed;
 int fp1,fp2;
 int pg_flag,fp4;
@@ -575,8 +576,7 @@ void epicon_main()
     }
   }
   incount = outcount = fp4 = 0;
-  mem_buff = malloc(MSIZE*sizeof(char));
-  memset( mem_buff, (int)'\0', sizeof( mem_buff));
+  mem_buff = calloc(MSIZE, sizeof(char));
   if ( mem_buff == NULL) {
     fprintf(stderr,"Memory not get!! about memory 10M less");
     end_process();

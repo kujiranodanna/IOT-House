@@ -40,7 +40,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "epicon.h"
 
-extern long int *mem_buff;          /* external memory buffer */
+extern char *mem_buff;              /* external memory buffer */
 char esc[2] = { ESC, '\0' };        /* escape charctor */
 extern pid_t ck_pid;                /* check to process id */
 char *LOG_file = '\0';              /* console log file */
@@ -99,6 +99,7 @@ sigtype end_process()
   if (LOG_flag) fclose(LOG_fp);
   unlink(Epicon_Socket);
   free(mem_buff);
+  mem_buff = NULL;
   if (ck_pid && !Quiet_flag) fprintf(stderr, "\r\nDisconnected\r\n");
   exit(0);
 }
