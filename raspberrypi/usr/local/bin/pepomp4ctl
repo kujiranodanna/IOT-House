@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2021.4.4
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2021.4.24
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 #VIDEOPG=ffmpeg
@@ -36,7 +36,7 @@ while [ -e ${pidfile} ];do
   DIFNOW2PID=$(($NOWTIME - $PIDTIME))
   if [ $DIFNOW2PID -gt ${MAXRUNTIME} ];then
     pid=`cat ${pidfile}`
-    CHILD=`ps --ppid=${pid}|cut -d " " -f1|grep -v PID`
+    CHILD=`ps --ppid=${pid}|awk '/[0-9]./{print $1}'`
     kill -HUP ${CHILD}
     msleep 100
     exit
@@ -46,7 +46,6 @@ while [ -e ${pidfile} ];do
   fi
 done
 error(){
-  [ -e ${WORKIMAGE} ] && rm -f ${WORKIMAGE}
   [ -e ${pidfile} ] && rm -f ${pidfile}
   [ -e ${ppidfile} ] && rm -f ${ppidfile}
   exit 0
@@ -65,11 +64,11 @@ if [ -e ${DEV} ];then
   else
     if [ $MP4 != "YES" ];then
 # If invert the image, add the following options -vf -hf
-      $RASPISTILL -vf -hf -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
-#      $RASPISTILL -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
+#      $RASPISTILL -vf -hf -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
+      $RASPISTILL -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
     else
-#      $RASPIVID -o ${WORKIMAGE}.tmp -w 640 -h 480 -t 10000 -fps 5
-      $RASPIVID -vf -hf -o ${WORKIMAGE}.tmp -w 640 -h 480 -t 10000 -fps 5
+      $RASPIVID -o ${WORKIMAGE}.tmp -w 640 -h 480 -t 10000 -fps 5
+#      $RASPIVID -vf -hf -o ${WORKIMAGE}.tmp -w 640 -h 480 -t 10000 -fps 5
       cat ${WORKIMAGE}.tmp | ${VIDEOPG} -f h264 -r 5 -i - -vcodec mpeg4 -y ${WORKIMAGE} >/dev/null 2>&1
       rm ${WORKIMAGE}.tmp
     fi
