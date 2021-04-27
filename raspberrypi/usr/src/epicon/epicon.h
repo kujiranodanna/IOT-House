@@ -46,6 +46,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <arpa/telnet.h>
 #include <arpa/inet.h>
 #include <termios.h>
+#include <netdb.h>
 // #include <curses.h> 2017.4.20 remove
 // #include <term.h> 2017.4.20 remove
 #define R_WSIZE 1024                /* send file block size */
