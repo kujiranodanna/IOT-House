@@ -52,7 +52,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #define R_WSIZE 1024                /* send file block size */
 #define MSIZE 1024*1024             /* defaut memory allocate size */
 #define SPEED "9600"                /* default com_port speed */
-#define VER "5.3"                   /* Version 2021.5.1 */
+#define VER "5.2"                   /* Version 2017.4.20 */
 #define COMPORT "/dev/ttyS0"        /* default com_port  */
 #define ESC     '~'                 /* default esc char  */
 #define EOT     '\004'              /* ^D */
