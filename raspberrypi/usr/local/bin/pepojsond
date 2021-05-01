@@ -1,5 +1,5 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2020.9.27
+# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2021.4.26
 # pepojsond is for daemon make json data
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
@@ -13,6 +13,8 @@ DIOWD=$DIR/.do_write_data
 GPIORD=$DIR/.gpiodi_read_data
 VOICEREQ=$DIR/.voice_req
 tVOICEREQ=$DIR/.voice_req.tmp
+LIVEIMG=$DIR/remote-hand.jpg
+LIVEMOVE=$DIR/remote-hand.webm
 JSONRD=/www/remote-hand/.di_read_data.json
 tJSONRD=/www/remote-hand/.di_read_data.json.tmp
 IRKIT_IP=$DIR/.IRKit_IP
@@ -37,10 +39,10 @@ trap error SIGTERM SIGHUP SIGKILL SIGINT
 [ -e "$tJSONRD" ] && rm -f $tJSONRD
 [ -e $pidfile ] && rm -f $pidfile
 
-# loop for gpio polling read 
+# loop for gpio polling read
 while true
 do
-  unset di do alias_di alias_do alias_vdo sound_file piface_ip tocos_ip 
+  unset di do alias_di alias_do alias_vdo sound_file piface_ip tocos_ip
   [ -e $ALIAS_DI ] && . $ALIAS_DI
   [ -e $ALIAS_DO ] && . $ALIAS_DO
   if [ ! -z  $piface_ip ];then
@@ -371,7 +373,7 @@ END
   echo -e \"cpu_temp\":\"$CPU_TEMP\", >>$tJSONRD
   voice_req="none"
   if [ ! -e "${tVOICEREQ}" ];then
-    if [ -e ${VOICEREQ} ];then 
+    if [ -e ${VOICEREQ} ];then
       mv ${VOICEREQ} ${tVOICEREQ}
       voice_req=`cat ${tVOICEREQ}`
       [ -z "${voice_req}" ] && voice_req="none"
@@ -382,6 +384,24 @@ END
   echo -e \"voice_req\":\"${voice_req}\", >>$tJSONRD
   HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
   echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\" >>$tJSONRD
+  liveimg="none"
+  livevideo="none"
+  if [ -e $LIVEIMG ];then
+    NOWDATE=`date +%s`
+    LIVEIMGSTAMP=`date +%s -r $LIVEIMG`
+    if [ $(($NOWDATE - $LIVEIMGSTAMP)) -gt 30 ];then
+      liveimg="remote-hand.jpg"
+    fi
+  fi
+  if [ -e $LIVEMOVE ];then
+    NOWDATE=`date +%s`
+    LIVEIMGSTAMP=`date +%s -r $LIVEMOVE`
+    if [ $(($NOWDATE - $LIVEIMGSTAMP)) -gt 10 ];then
+      livevideo="remote-hand.webm"
+    fi
+  fi
+  echo -e \"liveimg\":\"${liveimg}\", >>$tJSONRD
+  echo -e \"livevideo\":\"${livevideo}\" >>$tJSONRD
   echo "}" >>$tJSONRD
   mv $tJSONRD $JSONRD
   chown www-data.www-data $JSONRD
