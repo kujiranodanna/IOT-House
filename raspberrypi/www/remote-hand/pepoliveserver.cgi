@@ -21,7 +21,6 @@ echo -en '
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Live Webcam</TITLE>
 <script type="text/javascript">
-<!--
 function blink() {
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);

@@ -1,5 +1,6 @@
 #!/bin/bash
-# licence GPLv3 ; this scripts designed by Isamu.Yamauchi 2013.7.15 update 2021.4.26
+# The MIT License
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2021.5.3
 # pepojsond is for daemon make json data
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
@@ -18,13 +19,15 @@ LIVEMOVE=$DIR/remote-hand.webm
 JSONRD=/www/remote-hand/.di_read_data.json
 tJSONRD=/www/remote-hand/.di_read_data.json.tmp
 IRKIT_IP=$DIR/.IRKit_IP
-TEMPERFILE=$DIR/temperature
 TCOSWD=$DIR/.tocos_write_data
 TCOSRD=$DIR/.tocos_read_data
 SOUND_FILE_NAME=$DIR/.sound_file_name
 HOMEPAGE=/www/remote-hand/pi_int.html
+#HOMEPAGE=/www/remote-hand/pi_int_cp2112.html
 prog=pepojsond
 pidfile=/var/run/$prog.pid
+MAX_TMP_FILE_LIVE=180
+CMD=$DIR/$prog.pepocmd
 echo -en $$ >$pidfile
 WAIT=2000
 LWAIT=8000
@@ -383,20 +386,19 @@ END
   fi
   echo -e \"voice_req\":\"${voice_req}\", >>$tJSONRD
   HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
-  echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\" >>$tJSONRD
+  echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\", >>$tJSONRD
   liveimg="none"
   livevideo="none"
+  NOWSECOND=`date +%s`
   if [ -e $LIVEIMG ];then
-    NOWDATE=`date +%s`
     LIVEIMGSTAMP=`date +%s -r $LIVEIMG`
-    if [ $(($NOWDATE - $LIVEIMGSTAMP)) -gt 30 ];then
+    if [ $(($NOWSECOND - $LIVEIMGSTAMP)) -gt 2 ];then
       liveimg="remote-hand.jpg"
     fi
   fi
   if [ -e $LIVEMOVE ];then
-    NOWDATE=`date +%s`
     LIVEIMGSTAMP=`date +%s -r $LIVEMOVE`
-    if [ $(($NOWDATE - $LIVEIMGSTAMP)) -gt 10 ];then
+    if [ $(($NOWSECOND - $LIVEIMGSTAMP)) -gt 5 ];then
       livevideo="remote-hand.webm"
     fi
   fi
@@ -405,5 +407,24 @@ END
   echo "}" >>$tJSONRD
   mv $tJSONRD $JSONRD
   chown www-data.www-data $JSONRD
+  #temp file delete
+  TMP_FILE_PNG=`ls $DIR/|grep ".png"`;CT_PNG=`echo $TMP_FILE_PNG|wc -w`
+  TMP_FILE_JPG=`ls $DIR/|grep ".jpg"`;CT_JPG=`echo $TMP_FILE_JPG|wc -w`
+  TMP_FILE_TXT=`ls $DIR/|grep ".txt"`;CT_TXT=`echo $TMP_FILE_TXT|wc -w`
+  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT))
+  if [ $TOTAL -gt 0 ];then
+    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT ;do
+      TM=`date +%s -r $DIR/$TMP`
+      if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
+        rm $DIR/$TMP
+      fi
+    done
+  fi
+  if [ -e ${VOICEREQ} ];then
+    FILE_LIVE=`date +%s -r ${VOICEREQ}`
+    if [ $(($NOWSECOND - $FILE_LIVE)) -gt $MAX_TMP_FILE_LIVE ];then
+      rm ${VOICEREQ}
+    fi
+  fi
   msleep ${POLLTIME}
 done

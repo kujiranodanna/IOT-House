@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.14
-* remote-hand_pi.js  ver0.17 2021.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.5.3
+* remote-hand_pi.js  ver0.18 2021.5.3
 */
 function blink(){
   if (!document.all){ return; }
@@ -345,11 +345,63 @@ function disp_di_log(url_di_log){
 function start_photo(dev){
   var ip = $("#live_server").val();
   var live_close_timer = 60000;
-  var live_open_timer = 30000;
   var live_timer = 0;
   var video_dev = dev;
-  var livefile = "/remote-hand/tmp/remote-hand.jpg";
+  var liveimg_status = "none";
+  var liveimg = "remote-hand.jpg";
+  var json_interval_timer = 3000;
+  var interval_cout = 0;
+  var interval_max = 10;
+  var live_url = "/remote-hand/tmp/remote-hand.jpg";
   var wait_url ="/remote-hand/please_wait.html";
+  var wait_photo = null;
+  function wait_img(){
+    if (wait_photo === null)
+    {
+      var child_url = "http://" + ip + wait_url;
+      wait_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
+    }
+    $.ajax({
+      url: ".di_read_data.json",
+      dataType: "json",
+      type: "get",
+      cache: true,
+      async: true,
+      timeout : 3000,
+      success: function(di2json, status){
+        $(function(){
+          if (status == "success"){
+            liveimg_status = di2json.liveimg;
+            var id = setTimeout(function(){
+              if (liveimg_status == liveimg){
+                clearTimeout(id);
+                wait_photo.close();
+                child_url = "http://" + ip + live_url;
+                var live_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
+                var id = setTimeout(function(){
+                  live_photo.close();
+                },live_close_timer);
+                return true;
+              } else {
+                if (interval_cout++ < interval_max){
+                  wait_img();
+                }
+                else {
+                  wait_photo.close();
+                  clearTimeout(id);
+                  return false;
+                }
+              }
+            },json_interval_timer);
+          }
+        });
+      },
+      error: function(){
+        $("#disp_menu5").text("Server-Timout Live Photo!");
+        return false;
+      }
+    });
+  }
   $.ajax({
     type: "get",
     url: "pepoliveserver.cgi",
@@ -359,25 +411,13 @@ function start_photo(dev){
     data: 'dev=' + video_dev + '&live_timer=' + live_timer,
     success: function(){
       $("#disp_menu5").text("Server-Success!");
-      $(function(){
-        var child_url = "http://" + ip + wait_url;
-        var wait_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
-        setTimeout(function(){
-          wait_photo,close();
-          child_url = "http://" + ip + livefile;
-          var live_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
-          setTimeout(function(){
-            live_photo.close();
-          },live_close_timer);
-        },live_open_timer);
-        return true;
-      });
     },
     error: function(){
       $("#disp_menu5").text("Server-Timout Live Photo!");
-        return false;
+      return false;
     }
   });
+  wait_img();
 }
 // Processing of live video
 function start_video(dev){
@@ -388,6 +428,11 @@ function start_video(dev){
   var video_dev = dev;
   var live_url = '/remote-hand/tmp/remote-hand.webm'
   var wait_url ="/remote-hand/please_wait.html";
+  var liveimg_status = "none";
+  var liveimg = "remote-hand.webm";
+  var json_interval_timer = 3000;
+  var interval_cout = 0;
+  var interval_max = 10;
   if (video_dev == "video0"){
     live_timer = $('#live_timer0').val();
   }
@@ -401,16 +446,62 @@ function start_video(dev){
     live_timer = $('#live_timer3').val();
   }
   if (live_timer === undefined){
-    live_timer = "30";
+    live_timer = 10;
   }
-  live_timer = live_timer * 1000;
+  live_timer = live_timer * 1 + 5;
   if (video_dev == "vchiq"){
-    live_open_timer = live_timer;
-    live_close_timer = live_timer * 2.0;
+    live_close_timer = live_timer * 1000 * 4.0;
   }
   else {
-    live_open_timer = live_timer * 3.0;
-    live_close_timer = live_timer * 4.0;
+    live_close_timer = live_timer * 1000 * 4.0;
+  }
+  var wait_photo = null;
+  function wait_img(){
+    if (wait_photo === null)
+    {
+      var child_url = "http://" + ip + wait_url;
+      wait_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
+    }
+    $.ajax({
+      url: ".di_read_data.json",
+      dataType: "json",
+      type: "get",
+      cache: true,
+      async: true,
+      timeout : 3000,
+      success: function(di2json, status){
+        $(function(){
+          if (status == "success"){
+            liveimg_status = di2json.livevideo;
+            var id = setTimeout(function(){
+              if (liveimg_status == liveimg){
+                clearTimeout(id);
+                wait_photo.close();
+                child_url = "http://" + ip + live_url;
+                var live_photo = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
+                var id = setTimeout(function(){
+                  live_photo.close();
+                },live_close_timer);
+                return true;
+              } else {
+                if (interval_cout++ < interval_max){
+                  wait_img();
+                }
+                else {
+                  wait_photo.close();
+                  clearTimeout(id);
+                  return false;
+                }
+              }
+            },json_interval_timer);
+          }
+        });
+      },
+      error: function(){
+        $("#disp_menu5").text("Server-Timout Live Photo!");
+        return false;
+      }
+    });
   }
   $.ajax({
     type: "get",
@@ -421,35 +512,13 @@ function start_video(dev){
     data: 'dev=' + video_dev + '&live_timer=' + live_timer,
     success: function(){
       $("#disp_menu5").text("Server-Success!");
-      $(function(){
-        var child_url = "http://" + ip + wait_url;
-        if (video_dev=="vchiq"){
-          var wait_live = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
-        }
-        else {
-          var wait_live = window.open(child_url,dev,"width=320,height=240,resizable=yes,scrollbars=no");
-        }
-        setTimeout(function(){
-          wait_live,close();
-          var child_url = "http://" + ip + live_url;
-          if (video_dev=="vchiq"){
-            var live_video = window.open(child_url,dev,"width=640,height=480,resizable=yes,scrollbars=no");
-          }
-          else {
-            var live_video = window.open(child_url,dev,"width=320,height=240,resizable=yes,scrollbars=no");
-          }
-          setTimeout(function(){
-            live_video.close();
-          },live_close_timer);
-        },live_open_timer);
-        return true;
-      });
     },
     error: function(){
-      $("#disp_menu5").text("Server-Timout Live Video!");
-        return false;
+      $("#disp_menu5").text("Server-Timout Live Photo!");
+      return false;
     }
   });
+  wait_img();
 }
 // Module Camera streaming start,stop
 function streaming_start_stop(dev,start_stop){
@@ -466,7 +535,7 @@ function streaming_start_stop(dev,start_stop){
       $(function(){
         if (start_stop == "start"){
           setTimeout(function(){
-            alert("Please be Start the vlc player , http://" + server_ip + ":8554 / please visit");
+            alert("Please be Start the vlc player , http://" + server_ip + ":8554 please visit");
           },5000);
         }
         else {
@@ -1785,14 +1854,6 @@ function update_di(item){
                if ( val != "none" ){
                  update_do("voice_sel",val);
                }
-               setTimeout(function(){
-               $.ajax({
-                  type: "get",
-                  url: "voice_req_del.cgi",
-                  timeout : 3000,
-                  async: true
-               });
-             },1000);
            }
          }
          if (di2json.do0){
