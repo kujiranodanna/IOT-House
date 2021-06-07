@@ -1,10 +1,15 @@
 /*
 The MIT License
-Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.5.13 Update 2021.4.5
-pepoambme680.c read bme680 temperature,humidity,presure,gas
+Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.5.13 Update 2021.5.21
+pepobme680.c read bme680 temperature,humidity,presure,gas
 
 Download bme680.c bme680.h bme680_defs.h from https://github.com/BoschSensortec/BME680_driver
 cc pepobme680.c bme680.c -o pepobme680
+
+o 2021.5.21 ver 0.2
+  retry functions add
+o 2019.5.13 ver 0.1
+  1st release
 */
 
 #include <stdlib.h>
@@ -24,6 +29,7 @@ cc pepobme680.c bme680.c -o pepobme680
 #define DESTZONE "TZ=Asia/Tokyo"  /* destination time zone */
 #define SENSOR_DATA "/www/remote-hand/tmp/.pepobme680"  /* read sensor dta file */
 #define SENSOR_DATA_TMP "/www/remote-hand/tmp/.pepobme680_tmp"  /* read sensor file data temporary */
+#define VER "0.2"
 
 #include "bme680.h"
 /* BME680 I2C addresses defined bme680_def.h But can be changed here */
@@ -31,11 +37,14 @@ cc pepobme680.c bme680.c -o pepobme680
 #undef BME680_I2C_ADDR_SECONDARY
 #endif
 #define BME680_I2C_ADDR_SECONDARY  UINT8_C(0x76)
+#define I2C_FD_IS_CLOSE 0x00
+#define I2C_FD_IS_OPEN 0x01
 struct bme680_dev gas_sensor;
 struct bme680_field_data data;
 int i2c_fd;
 FILE *data_fd;
 uint16_t meas_period;
+int8_t is_i2c_fd = I2C_FD_IS_CLOSE;
 
 void user_delay_ms(uint32_t period)
 {
@@ -47,19 +56,58 @@ void user_delay_ms(uint32_t period)
   }
 }
 
+int i2c_fd_open(uint8_t dev)
+{
+  int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
+  if (is_i2c_fd == I2C_FD_IS_CLOSE)
+  {
+    rslt = ioctl(i2c_fd, I2C_SLAVE, dev);
+    if (rslt < 0)
+    {
+      perror("i2c fd open");
+      exit(EXIT_FAILURE);
+    }
+    is_i2c_fd = I2C_FD_IS_OPEN;
+  }
+  return rslt;
+}
+
+int i2c_fd_close()
+{
+  int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
+  if (is_i2c_fd == I2C_FD_IS_OPEN)
+  {
+    rslt = close(i2c_fd);
+    is_i2c_fd = I2C_FD_IS_CLOSE;
+  }
+  return rslt;
+}
+
+void close_fd()
+{
+  i2c_fd_close(i2c_fd);
+  unlink(SENSOR_DATA);
+  unlink(SENSOR_DATA_TMP);
+  exit(EXIT_SUCCESS);
+}
+
 int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
   int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
   uint8_t reg[1];
   reg[0]=reg_addr;
-   if (write(i2c_fd, reg, 1) != 1) {
+  i2c_fd_open(dev_id);
+  if (write(i2c_fd, reg, 1) != 1) {
     perror("user_i2c_read_reg");
+    i2c_fd_close();
     rslt = 1;
   }
   if (read(i2c_fd, reg_data, len) != len) {
     perror("user_i2c_read_data");
+    i2c_fd_close();
     rslt = 1;
   }
+  i2c_fd_close();
   return rslt;
 }
 
@@ -68,22 +116,22 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint1
   int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
   uint8_t reg[16];
   reg[0]=reg_addr;
+  i2c_fd_open(dev_id);
   for (int i=1; i<len+1; i++)
      reg[i] = reg_data[i-1];
   if (write(i2c_fd, reg, len+1) != len+1) {
     perror("user_i2c_write");
     rslt = 1;
-    exit(1);
+    exit(EXIT_SUCCESS);
   }
+  i2c_fd_close();
   return rslt;
 }
 
-void conf_bme680()
+int conf_bme680()
 {
   int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
   uint8_t set_required_settings;
-  rslt = ioctl( i2c_fd, I2C_SLAVE, BME680_I2C_ADDR_SECONDARY );
-  // init device
   //  set address of i2c_BME680
   gas_sensor.dev_id = BME680_I2C_ADDR_SECONDARY;
   gas_sensor.intf = BME680_I2C_INTF;
@@ -115,14 +163,9 @@ void conf_bme680()
   /* Get the total measurement duration so as to sleep or wait till the
    * measurement is complete */
   bme680_get_profile_dur(&meas_period, &gas_sensor);
+  /* Delay till the measurement is ready */
   user_delay_ms(meas_period + DELAY); /* Delay till the measurement is ready */
-}
-void close_fd()
-{
-  close(i2c_fd);
-  unlink(SENSOR_DATA);
-  unlink(SENSOR_DATA_TMP);
-  exit(1);
+  return rslt;
 }
 
 void move_file(const char* src_name, const char* dest_name)
@@ -130,7 +173,7 @@ void move_file(const char* src_name, const char* dest_name)
   rename(src_name, dest_name);
 }
 
-int main(int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
   signal(SIGTERM,close_fd);
   signal(SIGQUIT,close_fd);
@@ -139,22 +182,22 @@ int main(int argc, char *argv[] )
   time_t t = time(NULL);
   struct tm tm = *localtime(&t);
   putenv(DESTZONE);               // Switch to destination time zone
-  i2c_fd = open(I2C_DEVICE, O_RDWR);
-  if (i2c_fd < 0) {
-    perror("bme680 open");
-    exit(-1);
-  }
   conf_bme680();
   // Get sensor data
   // Avoid using measurements from an unstable heating setup
   while(1)
     {
       rslt = bme680_get_sensor_data(&data, &gas_sensor);
+      if(rslt != 0)
+      {
+        conf_bme680();
+        continue;
+      }
       if(data.status & BME680_HEAT_STAB_MSK)
       {
         data_fd = fopen(SENSOR_DATA_TMP,"w");
         if(data_fd < 0){
-          exit(-1);
+          exit(EXIT_FAILURE);
         }
       t = time(NULL);
       tm = *localtime(&t);
@@ -170,5 +213,5 @@ int main(int argc, char *argv[] )
     user_delay_ms(meas_period + DELAY); /* Wait for the measurement to complete */
     user_delay_ms(LOOP_TIME);
   }
-  return 0;
+  return rslt;
 }
