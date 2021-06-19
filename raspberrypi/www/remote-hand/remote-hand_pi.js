@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.5.3
-* remote-hand_pi.js  ver0.18 2021.5.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.6.19
+* remote-hand_pi.js  ver0.18 2021.6.19
 */
 function blink(){
   if (!document.all){ return; }
@@ -136,17 +136,20 @@ function initWebVoice(state){
 }
 function CheckBrowser(){
   var userAgent = window.navigator.userAgent.toLowerCase();
+  if(userAgent.indexOf('edg') != -1)     { return "Edge";   }
   if(userAgent.indexOf('chrome') != -1)   { return "Chrome";  }
-  if(userAgent.indexOf('apple') != -1)    { return "Safari";  }
+  if(userAgent.indexOf('safari') != -1)    { return "Safari";  }
+  if(userAgent.indexOf('iphone') != -1)    { return "Safari";  }
+  if(userAgent.indexOf('ipad') != -1)    { return "Safari";  }
   if(userAgent.indexOf('firefox') != -1)  { return "FireFox"; }
-  if(userAgent.indexOf('msie') != -1)     { return "MS_IE";   }
   if(userAgent.indexOf('opera') != -1)    { return "Opera";   }
   return "Unknown";
 }
 function speak_exec(voice,lang){
   var Browser = CheckBrowser();
   var lang_temp;
-  if(Browser == "Chrome" | Browser == "FireFox"){
+  if(Browser == "Chrome" | Browser == "FireFox" | Browser == "Edge" | Browser == "Safari"){
+    var utterance = new SpeechSynthesisUtterance();
     var utterance = new SpeechSynthesisUtterance();
     if (lang == "en") lang_temp = "en-US";
     if (lang == "ja") lang_temp = "ja";
