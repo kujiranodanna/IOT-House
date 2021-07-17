@@ -1,0 +1,45 @@
+#!/bin/bash
+# # The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.5 update 2021.7.14
+# pepotimelapse ; scripts to run the ｔimelapse for security cameras using Raspberry Pi module camera.
+# That to run a of 3600 seconds interval.
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+WORKDIR=/www/remote-hand/tmp
+IMAGE_DIR=$WORKDIR/timelapse
+IMAGE_DIR_TMP=$WORKDIR/timelapse_tmp
+IMAGE_TIMELAPSE=timelapse_tmp
+[ -e $IMAGE_DIR ] && rm -rf $IMAGE_DIR
+mkdir $IMAGE_DIR
+
+error(){
+  pkill -HUP raspistill
+  [ -e $IMAGE_DIR ] && rm -rf $IMAGE_DIR
+  [ -e $IMAGE_DIR_TMP ] && rm -rf $IMAGE_DIR_TMP
+  [ -e ${IMAGE_DIR_TMP}.tar.gz ] && rm ${IMAGE_DIR_TMP}.tar.gz
+  exit 0
+}
+trap error SIGQUIT SIGINT SIGTERM SIGHUP SIGKILL SIGCHLD
+
+while true;do
+  j=0
+  while true;do
+    NOWSEC=`date +"%S:"`
+    NOWMIN=`date +"%M:"`
+    if [ $NOWSEC = "00:" ];then
+      k=`printf "image%03d.jpg" $j`
+      raspistill -awb flash -a 1036 -ae +25+25 -w 640 -h 480 -o $IMAGE_DIR/$k
+      j=$(($j + 1))
+      if [ $j -gt 59 -o $NOWMIN = "59:" ];then
+        break
+      fi
+    else
+      msleep 100
+      continue
+    fi
+  done
+  [ -e $IMAGE_DIR_TMP ] && rm -rf $IMAGE_DIR_TMP
+  mkdir $IMAGE_DIR_TMP
+  mv $IMAGE_DIR/* $IMAGE_DIR_TMP/
+  (cd $WORKDIR;tar cfz ${IMAGE_TIMELAPSE}.tar.gz $IMAGE_TIMELAPSE)
+  rm -rf $IMAGE_DIR_TMP
+done

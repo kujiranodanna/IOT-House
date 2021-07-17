@@ -1,0 +1,28 @@
+#!/bin/sh
+# The MIT License
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21
+# pepohome-bridgectl start/stop svc daemon for rasberry pi zero W.
+
+LOG=/var/log/homebridge.log
+error(){
+  while true;do
+    ISPROG=`pgrep homebridge| wc -c`
+    if [ $ISPROG -gt 0 ];then
+      pkill -HUP homebridge
+    else
+      break
+    fi
+  done
+  exit 0
+}
+trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
+
+while true;do
+  ISPROG=`pgrep homebridge| wc -c`
+  if [ $ISPROG -gt 0 ];then
+    pkill -HUP homebridge
+  else
+    homebridge -I >$LOG 2>&1
+  fi
+  msleep 60000
+done
