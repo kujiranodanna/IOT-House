@@ -1,6 +1,6 @@
 #!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2021.7.19
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2021.7.26
 # pepoffmpegtimelapse ; RaspberryPi module A script that uses a camera to perform a security camera timelapse jpg to mp4 conversion.
 # That to run a of 3600 seconds interval.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -101,18 +101,17 @@ while true;do
     ffmpeg -safe 0 -f concat -i $FFMPEGINPUT -c copy -y $IMAGE_DIR/${DAYAGO}.mp4
     mv $IMAGE_DIR/${DAYAGO}.mp4 $MP_DIR/
     ln -s $MP_DIR/${DAYAGO}.mp4 $IMAGE_DIR/${DAYAGO}.mp4
-    if [ -e $IMAGE_DIR/$RMIMAGE ];then
-      rm $RMIMAGE
-      rm $FFMPEGINPUT
-    fi
-    WEEKAGO_IMAGE=`ls -l $MP_DIR/*| grep $WEEKAGO`
+    for i in $RMIMAGE;do
+      [ -e $i ] && rm $i
+    done
+    rm $FFMPEGINPUT
+    WEEKAGO_IMAGE=`ls -l $IMAGE_DIR/*| grep $WEEKAGO| awk '{printf("%s ",$9)}'`
+    MP_WEEKAGO_IMAGE=`ls -l $MP_DIR/*| grep $WEEKAGO| awk '{printf("%s",$9)}'`
     if [ `echo $WEEKAGO_IMAGE| wc -w` -eq 0 ];then
       continue
     else
-      if [ -e $MP_DIR/$WEEKAGO_IMAGE ];then
-        rm $IMAGE_DIR/$WEEKAGO_IMAGE
-        rm $MP_DIR/$WEEKAGO_IMAGE
-      fi
+      rm $WEEKAGO_IMAGE
+      rm $MP_WEEKAGO_IMAGE
     fi
   fi
 done
