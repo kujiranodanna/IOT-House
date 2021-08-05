@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.5
 
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2021.1.14">
+<META NAME="Build" content="2021.8.5">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital-in)</TITLE>
@@ -255,7 +255,7 @@ if [ -e $count ];then
     WGETMAIL=/usr/local/bin/peposendmail
     \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
   elif [ $IMAGE = "mail_message" ];then
-    WGETMAIL=/usr/local/bin/pepomsgsendmail
+    WGETMAIL=/usr/local/bin/peposendmail
     MSG_BOX=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
     \$WGETMAIL "$mail_to" \$MSG_BOX \$MESSAGE
   elif [ $IMAGE = "web_camera_still" ];then

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.7.29
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.5
 # peposendmail
 # peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
@@ -26,10 +26,12 @@ if [ $EMAIL_YES_NO = "NO" ];then
     . $SERVERCONF
     PASSWORD=$vWEBPASSWORD
     USER=$vWEBUSER
+    MESSAGE=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
     $ALEXADO $MAIL_TO $USER $PASSWORD $MESSAGE
   else
-   exit
- fi
+    exit
+  fi
+  exit
 fi
 error(){
   [ -e $pidfile ] && rm -f $pidfile
