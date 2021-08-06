@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.7.29
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.8.6
 # pepoalexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 RETRYTIME=20
@@ -33,14 +33,19 @@ json_name=$4
 val=$5
 time=$6
 if expr "$ch" : "[0-9]*$" >&/dev/null;then
-  ACT=PUT
+  ACT="PUT"
   DIO="YES"
 else
-  ACT=GET
+  ACT="GET"
   DIO="NO"
 fi
 [ "$ch" = "voice_req" ] && ACT="PUT"
 [[ "$ch" =~ ^dio ]] && ACT="PUT"
+if [ $DIO = "NO" -a $ACT = "GET" ];then
+  ACT="PUT"
+  val="$ch"
+  ch="voice_req"
+fi
 rm -if $WORK
 rm -if $tWORK
 if [ $ACT = "PUT" ];then
