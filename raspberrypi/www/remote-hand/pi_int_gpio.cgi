@@ -1,12 +1,12 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.5
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.7
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2021.8.5"
+DATE="2021.8.7"
 VERSION="ver:0.18&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -65,7 +65,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
   exit -1
@@ -266,7 +266,7 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2020-2022 pepolinux.com&nbsp;
+&copy;2021-2025 pepolinux.com&nbsp;
 </H1>
 </BODY>
 </HTML>
@@ -1393,7 +1393,7 @@ while [ $n -lt 22 ];do
     "mail")
       vdi_act[$n]="Email" ;;
     "mail_message")
-      vdi_act[$n]="Send_messageage" ;;
+      vdi_act[$n]="Send_message" ;;
     "web_camera_still")
       vdi_act[$n]="Web_camera Still" ;;
     "web_camera_video")
@@ -1465,7 +1465,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1533,7 +1533,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1601,7 +1601,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1669,7 +1669,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1737,7 +1737,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1805,7 +1805,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1873,7 +1873,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -1941,7 +1941,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2009,7 +2009,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2077,7 +2077,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2145,7 +2145,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2213,7 +2213,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2281,7 +2281,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2349,7 +2349,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2468,7 +2468,7 @@ while [ $n -lt 22 ];do
     "mail")
       vdi_act[$n]="Email" ;;
     "mail_message")
-      vdi_act[$n]="Send_messageage" ;;
+      vdi_act[$n]="Send_message" ;;
     "web_camera_still")
       vdi_act[$n]="Web_camera Still" ;;
     "web_camera_video")
@@ -2539,7 +2539,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2604,7 +2604,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2669,7 +2669,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2734,7 +2734,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2798,7 +2798,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2863,7 +2863,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2928,7 +2928,7 @@ Action:low→high
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -2993,7 +2993,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -3058,7 +3058,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -3123,7 +3123,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -3188,7 +3188,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -3252,7 +3252,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -3317,7 +3317,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still
@@ -3382,7 +3382,7 @@ Action:high→low
 <OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
 <OPTION VALUE="phone">Phone
 <OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_messageage
+<OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
 <OPTION VALUE="mod_camera_still">Mod_camera Still

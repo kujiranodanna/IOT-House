@@ -1,7 +1,7 @@
 #!/bin/bash
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.6
-# peposendmail
+# pepomsgsend
 # peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
   echo "usage: $0 mail_to subject message | image(remote.mp4|remote.jpg)"
@@ -10,15 +10,27 @@ fi
 DIR=/www/remote-hand/tmp
 SERVERCONF=$DIR/.startup.s.tmp
 MUA="/usr/bin/mutt -n -F /root/.mutt/muttrc"
+ALEXADO=/usr/local/bin/pepoalexado
 MAIL_LOG=/var/mail/mail
 prog=peposendmail
 pidfile=/var/run/$prog.pid
 MAIL_TO=$1
-HOSTNAME=`/bin/hostname`
 SUBJECT=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
-SUBJECT="$HOSTNAME $SUBJECT"
 MESSAGE=`echo $3 | awk '{gsub(/\+/," ",$0);printf $0}'`
 IMAGEFILE=$4
+EMAIL_YES_NO=`echo $MAIL_TO| awk 'BEGIN{i="NO"};/@/{i="YES"};END{printf i}'`
+if [ $EMAIL_YES_NO = "NO" ];then
+  if [ -e $SERVERCONF ];then
+    . $SERVERCONF
+    PASSWORD=$vWEBPASSWORD
+    USER=$vWEBUSER
+    MESSAGE=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
+    $ALEXADO $MAIL_TO $USER $PASSWORD $MESSAGE
+  else
+    exit
+  fi
+  exit
+fi
 error(){
   [ -e $pidfile ] && rm -f $pidfile
   exit 0

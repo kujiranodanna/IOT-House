@@ -35,7 +35,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Processing Upload Sound File settings</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>'
 
 DIR=/www/remote-hand/tmp
@@ -76,7 +76,7 @@ if [ -e $FILE_NAME ];then
   cat $FILE_NAME |grep -F -v $tmp >$tFILE_NAME
   echo "$tmp"="$filename" >> $tFILE_NAME
   mv $tFILE_NAME $FILE_NAME
-else 
+else
   echo "$tmp"="$filename" > $FILE_NAME
 fi
 FILE=$DIR/$filename
