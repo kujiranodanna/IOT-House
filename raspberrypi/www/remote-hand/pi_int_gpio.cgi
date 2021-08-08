@@ -1,12 +1,12 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.8
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2021.8.7"
+DATE="2021.8.8"
 VERSION="ver:0.18&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
