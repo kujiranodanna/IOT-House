@@ -1,12 +1,12 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.10
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2021.8.8"
+DATE="2021.8.10"
 VERSION="ver:0.18&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -235,11 +235,11 @@ if [ $SMART_PHONE = "YES" ];then
 <span id="voice_sel">
 Voice control
 <input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do('voice_sel')" placeholder="Command" autofocus />
-</span>
 <SELECT NAME="voice_lang" id="voice_lang">
 <OPTION VALUE="ja" SELECTED>Japanese
 <OPTION VALUE="en">English
 </SELECT>
+</span>
 <HR>
 <span id="s_phone_cpu_temp_graph"></span>
 <span id="s_phone_gpio_temp_graph"></span>

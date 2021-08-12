@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.9
 # pepomsgsend
 # peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
@@ -27,7 +27,11 @@ if [ $EMAIL_YES_NO = "NO" ];then
     PASSWORD=$vWEBPASSWORD
     USER=$vWEBUSER
     MESSAGE=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
-    $ALEXADO $MAIL_TO $USER $PASSWORD $MESSAGE
+    if expr "$MESSAGE" : "[0-9]*$" >&/dev/null;then
+      $ALEXADO $MAIL_TO $USER $PASSWORD $MESSAGE
+    else
+      $ALEXADO $MAIL_TO $USER $PASSWORD "voice_req" $MESSAGE
+    fi   
   else
     exit
   fi

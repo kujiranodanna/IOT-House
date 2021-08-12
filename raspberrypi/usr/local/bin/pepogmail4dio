@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2020.8.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2020.8.9
 # pepogmail4dio ; For raspberry pi zero, and scripts to run the GPIO and other instructions in the G-mail.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 #LANG=ja_JP.UTF-8
@@ -377,6 +377,11 @@ do
     if [ -e $CONF ];then
       msleep 100
       . $CONF
+      if [ -z "$GMAILUSER" ];then
+        rm -f $CONF
+        LOOPTIME=10000
+        break
+      fi
       SUBJECT="+IOT-House+report"
       USER=$GMAILUSER
       PASSWORD=$GMAILPASSWORD
