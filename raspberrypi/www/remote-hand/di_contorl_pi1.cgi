@@ -2,6 +2,7 @@
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.6
 
+PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
 <HEAD>
