@@ -3,6 +3,7 @@
 # Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2021.5.9
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
+
 #VIDEOPG=ffmpeg
 RASPICAMERA=/dev/vchiq
 RASPIVID=raspivid

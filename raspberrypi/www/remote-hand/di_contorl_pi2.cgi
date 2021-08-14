@@ -1,6 +1,7 @@
 #!/bin/bash
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.6
+# dio_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin
 echo -en '
