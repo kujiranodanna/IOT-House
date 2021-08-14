@@ -1,8 +1,8 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.9
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.15
 # pepomsgsend
-# peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
+# pepomsgsend $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
   echo "usage: $0 mail_to subject message | image(remote.mp4|remote.jpg)"
   exit
@@ -15,28 +15,28 @@ MAIL_LOG=/var/mail/mail
 prog=peposendmail
 pidfile=/var/run/$prog.pid
 MAIL_TO=$1
-HOSTNAME=`/bin/hostname`
 SUBJECT=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
-SUBJECT="$HOSTNAME $SUBJECT"
-MESSAGE=`echo $3 | awk '{gsub(/\+/," ",$0);printf $0}'`
-IMAGEFILE=$4
 EMAIL_YES_NO=`echo $MAIL_TO| awk 'BEGIN{i="NO"};/@/{i="YES"};END{printf i}'`
 if [ $EMAIL_YES_NO = "NO" ];then
   if [ -e $SERVERCONF ];then
     . $SERVERCONF
     PASSWORD=$vWEBPASSWORD
     USER=$vWEBUSER
-    MESSAGE=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
-    if expr "$MESSAGE" : "[0-9]*$" >&/dev/null;then
-      $ALEXADO $MAIL_TO $USER $PASSWORD $MESSAGE
+    NUM=`echo -en $SUBJECT |awk 'BEGIN{i="NO"}/^[0-9]/{i="YES"};END{printf i}'`
+    if [ $NUM = "YES" ];then
+      $ALEXADO $MAIL_TO $USER $PASSWORD $SUBJECT
+    elif [[ "$SUBJECT" =~ ^dio ]];then
+      $ALEXADO $MAIL_TO $USER $PASSWORD $SUBJECT
     else
-      $ALEXADO $MAIL_TO $USER $PASSWORD "voice_req" $MESSAGE
-    fi   
-  else
-    exit
+      $ALEXADO $MAIL_TO $USER $PASSWORD "voice_req" $SUBJECT
+    fi
   fi
   exit
 fi
+HOSTNAME=`/bin/hostname`
+SUBJECT="$HOSTNAME $SUBJECT"
+MESSAGE=`echo $3 | awk '{gsub(/\+/," ",$0);printf $0}'`
+IMAGEFILE=$4
 error(){
   [ -e $pidfile ] && rm -f $pidfile
   exit 0
