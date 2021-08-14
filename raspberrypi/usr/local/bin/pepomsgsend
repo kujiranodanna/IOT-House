@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.14
 # pepomsgsend
 # pepomsgsend $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
