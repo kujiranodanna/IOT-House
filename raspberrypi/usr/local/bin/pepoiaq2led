@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2019.7.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2021.5.4
 # Scan GPIO IAQ & LED Display for rasberry pi zero W.
 # pepoiaq2led
 DIR=/www/remote-hand/tmp
@@ -11,7 +11,6 @@ LIGHT=1500
 DSLEEP="/usr/local/bin/msleep $DEEP"
 LSLEEP="/usr/local/bin/msleep $LIGHT"
 GPIOCMD="/usr/local/bin/pepogpioctl b"
-GPIO3RD="/usr/local/bin/pepogpioctl 3"
 BLACK="$GPIOCMD 0"
 RED="$GPIOCMD 4"
 GREEN="$GPIOCMD 2"

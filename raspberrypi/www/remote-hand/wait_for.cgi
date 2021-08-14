@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.12.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.7
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -17,8 +17,18 @@ ALIAS_DI=$DIR/.alias_di
 [ -e $ALIAS_DI ] && . $ALIAS_DI
 if [ $DI_TTY != "gpio" ];then
    PI_INT=pi_int.cgi
+   cat>$CMD<<END
+#!/bin/bash
+rm -f /www/remote-hand/pepopiface
+ln -s /usr/local/bin/pepopiface_local /www/remote-hand/pepopiface
+END
 else
    PI_INT=pi_int_gpio.cgi
+   cat>$CMD<<END
+#!/bin/bash
+rm -f /www/remote-hand/pepopiface
+ln -s /usr/local/bin/pepogpiohelp /www/remote-hand/pepopiface
+END
 fi
 echo -en '
 <HTML>
@@ -74,7 +84,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 exit -1
@@ -97,7 +107,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
   msleep 20000
@@ -184,7 +194,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
   msleep 1000
@@ -217,7 +227,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
 fi

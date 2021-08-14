@@ -1,15 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2021.4.2
-# pepogmail4pic ; get video or jpeg & send mail
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2021.6.11
+# pepogmail4pic ; get video send mail
 # pepogmail4pic mail_to subject message
-# /usr/local/bin/peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.mp4
+# /usr/local/bin/pepogmail4pic $1:mail_to, $2:subject, $3:message ,$4:image.mp4
 
 IMAGE=remote_hand.mp4
 WORKDIR=/www/remote-hand/tmp
 WORKIMAGE=${WORKDIR}/${IMAGE}
 MUA=/usr/local/bin/peposendmail
 FFMPEGCTL=/usr/local/bin/pepomp4ctl
+FFMPEG=/usr/bin/ffmpeg
 DEV=/dev/$1
 if [ $# = 0 ];then
   echo "usage :$0 mail_to | subject | message"
@@ -27,8 +28,12 @@ VIDEO=$DEV
 $FFMPEGCTL $VIDEO $IMAGE $$
 if [ ! -e $WORKIMAGE ];then
   exit -1
-fi
-if [ -e $WORKIMAGE ];then
-  $MUA $MAILTO $SUBJECT $MSG $IMAGE
-  rm $WORKIMAGE
+else
+  OK_NG=`$FFMPEG -v error -i $IMAGE 2>&1 | awk 'BEGIN{I="OK"}/Invalid/{I="NG"};END{printf I}'`
+  if [ $OK_NG = "NG" ];then
+    rm $WORKIMAGE
+  else
+    $MUA $MAILTO $SUBJECT $MSG $IMAGE
+    rm $WORKIMAGE
+  fi
 fi

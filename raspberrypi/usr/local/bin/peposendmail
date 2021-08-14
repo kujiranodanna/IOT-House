@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2018.2.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.6
 # peposendmail
 # peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
@@ -8,6 +8,7 @@ if [ $# -lt 3 -o $# -gt 4 ];then
   exit
 fi
 DIR=/www/remote-hand/tmp
+SERVERCONF=$DIR/.startup.s.tmp
 MUA="/usr/bin/mutt -n -F /root/.mutt/muttrc"
 MAIL_LOG=/var/mail/mail
 prog=peposendmail

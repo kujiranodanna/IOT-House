@@ -1,14 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.6
+# dio_control_pi1.cgi
 
+PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2021.1.14">
+<META NAME="Build" content="2021.8.5">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital-in)</TITLE>
@@ -35,7 +37,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>DIO action-1 settings</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2020-2022 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>'
 
 DIR=/www/remote-hand/tmp
@@ -255,7 +257,7 @@ if [ -e $count ];then
     WGETMAIL=/usr/local/bin/peposendmail
     \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
   elif [ $IMAGE = "mail_message" ];then
-    WGETMAIL=/usr/local/bin/pepomsgsendmail
+    WGETMAIL=/usr/local/bin/pepomsgsend
     MSG_BOX=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
     \$WGETMAIL "$mail_to" \$MSG_BOX \$MESSAGE
   elif [ $IMAGE = "web_camera_still" ];then
