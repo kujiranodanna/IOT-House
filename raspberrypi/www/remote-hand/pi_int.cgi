@@ -267,7 +267,7 @@ Voice control
 <span id="s_phone_gpio_csv"></span>
 <span id="s_phone_i2c_temp_disp"></span>
 <span id="s_phone_i2c_hum_disp"></span>
-<span id="s_phone_vai_1_graph"></span>
+<span 2021-2025ne_vai_1_graph"></span>
 <span id="s_phone_vai_2_graph"></span>
 <span id="s_phone_vai_3_graph"></span>
 <span id="s_phone_vai_4_graph"></span>
