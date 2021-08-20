@@ -1,6 +1,7 @@
 #!/bin/bash
+# # The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.8.18
 # pepoalexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
-# licence GPLv2 ; the scripts designed by Isamu.Yamauchi, 2020.3.20 update 2021.8.9
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 RETRYTIME=20
 RETRY=1
@@ -31,24 +32,21 @@ ch=$4
 json_name=$4
 val=$5
 time=$6
-if expr "$ch" : "[0-9]*$" >&/dev/null;then
-  ACT=PUT
-else
-  ACT=GET
-fi
-[ "$ch" = "voice_req" ] && ACT=PUT
+NUM=`echo -en $ch |awk 'BEGIN{i="NO"}/^[0-9]/{i="YES"};END{printf i}'`
+ACT="GET"
+[ "$NUM" = "YES" ] && ACT="PUT"
+[ "$ch" = "voice_req" ] && ACT="PUT"
 [[ "$ch" =~ ^dio ]] && ACT="PUT"
 rm -if $WORK
 rm -if $tWORK
-if [ $ACT = PUT ];then
-  if [ "$ch" != "voice_req" ];then
+if [ $ACT = "PUT" ];then
+  if [ "$NUM" = "YES" ];then
     if [ $# -eq 5 -o $# -eq 6 ];then
       if [ "$ch" -lt 0 -o "$ch" -gt 17 ];then
         usage
       elif [ "$val" -lt 0 -o  "$val" -gt 1 ];then
         usage
-      fi
-      if [  $# -eq 6 ];then
+      elif [  $# -eq 6 ];then
         if [ "$time" -gt 300000 -o "$time" -lt 1 ];then
           usage
         fi
