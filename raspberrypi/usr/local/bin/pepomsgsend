@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.19
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.27
 # pepomsgsend
 # pepomsgsend $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
@@ -24,9 +24,9 @@ if [ $EMAIL_YES_NO = "NO" ];then
     . $SERVERCONF
     PASSWORD=$vWEBPASSWORD
     USER=$vWEBUSER
-    NUM=`echo -en $SUBJECT |awk 'BEGIN{i="NO"}/^[0-9]/{i="YES"};END{printf i}'`
-    if [ $NUM = "YES" ];then
-      $ALEXADO $MAIL_TO $USER $PASSWORD $SUBJECT $MESSAGE $VAL
+    NUM_SUB=`echo -en $SUBJECT |awk 'BEGIN{i="NO"}/^[0-9]/{i="YES"};END{printf i}'`
+    if [ $NUM_SUB = "YES" ];then
+      $ALEXADO $MAIL_TO $USER $PASSWORD $SUBJECT
     elif [[ "$SUBJECT" =~ ^dio ]];then
       $ALEXADO $MAIL_TO $USER $PASSWORD $SUBJECT
     else
