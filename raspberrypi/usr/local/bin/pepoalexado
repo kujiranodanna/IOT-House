@@ -1,6 +1,6 @@
 #!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.8.18
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.8.27
 # pepoalexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 RETRYTIME=20
@@ -54,7 +54,7 @@ if [ $ACT = "PUT" ];then
     fi
   fi
   data='ch='${ch}'&val='$val'&time='${time}
-  curl -s -d --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --user-agent ${USERAGENT} --tlsv1 -k -u ${USER}:${PASSWORD} -X POST -d $data https://$RM_HOST:$PORT/$REMOTE_CGI >${WORK}
+  curl -s --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --user-agent ${USERAGENT} --tlsv1 -k -u ${USER}:${PASSWORD} -X POST -d $data https://$RM_HOST:$PORT/$REMOTE_CGI >${WORK}
   exit
 elif [ $ACT = GET ];then
   curl -s -m $RETRYTIME --retry $RETRY --tlsv1 -k -u ${USER}:${PASSWORD} https://$RM_HOST:$PORT/$RM_JSON_DATA >${WORK}
