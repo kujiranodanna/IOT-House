@@ -1,14 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2021.8.19
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2021.9.8
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 
-#VIDEOPG=ffmpeg
 RASPICAMERA=/dev/vchiq
 RASPIVID=raspivid
 RASPISTILL=raspistill
-VIDEOPG=/usr/bin/avconv
+VIDEOPG=/usr/bin/ffmpeg
 MAXRUNTIME=60
 if [ $# != 3 ];then
  echo  "$0 video-dev xxx.jpg|xxx.mp4 your_pid"
