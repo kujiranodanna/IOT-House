@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2021.8.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2021.9.17
 # pepo_iothoused ; For raspberry pi , and scripts to run the Remote DIO and Twelite .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 ALEXSADO=/usr/local/bin/pepoalexado
@@ -32,6 +32,8 @@ tTEMP2FWASHITU=$DIR/.iothouse_temp_2fwashitu.tmp
 tTEMP2FYOUSHITU=$DIR/.iothouse_temp_2fyoushitu.tmp
 error(){
   [ -e $tALEXSADO ] && rm $tALEXSADO
+  [ -e $TEMPOUT ] && rm $TEMPOUT
+  [ -e $HUMOUT ] && rm $HUMOUT
   [ -e $TEMPROOM ] && rm $TEMPROOM
   [ -e $HUMROOM ] && rm $HUMROOM
   [ -e $PRESROOM ] && rm $PRESROOM
@@ -78,13 +80,25 @@ do
     fi
   fi
   RHOST=iot01f.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c.temp >$tTEMP1FWASHITU
-  mv $tTEMP1FWASHITU $TEMP1FWASHITU
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
+  LEN=`cat $tALEXSADO |wc -l`
+  if [ $LEN -gt 2 ];then
+    cat $tALEXSADO | jq -r .gpio_i2c.temp >$tTEMP1FWASHITU
+    mv $tTEMP1FWASHITU $TEMP1FWASHITU
+  fi
   RHOST=iot02f.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c.temp > $tTEMP2FYOUSHITU
-  mv $tTEMP2FYOUSHITU $TEMP2FYOUSHITU
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
+  LEN=`cat $tALEXSADO |wc -l`
+  if [ $LEN -gt 2 ];then
+    cat $tALEXSADO | jq -r .gpio_i2c.temp >$tTEMP2FYOUSHITU
+    mv $tTEMP2FYOUSHITU $TEMP2FYOUSHITU
+  fi
   RHOST=iot04f.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c.temp >$tTEMP2FWASHITU
-  mv $tTEMP2FWASHITU $TEMP2FWASHITU
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
+  LEN=`cat $tALEXSADO |wc -l`
+  if [ $LEN -gt 2 ];then
+    cat $tALEXSADO | jq -r .i2ctemp.temp >$tTEMP2FWASHITU
+    mv $tTEMP2FWASHITU $TEMP2FWASHITU
+  fi
   msleep $LOOPTIME
 done
