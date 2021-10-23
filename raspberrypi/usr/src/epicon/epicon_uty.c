@@ -169,11 +169,11 @@ int com_port_unuse(char *com)
   fl.l_start  = 0;        /* Offset from l_whence         */
   fl.l_len    = 0;        /* length, 0 = to EOF           */
   fl.l_pid    = getpid(); /* our PID                      */
-  fd = open(VAR_LOCK, O_RDONLY);
+  fd = open(VAR_PREFIX, O_RDONLY);
   if( fd < 0 ) return 1;
   close(fd);
   p = strrchr(com, '/');
-  strcpy(file, TTY_LOCK);
+  strcpy(file, VAR_PREFIX TTY_LOCK);
   if( p ) strcat(file, p + 1);
   else  {
     strcat(file, com);
@@ -264,11 +264,11 @@ int com_port_use_check(char *com)
   fl.l_start  = 0;        /* Offset from l_whence         */
   fl.l_len    = 0;        /* length, 0 = to EOF           */
   fl.l_pid    = getpid(); /* our PID                      */
-  fd = open(VAR_LOCK, O_RDONLY);
+  fd = open(VAR_PREFIX, O_RDONLY);
   if( fd < 0 ) return 1;
   close(fd);
   p = strrchr(com, '/');
-  strcpy(file, TTY_LOCK);
+  strcpy(file, VAR_PREFIX TTY_LOCK);
   if( p ) strcat(file, p + 1);
   else  {
     strcat(file, com);

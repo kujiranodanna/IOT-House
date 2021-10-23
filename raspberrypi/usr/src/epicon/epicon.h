@@ -67,7 +67,11 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #define sigtype int
 #endif
 #define DAY "compiled:"__DATE__
-#define Epicon_Socket_init "/var/run/lock/epicon_socket." /* AF_UNIX socket */
-#define VAR_LOCK "/var/run/lock/"
-#define TTY_LOCK "/var/run/lock/LCK.."
+#if defined(__linux__)
+#define VAR_PREFIX "/var/run/lock/"
+#else
+#define VAR_PREFIX "/var/tmp/"
+#endif
+#define Epicon_Socket_init "epicon_socket." /* AF_UNIX socket */
+#define TTY_LOCK "LCK.."
 #define MY_TTYPE  "vt100"  /* terminal type */
