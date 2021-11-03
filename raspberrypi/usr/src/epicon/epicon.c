@@ -118,7 +118,7 @@ char *argv[];
   extern int optind;
   extern int getopt(), convert_speed(), escape_code(), access(), convert_mode();
   epicon_pid = getpid();
-  sprintf( Epicon_Socket ,"%s%ld",Epicon_Socket_init , epicon_pid);
+  sprintf( Epicon_Socket ,"%s%ld", VAR_PREFIX Epicon_Socket_init, epicon_pid);
   unlink( Epicon_Socket );
   strcpy(com_port, COMPORT);
   argv_redirect = argv[argc];
