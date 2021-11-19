@@ -69,6 +69,7 @@ int SB_flag = 0;                    /* send binary file flag */
 int SF_flag = 0;                    /* send character file flag with delay*/
 int CM_flag = 0;                    /* external command option flag */
 int LOG_flag = 0;                   /* console log flag */
+int TS_flag = 0;                    /* timestamp flag */
 unsigned int Char_delay = 0;        /* external send charcacter delay value */
 unsigned int CR_delay = 0;          /* external send CR delay value */
 int CON_flag = 0;                   /* console flag */
@@ -123,7 +124,7 @@ char *argv[];
   strcpy(com_port, COMPORT);
   argv_redirect = argv[argc];
   speed = convert_speed(SPEED);
-  while((i = getopt(argc, argv,"46bmMs:d:D:l:e:n:L:f:F:c:pqvzx:")) != EOF) {
+  while((i = getopt(argc, argv,"46bmMs:d:D:l:e:n:L:f:F:c:pqvzx:T")) != EOF) {
     switch(i) {
       case '4':
         ip_addr_family = AF_INET; /* use IPv4 */
@@ -230,6 +231,9 @@ char *argv[];
           fprintf(stderr,"%s: invalid mode\n", optarg);
           exit(1);
         }
+        break;
+      case 'T':
+        TS_flag = 1;
         break;
       default:
         usage(*argv);
@@ -516,6 +520,7 @@ fprintf(stderr,"        [-L output_log_file]\r\n");
 fprintf(stderr,"        [-n ip_address[:port]]\r\n");
 fprintf(stderr,"        [-p [server_port]]\r\n");
 fprintf(stderr,"        [-s speed]\r\n");
+fprintf(stderr,"        [-T ] <--add timestamp\r\n");
 fprintf(stderr,"        [-v ] show version\r\n");
 fprintf(stderr,"        [-x bit_length (5|6|7) parity(o|e|n) stop_bit (1|2)] \r\n");
 fprintf(stderr,"        [-z ] <--auto rz prohibition\r\n%s",avg);

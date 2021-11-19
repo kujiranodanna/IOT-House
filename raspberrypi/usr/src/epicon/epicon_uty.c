@@ -57,6 +57,7 @@ extern int ip_socket_bufsize;   /* ip socket buffer size */
 extern int SB_flag;             /* send binary file flag */
 extern int CM_flag;             /* external command option flag */
 extern int LOG_flag;            /* log flag */
+extern int TS_flag;             /* timestamp flag */
 extern FILE *LOG_fp;            /* log file descriptor */
 extern char *argv_redirect;     /* redirect file */
 void end_process();             /* call end process */
@@ -70,6 +71,7 @@ int redirect_flag = 0;          /* redirect flag */
 static int t_result;            /* tmp int result */
 static char *c_result;          /* tmp char result */
 static FILE *f_result = 0;      /* tmp FILE result */
+static int TS_add = 0;          /* LF received, add time stamp next coming */
 void set_console_mode();
 
 int msleep(int msec)
@@ -777,7 +779,24 @@ void client_socket_write(char ch)
 /* no print except for reading character */
 void display_console(int fp,char ch)
 {
-  char c[10];
+  char c[32];
+  struct timeval tv;
+  struct tm *tm;
+
+  if ( TS_flag && !Bin_flag && TS_add ) {
+    gettimeofday(&tv, NULL);
+    tm = localtime(&tv.tv_sec);
+    if (tm != NULL) {
+      snprintf(c, sizeof(c), "[%04d/%02d/%02d %02d:%02d:%02d.%03u] ",
+               tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
+               tm->tm_hour, tm->tm_min, tm->tm_sec,
+               (unsigned int)(tv.tv_usec / 1000));
+      if ( LOG_flag ) fputs(c,LOG_fp);
+      t_result = write(fp,c,strlen(c));
+    }
+    TS_add = 0;
+  }
+
   ch &= 0xFF;
   if ( LOG_flag ) fputc(ch,LOG_fp);
   if ( Bin_flag )  {
@@ -786,7 +805,7 @@ void display_console(int fp,char ch)
   }
   switch (ch)  {
     case '\377': t_result = write(fp, "\\d",1); break;
-    case '\n': sprintf(c,"\n\r"); t_result = write(fp,&c,2); break;
+    case '\n': sprintf(c,"\n\r"); t_result = write(fp,&c,2); TS_add = 1; break;
     case '\r': t_result = write(fp,&ch,1); break;
     case '\t': t_result = write(fp,&ch,1); break;
     case '\b': t_result = write(fp,&ch,1); break;
