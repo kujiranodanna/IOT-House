@@ -1,10 +1,10 @@
 #!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.8.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.10.15
 # pepoalexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 RETRYTIME=20
-RETRY=1
+RETRY=0
 WAIT=5000
 PORT=443
 LOCAL_DIR=/www/remote-hand/tmp
