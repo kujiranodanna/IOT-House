@@ -1,11 +1,10 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2021.5.24 for i386 & raspberry pi.
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2021.11.28 for i386 & raspberry pi.
 # pepotocsctl for contorl TWE-Lite DIP:Ver1.6 or later(monowireless engine) digital-IN/digital-OUT signal.
-# pepotocsctl $1:ch[0-7] [$2:0-f] [$3: timer->1 to 300000ms]
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 usage(){
-  echo "usage $0 read->chno:0-6 | write->chno:0-7 [DO:0|1|f] [timer->1 to 300000ms]" >/dev/stderr
+  echo "usage $0 read->chno:0-7 | write->chno:0-3 [DO:0|1] [timer->1 to 300000ms]" >/dev/stderr
   exit
 }
 if [ $# -eq 0 ];then
@@ -18,8 +17,8 @@ elif [ $# -eq 2 -a "$1" -eq 0 ];then
   ALLDO=NO
   if [ $((0x$2 - 0)) -gt $((0xf - 0)) -o $((0x$2 - 0)) -lt 0 ];then
     usage
-  else
-    ALLDO=YES
+  else 
+    ALLDO=YES  
   fi
 elif [ $# -eq 3 ];then
   if [ "$2" -gt 0 -a "$2" -gt 1 -o "$3" -gt 300000 -o "$3" -lt 1 ];then
@@ -77,7 +76,7 @@ error(){
   [ -e ${CMD} ] && rm -f ${CMD}
   exit 0
 }
-trap error SIGHUP SIGTERM SIGQUIT SIGKILL SIGINT SIGCHLD
+trap error SIGHUP SIGTERM SIGQUIT SIGKILL SIGINT
 
 CMD_DIO="/usr/local/bin/epicon -s 115200 -ql ${DIO_DEV} -c ${CMD}"
 
@@ -126,6 +125,8 @@ EOF
 }
 i2c_read(){
   local send read retry_time tmp
+  I2CCMD="00"
+  I2CRES="00"
   RETRY=$TRY
   while [ -e $LOCK ]
   do
@@ -141,7 +142,7 @@ i2c_read(){
   tmp=${I2CHEAD}${I2CWRITE}${I2CADDR}${I2CWRITE_CT}
   wake_up=${HEDER}${tmp}X
 # temperature & Humidity start command
-  tmp=${I2CHEAD}${I2CWRITE}${I2CADDR}${I2CTEPHUM}
+  tmp=${I2CHEAD}${I2CWRITE}${I2CADDR}${I2CTEPHUM} 
   send=${HEDER}${tmp}X
 # temperature & Humidity read command
   tmp=${I2CHEAD}${I2CREAD}${I2CADDR}${I2CREAD_CT}
@@ -190,7 +191,7 @@ read_temp_hum(){
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
     return
-  fi
+  fi   
   HUMTMP=`echo -en ${RD} |awk '{printf(substr($1,18,4))}'`
   if [ $HUMTMP = $ZEROHUM ];then
     echo -en "-1" >/dev/stderr
@@ -254,7 +255,7 @@ write_dio(){
       0) SD="0F" ;;
       1) SD="0E" ;;
       2) SD="0D" ;;
-      3) SD="0C" ;;
+      3) SD="0C" ;;      
       4) SD="0B" ;;
       5) SD="0A" ;;
       6) SD="09" ;;
@@ -267,7 +268,7 @@ write_dio(){
       D) SD="02" ;;
       E) SD="01" ;;
       F) SD="00" ;;
-    esac
+    esac      
     DATA="$SD"${CH}
     RD=`send_dio ${DATA} 2>&1`
     TMP=`echo -en ${RD} | wc -c`
@@ -276,7 +277,7 @@ write_dio(){
     [ $SD -eq 1 ] && DATA=${CH}${CH} || DATA="00"${CH}
     RD=`send_dio ${DATA} 2>&1`
     if [ ${TM} -ne 0 ];then
-      SD=$(($SD ^ 1))
+      SD=$(($SD ^ 1))  
       [ `echo -en ${RD} | wc -c` != ${READCT} ] && RD="-1" || RD=$2
       if [ ${RD} != "-1" ];then
         msleep ${TM}
@@ -290,7 +291,7 @@ write_dio(){
   fi
   if [ ${RD} != "-1" ];then
     echo -en ${SD} >/dev/stderr
-  else
+  else 
     echo -en -1 >/dev/stderr
   fi
 }
@@ -317,12 +318,12 @@ read_dio(){
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
   return
-  fi
+  fi   
   TMP=`echo -en ${RD} | awk '{i=substr(\$0,34,2);printf i}'`
   if [ $1 -eq 0 ];then
     DATA=$((0x${TMP} & 0x${CH}))
     DATA=$(($DATA ^ 0x0f))
-  else
+  else      
     DATA=$(($((0x${TMP} & 0x${CH})) / ${XCH}))
     DATA=$(($DATA ^ 0x01))
   fi
@@ -344,7 +345,7 @@ read_ai(){
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
   return
-  fi
+  fi   
   TMP=`echo -en ${RD} | awk '{i=substr(\$0,46,2);printf i}'`
   A1=`echo -en ${RD} | awk '{i=substr(\$0,38,2);printf i}'`
   VOLT=$((0x$A1 * 4))
@@ -391,7 +392,7 @@ cmd_di(){
   RD=$1
   TMP=`echo -en ${RD} | awk '{i=substr(\$0,34,2);printf i}'`
   DATA=$((0x${TMP} & 0x0F))
-  DATA=$(($DATA ^ 0x0f))
+  DATA=$(($DATA ^ 0x0F))
   printf "%1x" ${DATA} >/dev/stderr
 }
 cmd_ai(){
@@ -434,7 +435,7 @@ read_di_ai(){
   fi
   DATA=`cmd_di ${RD} 2>&1`
   DATA1=`cmd_ai ${RD} 2>&1`
-  printf "%x;%s" ${DATA} ${DATA1} >/dev/stderr
+  echo -en ${DATA}";"${DATA1} >/dev/stderr
 }
 read_di_ai_wait(){
   local DATA DATA1 RD TMP CHECK_DATA RDCHECKPG_SUM SUM
@@ -460,7 +461,7 @@ read_di_ai_wait(){
 write_do_rd(){
   local RD TMP
   RD=`write_dio $1 $2 $3 2>&1`
-  if [ "$RD" != "-1" ];then
+  if [ "$RD" != "-1" ];then 
     if [ $1 -eq 0 ];then
       DATA=`cmd_di ${RD} 2>&1`
       DATA1=`cmd_ai ${RD} 2>&1`
@@ -471,7 +472,7 @@ write_do_rd(){
       return
     fi
   fi
-  echo -en ${RD} >/dev/stderr
+  echo -en ${RD} >/dev/stderr   
 }
 
 if [ $# -eq 1 ];then
