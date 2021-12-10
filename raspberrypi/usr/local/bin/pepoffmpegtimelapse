@@ -1,6 +1,6 @@
 #!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2021.9.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2021.12.7
 # pepoffmpegtimelapse ; RaspberryPi module A script that uses a camera to perform a security camera timelapse jpg to mp4 conversion.
 # That to run a of 3600 seconds interval.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -49,7 +49,7 @@ error(){
   fi
   exit 0
 }
-trap error SIGQUIT SIGINT SIGTERM SIGHUP SIGKILL SIGCHLD
+trap error SIGQUIT SIGINT SIGTERM SIGHUP
 while true;do
   NOWMIN=`date +"%M:"`
   if [ $NOWMIN = "05:" ];then
