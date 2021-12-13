@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2021.5.2
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2021.12.11
 # pepoliveserver ;  liveserver for i386
 # pepoliveserver dev timer
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -30,7 +30,7 @@ error(){
   fi
   exit
 }
-trap error SIGINT SIGTERM SIGHUP SIGKILL SIGCHLD
+trap error SIGINT SIGTERM SIGHUP
 while [ -e $pidfile ];do
   tpid=`cat $pidfile`
   kill -HUP $tpid

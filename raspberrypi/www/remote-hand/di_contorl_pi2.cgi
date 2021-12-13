@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.6
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.12.9
 # dio_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin
@@ -10,7 +10,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2021.8.5">
+<META NAME="Build" content="2021.12.9">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital -in)</TITLE>
@@ -661,3 +661,11 @@ END
 fi
 echo -en '
 </HTML>'
+msleep 5000
+if [ $DI_TTY = "gpio" ];then
+  ./pi_int_gpio.cgi
+elif [ $DI_TTY = "piface" ];then
+  ./pi_int.cgi
+elif [ $DI_TTY = "cp2112" ];then
+  ./pi_int_cp2112.cgi
+fi

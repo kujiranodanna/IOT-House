@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.10.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.28
 
 PATH=$PATH:/usr/local/bin
 # irkit_post.cgi,Post of IR data for IRKit
@@ -47,9 +47,9 @@ CONV=./conv_get.cgi
 IRNUM=$ir_num
 TIMER=$ir_timer
 IRFILE=$DIR/.irdata_${IRNUM}
-USERAGENT="Chrome/94.0.4606.81"
-RETRYTIME=20
-RETRY=0
+USERAGENT="Chrome/87.0.4280.88"
+RETRYTIME=10
+RETRY=1
 if [ -e ${IRKIT_IP} ];then
   IP=`cat ${IRKIT_IP}`
   if [ -e ${IRFILE} ];then

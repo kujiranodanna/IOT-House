@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2018.2.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2021.12.11
 # peposound ; sound mp3 file
 # usage peposound mp3_file_No timer
 if [ $# -lt 1 -o $# -gt 2 ];then
@@ -28,7 +28,7 @@ error(){
   [ -e ${LOCKFILE} ] && rm -f ${LOCKFILE}
   exit 0
 }
-trap error SIGINT SIGTERM SIGHUP SIGKILL SIGCHLD
+trap error SIGINT SIGTERM SIGHUP
 lockfile -15 -r 1 ${LOCKFILE} >/dev/null 2>&1
 if [ $? = 0 ];then
   echo -en $$ >${LOCKFILE}

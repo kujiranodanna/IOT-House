@@ -1,14 +1,14 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.12.12
 # pi_int.cgi ;piface main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2021.8.10"
-VERSION="ver:0.18&nbsp;$DATE"
+DATE="2021.12.12"
+VERSION="ver:0.19&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
 if [ $ZEROW_YES_NO = "YES" ];then
@@ -267,7 +267,7 @@ Voice control
 <span id="s_phone_gpio_csv"></span>
 <span id="s_phone_i2c_temp_disp"></span>
 <span id="s_phone_i2c_hum_disp"></span>
-<span 2021-2025ne_vai_1_graph"></span>
+<span id="s_phone_vai_1_graph"></span>
 <span id="s_phone_vai_2_graph"></span>
 <span id="s_phone_vai_3_graph"></span>
 <span id="s_phone_vai_4_graph"></span>
