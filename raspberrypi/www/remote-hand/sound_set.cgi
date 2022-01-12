@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2017.7.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.1.12
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,8 +9,8 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2017.7.13">
-<META http-equiv="Refresh" content="2;URL=/remote-hand/pi_int.html">
+<META NAME="build" content="2022.1.11">
+<META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Upload Sound File settings</TITLE>
 <script type="text/javascript">
