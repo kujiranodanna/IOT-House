@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.1.12
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.2.3
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -33,7 +33,7 @@ function blink() {
 <BODY onload="blink()" BGCOLOR="#E0FFFF">
 <HR>
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
-<TR ALIGN=CENTER class="blink"><TD>Processing Upload Sound File settings</TD></TR></TABLE>
+<TR ALIGN=CENTER class="blink"><TD>Processing Sound File settings</TD></TR></TABLE>
 <HR>
 <TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>'

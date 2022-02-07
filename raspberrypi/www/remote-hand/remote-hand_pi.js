@@ -1,7 +1,7 @@
 /*
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.10
-* remote-hand_pi.js  ver0.18 2021.8.10
+* remote-hand_pi.js  ver0.20 2021.8.10
 */
 function blink(){
   if (!document.all){ return; }
@@ -3064,7 +3064,7 @@ function menu4_ck(button_id,disp_id){
   var formdata = new FormData($('#menu4').get(0));
   switch (button_id){
     case 'menu4_jikkou':
-      call_cgi = 'sound_set.cgi';
+      call_cgi = 'sound_del.cgi';
       break;
     case 'menu4_sound_0':
       file_name = document.menu4.sound_file_0.value;
@@ -3125,7 +3125,7 @@ function menu4_ck(button_id,disp_id){
       return false;
       break;
   }
-  if (call_cgi == 'sound_set.cgi'){
+  if (call_cgi == 'sound_del.cgi'){
     var array_file_name = new Array(5);
     var array_reg = new Array(5);
     var reg_count = 0;
@@ -3143,15 +3143,10 @@ function menu4_ck(button_id,disp_id){
     for (var i=0 ; i <= 4 ; i++){
       if (array_reg[i] != "none") reg_count++;
       if (array_file_name[i] != ""){
-        str = array_file_name[i];
         check++;
-        var file_name_ck = str.split(".");
-        if (file_name_ck[1] != "mp3"){
-          error_ct++;
-        }
       }
     }
-    if (error_ct != 0 && check > 0 || reg_count == 0){
+    if (check == 0 || reg_count == 0){
       return false;
     }
     document.getElementById("menu4_form").submit();
@@ -3162,7 +3157,7 @@ function menu4_ck(button_id,disp_id){
       $.ajax({
       type: "POST",
       url: call_cgi,
-      timeout : 10000,
+      timeout : 15000,
       dataType: "html",
       data: formdata,
       cache       : false,
