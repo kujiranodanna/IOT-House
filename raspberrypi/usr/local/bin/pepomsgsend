@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2021.8.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2022.1.12
 # pepomsgsend
 # pepomsgsend $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
@@ -12,7 +12,7 @@ SERVERCONF=$DIR/.startup.s.tmp
 MUA="/usr/bin/mutt -n -F /root/.mutt/muttrc"
 ALEXADO=/usr/local/bin/pepoalexado
 MAIL_LOG=/var/mail/mail
-prog=peposendmail
+prog=pepomsgsend
 pidfile=/var/run/$prog.pid
 MAIL_TO=$1
 SUBJECT=`echo $2 | awk '{gsub(/\+/," ",$0);printf $0}'`
