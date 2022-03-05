@@ -11,8 +11,8 @@ PING_MSG=/www/remote-hand/tmp/"$PING_HOST"_mail.msg
 #WGETMAIL=/pepolinux/wget_mail.sh
 WGETMAIL=/usr/local/bin/peposendmail
 if [ $# != 2 ]; then
-        echo usage: $0 ip_addres mail_address
-        exit
+  echo usage: $0 ip_addres mail_address
+  exit
 fi
 
 if ! ping -c 1 $1 2>&1 >$PING_LOG; then

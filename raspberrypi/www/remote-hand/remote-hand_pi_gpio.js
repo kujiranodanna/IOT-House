@@ -1,6 +1,6 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.2.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.2.4
 * remote-hand_pi_gpio.js  ver0.20 2022.2.4
 */
 function blink(){

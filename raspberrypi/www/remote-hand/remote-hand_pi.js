@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.10
-* remote-hand_pi.js  ver0.20 2021.8.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.2.4
+* remote-hand_pi.js  ver0.20 2022.2.4
 */
 function blink(){
   if (!document.all){ return; }
