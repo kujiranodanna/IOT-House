@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.2.4
-* remote-hand_pi_gpio.js  ver0.20 2022.2.4
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.16
+* remote-hand_pi_gpio.js  ver0.20 2022.3.16
 */
 function blink(){
   if (!document.all){ return; }
@@ -3062,7 +3062,7 @@ function menu4_ck(button_id,disp_id){
   var file_name = "none";
   var formdata = new FormData($('#menu4').get(0));
   switch (button_id){
-    case 'menu4_jikkou':
+    case 'menu4_sound_del':
       call_cgi = 'sound_del.cgi';
       break;
     case 'menu4_sound_0':
@@ -3125,35 +3125,32 @@ function menu4_ck(button_id,disp_id){
       break;
   }
   if (call_cgi == 'sound_del.cgi'){
-    var array_file_name = new Array(5);
-    var array_reg = new Array(5);
-    var reg_count = 0;
-    var str = "";
-    array_file_name[0] = document.menu4.sound_file_0.value;
-    array_file_name[1] = document.menu4.sound_file_1.value;
-    array_file_name[2] = document.menu4.sound_file_2.value;
-    array_file_name[3] = document.menu4.sound_file_3.value;
-    array_file_name[4] = document.menu4.sound_file_4.value;
-    array_reg[0] = $("#reg_sound_0").val();
-    array_reg[1] = $("#reg_sound_1").val();
-    array_reg[2] = $("#reg_sound_2").val();
-    array_reg[3] = $("#reg_sound_3").val();
-    array_reg[4] = $("#reg_sound_4").val();
-    for (var i=0 ; i <= 4 ; i++){
-      if (array_reg[i] != "none") reg_count++;
-      if (array_file_name[i] != ""){
-        check++;
-      }
-    }
-    if (check == 0 || reg_count == 0){
-      return false;
-    }
-    document.getElementById("menu4_form").submit();
-  }
-  else {
-    if (call_cgi != "none"){
-      $(disp_id).text("File upload in progress.");
+    var disp_info = '#' + disp_id;
+    file_name = $(disp_info).html();
+    if (file_name != ""){
+      $(disp_info).text("File Delete in progress.");
       $.ajax({
+        type: "get",
+        url: call_cgi,
+        timeout : 5000,
+        dataType: "text",
+        async: true,
+        data: disp_id + '=' + file_name,
+        success: function(){
+          $(disp_info).text("File Delete Success!");
+          return;
+        },
+        error: function(){
+          $(disp_info).text("File Delete faile!");
+          return;
+        }
+      });
+    }
+    return false;
+  }
+  if (call_cgi == "sound_upload.cgi"){
+    $(disp_id).text("File upload in progress.");
+    $.ajax({
       type: "POST",
       url: call_cgi,
       timeout : 15000,
@@ -3171,10 +3168,6 @@ function menu4_ck(button_id,disp_id){
         return;
       }
     });
-    }
-    else {
-      return;
-    }
   }
 }
 

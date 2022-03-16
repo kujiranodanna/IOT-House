@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.2.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.16
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -43,15 +43,14 @@ CONV=./conv_get.cgi
 DIR=/www/remote-hand/tmp
 FILE_NAME=$DIR/.sound_file_name
 tFILE_NAME=$DIR/.sound_file_name_tmp
-
 if [ ! -e $FILE_NAME ];then
   exit
 else
   . $FILE_NAME
 fi
 for n in 0 1 2 3 4;do
-if [ -n ${sound_file[$n]} ];then
-  if [ ${reg_sound[$n]} = "del" ];then
+if [ -n "${disp_sound[$n]}" ];then
+  if [ ${sound_file[$n]}=${disp_sound[$n]} ];then
     cat $FILE_NAME | grep -F -v ${sound_file[$n]} > $tFILE_NAME
     mv $tFILE_NAME $FILE_NAME
     rm -f $DIR/${sound_file[$n]}
