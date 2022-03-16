@@ -1,6 +1,6 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.16
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.17
 * remote-hand_pi_gpio.js  ver0.20 2022.3.16
 */
 function blink(){
@@ -3132,7 +3132,7 @@ function menu4_ck(button_id,disp_id){
       $.ajax({
         type: "get",
         url: call_cgi,
-        timeout : 5000,
+        timeout : 10000,
         dataType: "text",
         async: true,
         data: disp_id + '=' + file_name,
@@ -3153,7 +3153,7 @@ function menu4_ck(button_id,disp_id){
     $.ajax({
       type: "POST",
       url: call_cgi,
-      timeout : 15000,
+      timeout : 30000,
       dataType: "html",
       data: formdata,
       cache       : false,
