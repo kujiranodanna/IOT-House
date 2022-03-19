@@ -75,10 +75,13 @@ if [ -e $FILE_NAME ];then
   [ -e $DIR/${sound_file[$n]} ] && rm -f $DIR/${sound_file[$n]}
   cat $FILE_NAME |grep -F -v $tmp >$tFILE_NAME
   M4A_YES_NO=`echo $filename |awk 'BEGIN{TMP="NO"};/m4a$/{TMP="YES"};END{printf TMP}'`
-  if [ $M4A="YES" ];then
+  WAV_YES_NO=`echo $filename |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}'`
+  tmpFILENAME=$filename
+  if [ $M4A_YES_NO="YES" ];then
     tmpFILENAME=`echo $filename |awk '{sub("m4a","mp3",$0);printf $0}'`
-  else
-    tmpFILENAME=$filename
+  fi
+  if [ $WAV_YES_NO="YES" ];then
+    tmpFILENAME=`echo $filename |awk '{sub("wav","mp3",$0);printf $0}'`
   fi
   echo "$tmp"="$tmpFILENAME" >> $tFILE_NAME
   mv $tFILE_NAME $FILE_NAME
@@ -88,7 +91,7 @@ fi
 FILE=$DIR/$filename
 cat $tSOUND_FILE | sed '1,8d' >$SOUND_FILE
 dd if=$SOUND_FILE of=$FILE bs=1 count=$SIZE
-if [ $M4A="YES" ];then
+if [ $M4A="YES" -o $WAV_YES_NO="YES" ];then
   ffmpeg -i $FILE -ab 64k -y $DIR/$tmpFILENAME
   rm -f $FILE
 fi

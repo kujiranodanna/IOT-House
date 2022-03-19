@@ -1,7 +1,7 @@
 /*
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.17
-* remote-hand_pi.js  ver0.20 2022.3.16
+* remote-hand_pi.js  ver0.21 2022.3.17
 */
 function blink(){
   if (!document.all){ return; }
@@ -149,7 +149,6 @@ function speak_exec(voice,lang){
   var Browser = CheckBrowser();
   var lang_temp;
   if(Browser == "Chrome" | Browser == "FireFox" | Browser == "Edge" | Browser == "Safari"){
-    var utterance = new SpeechSynthesisUtterance();
     var utterance = new SpeechSynthesisUtterance();
     if (lang == "en") lang_temp = "en-US";
     if (lang == "ja") lang_temp = "ja";
