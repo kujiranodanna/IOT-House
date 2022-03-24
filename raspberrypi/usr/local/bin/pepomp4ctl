@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2021.12.12
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2022.3.24
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 
@@ -65,7 +65,7 @@ if [ -e ${DEV} ];then
   else
     if [ $MP4 != "YES" ];then
 # If invert the image, add the following options -vf -hf
-      $RASPISTILL -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
+      $RASPISTILL -awb flash -a 1036 -ae +25+25 -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
 #      $RASPISTILL -vf -hf -w 1920 -h 1080 -o ${WORKIMAGE} >/dev/null 2>&1
     else
       $RASPIVID -ss 1000 -o - -w 640 -h 480 -t 0 -fps 5 |${VIDEOPG} -f h264 -r 5 -t 10 -i - -vcodec mpeg4 -y ${WORKIMAGE} >/dev/null 2>&1
