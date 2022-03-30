@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.27
-* remote-hand_pi_gpio.js  ver0.21 2022.3.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.3.29
+* remote-hand_pi_gpio.js  ver0.21 2022.3.29
 */
 function blink(){
   if (!document.all){ return; }
@@ -18,7 +18,7 @@ function blink(){
   }
   setTimeout("blink()",1000);
 }
-var smapho_reload_tm = 15000;
+var smapho_reload_tm = 10000;
 var unsmapho_reload_tm = 60000;
 var recognition = new webkitSpeechRecognition();
 var recognition_state = "Stop"

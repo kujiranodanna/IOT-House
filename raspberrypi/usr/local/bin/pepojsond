@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2022.3.27
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2022.3.29
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -31,7 +31,7 @@ pidfile=/var/run/$prog.pid
 MAX_TMP_FILE_LIVE=180
 CMD=$DIR/$prog.pepocmd
 echo -en $$ >$pidfile
-WAIT=5000
+WAIT=2000
 error(){
   [ -e "$JSONRD" ] && rm -f $JSONRD
   [ -e "$tJSONRD" ] && rm -f $tJSONRD
