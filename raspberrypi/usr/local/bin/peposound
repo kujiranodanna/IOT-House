@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2022.3.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2022.4.3
 # peposound ; Play a sound file
 # usage peposound sound file_Num timer
 if [ $# -lt 1 -o $# -gt 2 ];then
@@ -12,7 +12,9 @@ TM=$2
 DIR=/www/remote-hand/tmp
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 SOUND_FILE_NAME=$DIR/.sound_file_name
+# lubuntu
 #SOUND_PLAYER=/usr/bin/mplayer
+# raspbery pi
 SOUND_PLAYER=/usr/bin/mpg321
 MYPROG=/usr/local/bin/peposound
 SOUND_EXEC_CMD=$DIR/sound_player.pepocmd
