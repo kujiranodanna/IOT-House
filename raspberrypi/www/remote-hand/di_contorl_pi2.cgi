@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.1.12
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
 # di_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin

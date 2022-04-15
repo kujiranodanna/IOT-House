@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.12.9
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -35,7 +35,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Processing DIO settings</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>'
 
 CONV=./conv_get.cgi
@@ -245,7 +245,6 @@ EOF
 END
 echo -en '
 </HTML>'
-msleep 5000
 if [ $DI_TTY = "gpio" ];then
   ./pi_int_gpio.cgi
 elif [ $DI_TTY = "piface" ];then

@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2022.4.3"
+DATE="2022.4.15"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -66,7 +66,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
   exit -1
@@ -267,7 +267,7 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2021-2025 pepolinux.com&nbsp;
+&copy;2022-2025 pepolinux.com&nbsp;
 </H1>
 </BODY>
 </HTML>
@@ -311,7 +311,7 @@ END
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
 <BR>
 <BR>
-&copy;2021-2025 pepolinux.com&nbsp;
+&copy;2022-2025 pepolinux.com&nbsp;
 <span id="server_time" style="text-align:left"></span>
 </H1>
 </BODY>
@@ -336,14 +336,12 @@ cat >$PAGE1<<END
 <script src="jquery-ui.min.js" type="text/javascript"></script>
 <script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-<!--
   \$(function() {
     \$("#tabs").tabs();
   });
   \$(function() {
     \$("#tabs").tabs("option","active",1);
   });
-// -->
 </script>
 <TITLE>$DIST_NAME Control Panel</TITLE>
 </HEAD>
@@ -7322,7 +7320,7 @@ web password
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./wait_for.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>
-<TR><TD><FONT SIZE="-1">&copy;2021-2025 pepolinux.com&nbsp;
+<TR><TD><FONT SIZE="-1">&copy;2022-2025 pepolinux.com&nbsp;
 <span id="server_time" style="text-align:left"></span>&nbsp;
 </TR>
 </TABLE>

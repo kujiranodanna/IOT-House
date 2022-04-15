@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.8.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -13,7 +13,35 @@ LOCKFILE="$DIR/LCK..wait_for.cgi"
 LOCKPID="$DIR/LCK..wait_for.cgi.pid"
 LOCKCGI="$DIR/LCK..pi_int.cgi"
 LOCKCGIPID="$DIR/LCK..pi_int.cgi.pid"
+HOMEPAGE=./pi_int.html
+RMHOMEPAGE="NO"
+NOWIME=`date +%s`
+JITTER=5
 ALIAS_DI=$DIR/.alias_di
+if [ -e $ALIAS_DI ];then
+  timeALIAS_DI=`date +%s -r $ALIAS_DI`
+  [ $(($NOWIME - $timeALIAS_DI)) -lt 10 ] && RMHOMEPAGE="YES"
+fi
+ALIAS_DO=$DIR/.alias_do
+if [ -e $ALIAS_DO ];then
+  timeALIAS_DO=`date +%s -r $ALIAS_DI`
+  [ $(($NOWIME - $timeALIAS_DO)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
+DICHANG1=$DIR/.di_change1
+if [ -e $DICHANG1 ];then
+  timeDICHANG1=`date +%s -r $ALIAS_DI`
+  [ $(($NOWIME - $timeDICHANG1)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
+DICHANG2=$DIR/.di_change2
+if [ -e $DICHANG1 ];then
+  timeDICHANG2=`date +%s -r $ALIAS_DI`
+  [ $(($NOWIME - $timeDICHANG2)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
+AUTOACT_LIST=$DIR/.auto_act.list
+if [ -e $AUTOACT_LIST ];then
+  timeAUTOACT_LIST=`date +%s -r $ALIAS_DI`
+  [ $(($NOWIME - $timeAUTOACT_LIST)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
 [ -e $ALIAS_DI ] && . $ALIAS_DI
 if [ $DI_TTY != "gpio" ];then
    PI_INT=pi_int.cgi
@@ -40,7 +68,6 @@ echo -en '
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Remote-hand wait for process</TITLE>
 <script type="text/javascript">
-<!--
 function blink() {
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);
@@ -84,7 +111,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 exit -1
@@ -107,7 +134,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
   msleep 20000
@@ -117,7 +144,6 @@ function jump_href() {
 done
   echo -en $$ >${LOCKPID}
 fi
-
 if [ -e $PPP_SEC ]; then
 cat>$CMD<<EOF
 #!/bin/bash
@@ -171,6 +197,8 @@ do
   msleep 500
   BUSY=`ls $DIR/|grep -E ".pepocmd$"|wc -w`
 done
+[ $RMHOMEPAGE = "YES" ] && rm $HOMEPAGE
+
 while [ -e ${LOCKCGI} ]
 do
   msleep 20000
@@ -194,7 +222,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
   msleep 1000
@@ -227,7 +255,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
 fi
