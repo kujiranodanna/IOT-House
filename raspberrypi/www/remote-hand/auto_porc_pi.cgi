@@ -164,7 +164,7 @@ auto_cron_reg() {
       DO=8 ;;
     "SOUND_9")
       CH=26
-      DO=8 ;;
+      DO=9 ;;
   esac
   YES_NO="ENABLE"
   DI_CH="-1"
