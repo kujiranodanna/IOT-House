@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
 
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2021.12.9">
+<META NAME="build" content="2022.4.26">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Automatic process settings</TITLE>
@@ -150,6 +150,21 @@ auto_cron_reg() {
     "SOUND_4")
       CH=21
       DO=4 ;;
+    "SOUND_5")
+      CH=22
+      DO=5 ;;
+    "SOUND_6")
+      CH=23
+      DO=6 ;;
+    "SOUND_7")
+      CH=24
+      DO=7 ;;
+    "SOUND_8")
+      CH=25
+      DO=8 ;;
+    "SOUND_9")
+      CH=26
+      DO=8 ;;
   esac
   YES_NO="ENABLE"
   DI_CH="-1"
@@ -320,7 +335,7 @@ if [ $CH -gt 7 -a $CH -lt 14 ];then
   $ACT_IRKIT $J $TM
 elif [ $CH -gt 13 -a $CH -lt 17 ];then
   $ACT_TOCOS $J $DO $TM
-elif [ $CH -gt 16 -a $CH -lt 22 ];then
+elif [ $CH -gt 16 -a $CH -lt 27 ];then
   $SOUND_DO $DO $TM
 elif [ $CH -lt 8 ];then
   $ACT_DO $CH $DO $TM

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
 # di_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin
@@ -10,7 +10,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2022.1.11">
+<META NAME="Build" content="2022.4.26">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital -in)</TITLE>
@@ -635,6 +635,31 @@ if [ -e "$sDICH" ];then
         ;;
         "SOUND_4")
           ARG1="4"
+          ARG2="${don_time[$n]}"
+          di_sound "$FIL" "$ARG1" "$ARG2"
+        ;;
+        "SOUND_5")
+          ARG1="5"
+          ARG2="${don_time[$n]}"
+          di_sound "$FIL" "$ARG1" "$ARG2"
+        ;;
+        "SOUND_6")
+          ARG1="6"
+          ARG2="${don_time[$n]}"
+          di_sound "$FIL" "$ARG1" "$ARG2"
+        ;;
+        "SOUND_7")
+          ARG1="7"
+          ARG2="${don_time[$n]}"
+          di_sound "$FIL" "$ARG1" "$ARG2"
+        ;;
+        "SOUND_8")
+          ARG1="8"
+          ARG2="${don_time[$n]}"
+          di_sound "$FIL" "$ARG1" "$ARG2"
+        ;;
+        "SOUND_9")
+          ARG1="9"
           ARG2="${don_time[$n]}"
           di_sound "$FIL" "$ARG1" "$ARG2"
         ;;

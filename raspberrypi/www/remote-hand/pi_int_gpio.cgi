@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2022.4.15"
+DATE="2022.4.26"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -409,6 +409,46 @@ Sound5
 <span id="disp_sound_4">
 </span>&nbsp;
 <INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_4" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_4');"/>
+<BR>
+Sound6
+<INPUT TYPE="file" id="sound_file_5" style="width:240px;" NAME="sound_file_5" VALUE="">&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_5" VALUE="Upload" onClick="return menu4_ck('menu4_sound_5','disp_sound_5');"/>
+&nbsp;
+<span id="disp_sound_5">
+</span>&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_5" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_5');"/>
+<BR>
+Sound7
+<INPUT TYPE="file" id="sound_file_6" style="width:240px;" NAME="sound_file_6" VALUE="">&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_6" VALUE="Upload" onClick="return menu4_ck('menu4_sound_6','disp_sound_6');"/>
+&nbsp;
+<span id="disp_sound_6">
+</span>&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_6" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_6');"/>
+<BR>
+Sound8
+<INPUT TYPE="file" id="sound_file_7" style="width:240px;" NAME="sound_file_7" VALUE="">&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_7" VALUE="Upload" onClick="return menu4_ck('menu4_sound_7','disp_sound_7');"/>
+&nbsp;
+<span id="disp_sound_7">
+</span>&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_7" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_7');"/>
+<BR>
+Sound9
+<INPUT TYPE="file" id="sound_file_8" style="width:240px;" NAME="sound_file_8" VALUE="">&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_8" VALUE="Upload" onClick="return menu4_ck('menu4_sound_8','disp_sound_8');"/>
+&nbsp;
+<span id="disp_sound_8">
+</span>&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_8" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_8');"/>
+<BR>
+Sound10
+<INPUT TYPE="file" id="sound_file_9" style="width:240px;" NAME="sound_file_9" VALUE="">&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_9" VALUE="Upload" onClick="return menu4_ck('menu4_sound_9','disp_sound_9');"/>
+&nbsp;
+<span id="disp_sound_9">
+</span>&nbsp;
+<INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_9" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_9');"/>
 <BR>
 </FORM>
 </DD>
@@ -1457,6 +1497,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_0">
@@ -1525,6 +1570,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_1">
@@ -1593,6 +1643,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_2">
@@ -1661,6 +1716,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_3">
@@ -1729,6 +1789,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_8">
@@ -1797,6 +1862,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_9">
@@ -1865,6 +1935,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_10">
@@ -1933,6 +2008,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_11">
@@ -2001,6 +2081,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_12">
@@ -2069,6 +2154,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_13">
@@ -2137,6 +2227,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_14">
@@ -2205,6 +2300,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_19">
@@ -2273,6 +2373,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_20">
@@ -2341,6 +2446,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_21">
@@ -2531,6 +2641,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_0">
@@ -2596,6 +2711,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_1">
@@ -2661,6 +2781,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_2">
@@ -2726,6 +2851,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_3">
@@ -2790,6 +2920,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_8">
@@ -2855,6 +2990,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_9">
@@ -2920,6 +3060,11 @@ Action:low→high
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_10">
@@ -2985,6 +3130,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_11">
@@ -3050,6 +3200,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_12">
@@ -3115,6 +3270,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_13">
@@ -3180,6 +3340,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_"14>
@@ -3244,6 +3409,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_19">
@@ -3309,6 +3479,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_20">
@@ -3374,6 +3549,11 @@ Action:high→low
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 Alt
 <SELECT NAME="di_act_alt_21">
@@ -5079,6 +5259,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT0_VAL[1]}" NAME="auto_act0_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT0_VAL[2]}" NAME="auto_act0_val_2">min
@@ -5193,6 +5378,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT1_VAL[1]}" NAME="auto_act1_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT1_VAL[2]}" NAME="auto_act1_val_2">min
@@ -5307,6 +5497,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT2_VAL[1]}" NAME="auto_act2_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT2_VAL[2]}" NAME="auto_act2_val_2">min
@@ -5422,6 +5617,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT3_VAL[1]}" NAME="auto_act3_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT3_VAL[2]}" NAME="auto_act3_val_2">min
@@ -5535,6 +5735,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT4_VAL[1]}" NAME="auto_act4_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT4_VAL[2]}" NAME="auto_act4_val_2">min
@@ -5648,6 +5853,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT5_VAL[1]}" NAME="auto_act5_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT5_VAL[2]}" NAME="auto_act5_val_2">min
@@ -5761,6 +5971,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT6_VAL[1]}" NAME="auto_act6_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT6_VAL[2]}" NAME="auto_act6_val_2">min
@@ -5874,6 +6089,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT7_VAL[1]}" NAME="auto_act7_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT7_VAL[2]}" NAME="auto_act7_val_2">min
@@ -5987,6 +6207,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT8_VAL[1]}" NAME="auto_act8_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT8_VAL[2]}" NAME="auto_act8_val_2">min
@@ -6100,6 +6325,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT9_VAL[1]}" NAME="auto_act9_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT9_VAL[2]}" NAME="auto_act9_val_2">min
@@ -6213,6 +6443,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT10_VAL[1]}" NAME="auto_act10_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT10_VAL[2]}" NAME="auto_act10_val_2">min
@@ -6326,6 +6561,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT11_VAL[1]}" NAME="auto_act11_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT11_VAL[2]}" NAME="auto_act11_val_2">min
@@ -6439,6 +6679,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT12_VAL[1]}" NAME="auto_act12_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT12_VAL[2]}" NAME="auto_act12_val_2">min
@@ -6552,6 +6797,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT13_VAL[1]}" NAME="auto_act13_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT13_VAL[2]}" NAME="auto_act13_val_2">min
@@ -6665,6 +6915,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT14_VAL[1]}" NAME="auto_act14_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT14_VAL[2]}" NAME="auto_act14_val_2">min
@@ -6778,6 +7033,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT15_VAL[1]}" NAME="auto_act15_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT15_VAL[2]}" NAME="auto_act15_val_2">min
@@ -6891,6 +7151,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT16_VAL[1]}" NAME="auto_act16_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT16_VAL[2]}" NAME="auto_act16_val_2">min
@@ -7004,6 +7269,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT17_VAL[1]}" NAME="auto_act17_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT17_VAL[2]}" NAME="auto_act17_val_2">min
@@ -7117,6 +7387,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT18_VAL[1]}" NAME="auto_act18_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT18_VAL[2]}" NAME="auto_act18_val_2">min
@@ -7230,6 +7505,11 @@ cat >>$PAGE1<<END
 <OPTION VALUE="SOUND_2">Sound_3
 <OPTION VALUE="SOUND_3">Sound_4
 <OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>&nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${vAUTO_ACT19_VAL[1]}" NAME="auto_act19_val_1">ms&nbsp;
 <INPUT TYPE="text" style="width:28px;text-align:center;" VALUE="${vAUTO_ACT19_VAL[2]}" NAME="auto_act19_val_2">min

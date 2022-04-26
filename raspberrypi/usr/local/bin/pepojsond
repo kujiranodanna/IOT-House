@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2022.3.29
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2022.4.26
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -401,6 +401,11 @@ END
   [ ! -z "${sound_file[2]}" ] && echo -e \"disp_sound_2\":\"${sound_file[2]}\", >>$tJSONRD || echo -e \"disp_sound_2\":\"none\", >>$tJSONRD
   [ ! -z "${sound_file[3]}" ] && echo -e \"disp_sound_3\":\"${sound_file[3]}\", >>$tJSONRD || echo -e \"disp_sound_3\":\"none\", >>$tJSONRD
   [ ! -z "${sound_file[4]}" ] && echo -e \"disp_sound_4\":\"${sound_file[4]}\", >>$tJSONRD || echo -e \"disp_sound_4\":\"none\", >>$tJSONRD
+  [ ! -z "${sound_file[5]}" ] && echo -e \"disp_sound_5\":\"${sound_file[5]}\", >>$tJSONRD || echo -e \"disp_sound_5\":\"none\", >>$tJSONRD
+  [ ! -z "${sound_file[6]}" ] && echo -e \"disp_sound_6\":\"${sound_file[6]}\", >>$tJSONRD || echo -e \"disp_sound_6\":\"none\", >>$tJSONRD
+  [ ! -z "${sound_file[7]}" ] && echo -e \"disp_sound_7\":\"${sound_file[7]}\", >>$tJSONRD || echo -e \"disp_sound_7\":\"none\", >>$tJSONRD
+  [ ! -z "${sound_file[8]}" ] && echo -e \"disp_sound_8\":\"${sound_file[8]}\", >>$tJSONRD || echo -e \"disp_sound_8\":\"none\", >>$tJSONRD
+  [ ! -z "${sound_file[9]}" ] && echo -e \"disp_sound_9\":\"${sound_file[9]}\", >>$tJSONRD || echo -e \"disp_sound_9\":\"none\", >>$tJSONRD
   CPU_TEMP=`cat /sys/class/thermal/thermal_zone0/temp|awk '{printf(substr($1,1,2)"."substr($1,3,1)"℃")}'`
   echo -e \"cpu_temp\":\"$CPU_TEMP\", >>$tJSONRD
   CPU_TEMP=`echo ${CPU_TEMP} | awk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
