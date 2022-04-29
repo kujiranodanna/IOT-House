@@ -1,6 +1,6 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.29
 * remote-hand_pi_gpio.js  ver0.21 2022.4.26
 */
 function blink(){
@@ -297,9 +297,10 @@ function disp_irdata(irdata,val){
 // IP address search of IRKit
 function irkit_search(){
   var irkit_ip = document.menu5.irkit_ip.value;
-  if (ipaddr_ck(irkit_ip) == -1){
+/*  if (ipaddr_ck(irkit_ip) == -1){
     irkit_ip = "none";
   }
+*/
   $.ajax({
     url: "irkit_search.cgi",
     dataType: "text",

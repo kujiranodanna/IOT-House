@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.27
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -15,32 +15,47 @@ LOCKCGI="$DIR/LCK..pi_int.cgi"
 LOCKCGIPID="$DIR/LCK..pi_int.cgi.pid"
 HOMEPAGE=./pi_int.html
 RMHOMEPAGE="NO"
-NOWIME=`date +%s`
+NOWTIME=`date +%s`
 JITTER=5
 ALIAS_DI=$DIR/.alias_di
 if [ -e $ALIAS_DI ];then
-  timeALIAS_DI=`date +%s -r $ALIAS_DI`
-  [ $(($NOWIME - $timeALIAS_DI)) -lt 10 ] && RMHOMEPAGE="YES"
+  timeSTAMP=`date +%s -r $ALIAS_DI`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 ALIAS_DO=$DIR/.alias_do
 if [ -e $ALIAS_DO ];then
-  timeALIAS_DO=`date +%s -r $ALIAS_DI`
-  [ $(($NOWIME - $timeALIAS_DO)) -lt $JITTER ] && RMHOMEPAGE="YES"
+  timeSTAMP=`date +%s -r $ALIAS_DO`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 DICHANG1=$DIR/.di_change1
 if [ -e $DICHANG1 ];then
-  timeDICHANG1=`date +%s -r $ALIAS_DI`
-  [ $(($NOWIME - $timeDICHANG1)) -lt $JITTER ] && RMHOMEPAGE="YES"
+  timeSTAMP=`date +%s -r $DICHANG1`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 DICHANG2=$DIR/.di_change2
 if [ -e $DICHANG1 ];then
-  timeDICHANG2=`date +%s -r $ALIAS_DI`
-  [ $(($NOWIME - $timeDICHANG2)) -lt $JITTER ] && RMHOMEPAGE="YES"
+  timeSTAMP=`date +%s -r $DICHANG2`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 AUTOACT_LIST=$DIR/.auto_act.list
 if [ -e $AUTOACT_LIST ];then
-  timeAUTOACT_LIST=`date +%s -r $ALIAS_DI`
-  [ $(($NOWIME - $timeAUTOACT_LIST)) -lt $JITTER ] && RMHOMEPAGE="YES"
+  timeSTAMP=`date +%s -r $AUTOACT_LIST`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
+STARTUP=$DIR/.startup.s.tmp
+if [ -e $STARTUP ];then
+  timeSTAMP=`date +%s -r $STARTUP`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
+SOUND=$DIR/.sound_file_name
+if [ -e $SOUND ];then
+  timeSTAMP=`date +%s -r $SOUND`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
+fi
+GMAIL=$DIR/.pepogmail4dio.conf
+if [ -e $GMAIL ];then
+  timeSTAMP=`date +%s -r $GMAIL`
+  [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 [ -e $ALIAS_DI ] && . $ALIAS_DI
 if [ $DI_TTY != "gpio" ];then
