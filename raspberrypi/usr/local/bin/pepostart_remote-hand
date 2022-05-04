@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.3.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.4.30
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 /etc/init.d/networking stop
 /etc/init.d/apache2 stop
@@ -276,9 +276,9 @@ ln -s /www/tmp/.bash_history_pi /home/pi/.bash_history
 rm -f /root/.bash_history
 touch /www/tmp/.bash_history_root
 ln -s /www/tmp/.bash_history_root /root/.bash_history
-rm -f /var/lib/logrotate/status
-touch /www/tmp/logrotate_status
-ln -s /www/tmp/logrotate_status /var/lib/logrotate/status
+rm -rf /var/lib/logrotate
+mkdir /www/tmp/logrotate
+ln -s /www/tmp/logrotate /var/lib/logrotate
 /etc/init.d/rsyslog restart
 /etc/init.d/networking restart
 /etc/init.d/ntp restart

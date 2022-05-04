@@ -1,15 +1,13 @@
 /var/log/syslog
 {
-#	rotate 7
-#	rotate 2
 	rotate 1
 	daily
 	missingok
 	notifempty
 	delaycompress
-	compress
-#pepo add size 1M
-	size 1M
+#	compress
+#pepo add size 10k
+	size 10k
 	postrotate
 		invoke-rc.d rsyslog rotate > /dev/null
 	endscript
@@ -28,15 +26,13 @@
 /var/log/debug
 /var/log/messages
 {
-#	rotate 4
 	rotate 1
-#	weekly
 	daily
 	missingok
 	notifempty
-	compress
-#pepo add size 1M
-	size 1M
+#	compress
+#pepo add size 10k
+	size 10k
 	delaycompress
 	sharedscripts
 	postrotate

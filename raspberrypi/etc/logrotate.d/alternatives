@@ -1,0 +1,10 @@
+/var/log/alternatives.log {
+	daily
+	rotate 1
+#	compress
+	size 10k
+	delaycompress
+	missingok
+	notifempty
+	create 644 root root
+}

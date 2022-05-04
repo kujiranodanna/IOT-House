@@ -14,7 +14,7 @@
         notifempty
         sharedscripts
         ifempty
-        size 1M
+        size 10k
         delaycompress
         postrotate
                 /etc/init.d/apache2 reload > /dev/null

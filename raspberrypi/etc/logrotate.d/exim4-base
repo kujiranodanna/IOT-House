@@ -2,10 +2,10 @@
 	daily
 	missingok
 #	rotate 10
-	rotate 2
+	rotate 1
 #pepo   add size 1M
-	size 1M
-	compress
+	size 10k
+#	compress
 	delaycompress
 	notifempty
 	create 640 Debian-exim adm
