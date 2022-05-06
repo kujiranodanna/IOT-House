@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2022.5.4
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2022.5.6
 # Scan GPIO IAQ & LED Display for rasberry pi zero W.
 # pepoiaq2led
 # Connect physical Pin 13 ->Red Led, Pin 14 ->Green Led
@@ -19,7 +19,12 @@ YELLOW="12"
 
 while true;do
   if [ -e $GPIORD ];then
-    . $GPIOWD
+    if [ -e $GPIOWD ];then
+      . $GPIOWD
+    else
+      DO[0]=0
+      DO[1]=0
+    fi
     while true;do
       IAQ=`cat $GPIORD|awk 'BEGIN{FS=","};{printf $6}'`
       [ ! -z "$IAQ" ] && break
@@ -42,7 +47,7 @@ while true;do
     tBLACK=$((${DO[1]} * 2))
     tBLACK=$((${DO[0]} + $tBLACK))
     tIAQ_COLOR=$(($tBLACK + $IAQ_COLOR))
-    $GPIOCMD $tIAQ_COLOR
+    $GPIOCMD $tIAQ_COLOR >/dev/null 2>&1
     $LSLEEP
     $GPIOCMD $tBLACK >/dev/null 2>&1
   fi
