@@ -4,6 +4,9 @@
 #	compress
 	size 10k
 	delaycompress
+	postrotate
+		[ -e /var/log/homebridge.log.1 ] && cp /var/log/homebridge.log.1 /var/log/homebridge.log
+	endscript
 	missingok
 	notifempty
 }
