@@ -1,8 +1,9 @@
 #!/bin/bash
-# # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2021.10.15
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2022.5.29
 # pepoalexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
+PROG=pepoalexado
 RETRYTIME=20
 RETRY=0
 WAIT=5000
@@ -12,19 +13,36 @@ REMOTE_DIR=remote-hand
 JSON_DATA=.di_read_data.json
 RM_JSON_DATA=$REMOTE_DIR/$JSON_DATA
 REMOTE_CGI=$REMOTE_DIR/ip_do_ajax.cgi
-WORK=$LOCAL_DIR/.pepoalexado
-tWORK=$LOCAL_DIR/.pepoalexado_tmp
+WORK=$LOCAL_DIR/.${PROG}
+tWORK=$LOCAL_DIR/.${PROG}.tmp
 ALIAS_DI=$LOCAL_DIR/.alias_di
 USERAGENT="Chrome/83.0.4103.116"
 GETSIZE="1024"
+LOCK=$LOCAL_DIR/.${PROG}.pid
+LOCKWAIT=30
+MSLEEP=100
 usage(){
   echo "usage $0 host user password [write->chno:0-17 [DO:0|1] [timer->1 to 300000ms]] or read->json_name" >/dev/stderr
   exit
 }
+
 if [ $# -lt 4 ];then
   usage
 fi
-prog=$0
+CT=0
+while [ -e $LOCK ];do
+  msleep $MSLEEP
+  CT=$(($CT + 1))
+  [ $CT -gt $LOCKWAIT ] && exit
+done
+echo -en $$ >$LOCK
+error(){
+  [ -e ${WORK} ] && rm ${WORK}
+  [ -e ${tWORK} ] && rm ${tWORK}
+  [ -e ${LOCK} ] && rm ${LOCK}
+  exit 0
+}
+trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
 RM_HOST=$1
 USER=$2
 PASSWORD=$3
@@ -55,7 +73,6 @@ if [ $ACT = "PUT" ];then
   fi
   data='ch='${ch}'&val='$val'&time='${time}
   curl -s --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --user-agent ${USERAGENT} --tlsv1 -k -u ${USER}:${PASSWORD} -X POST -d $data https://$RM_HOST:$PORT/$REMOTE_CGI >${WORK}
-  exit
 elif [ $ACT = GET ];then
   curl -s -m $RETRYTIME --retry $RETRY --tlsv1 -k -u ${USER}:${PASSWORD} https://$RM_HOST:$PORT/$RM_JSON_DATA >${WORK}
   if [ -e $WORK ];then
@@ -63,7 +80,7 @@ elif [ $ACT = GET ];then
     if [ $LEN -gt 2 ];then
       JSON_DATA=`cat $WORK | jq -r .${json_name}`
       echo -n $JSON_DATA
-      exit
     fi
   fi
 fi
+kill -HUP $$
