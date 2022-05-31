@@ -1,7 +1,7 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2021.12.11
-# pepo_iothoused ; For raspberry pi , and scripts to run the Remote DIO and Twelite .
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2022.5.31
+# pepoiothoused ; For raspberry pi , and scripts to run the Remote DIO and Twelite .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 ALEXSADO=/usr/local/bin/pepoalexado
 DIR=/www/remote-hand/tmp
@@ -9,7 +9,7 @@ LOOPTIME=60000
 RHOST=iot001.local
 USER=remote
 PASSWD=hand
-tALEXSADO=$DIR/.pepoalexado
+tALEXSADO=$DIR/.pepoiothoused.tmp
 TEMPROOM=$DIR/.iothouse_temp_room
 HUMROOM=$DIR/.iothouse_hum_room
 PRESROOM=$DIR/.iothouse_pres_room
@@ -59,45 +59,46 @@ trap error SIGQUIT SIGINT SIGTERM SIGHUP
 while true
 do
   RHOST=iot001.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
   if [ -e $tALEXSADO ];then
-    LEN=`cat $tALEXSADO |wc -l`
+    LEN=`cat $tALEXSADO | wc -c`
     if [ $LEN -gt 2 ];then
-      cat $tALEXSADO | jq -r .gpio_i2c.temp >$tTEMPROOM
+      cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMPROOM
       mv $tTEMPROOM $TEMPROOM
-      cat $tALEXSADO | jq -r .gpio_i2c.hum >$tHUMROOM
+      cat $tALEXSADO | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tHUMROOM
       mv $tHUMROOM $HUMROOM
-      cat $tALEXSADO | jq -r .gpio_i2c.pres | awk '{gsub(/[^0-9]+/,"",$0);printf $0}' >$tPRESROOM
+      cat $tALEXSADO | jq -r .pres | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tPRESROOM
       mv $tPRESROOM $PRESROOM
-      cat $tALEXSADO | jq -r .gpio_i2c.gas | awk '{gsub(/[^0-9]+/,"",$0);printf $0}' >$tGASROOM
+      cat $tALEXSADO | jq -r .gas | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tGASROOM
       mv $tGASROOM $GASROOM
-      cat $tALEXSADO | jq -r .gpio_i2c.iaq | awk '{gsub(/[^0-9]+/,"",$0);printf $0}' >$tAIRROOM
+      cat $tALEXSADO | jq -r .iaq | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tAIRROOM
       mv $tAIRROOM $AIRROOM
-      cat $tALEXSADO | jq -r .i2ctemp.temp >$tTEMPOUT
+      $ALEXSADO $RHOST $USER $PASSWD i2ctemp > $tALEXSADO
+      cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMPOUT
       mv $tTEMPOUT $TEMPOUT
-      cat $tALEXSADO | jq -r .i2ctemp.hum >$tHUMOUT
+      cat $tALEXSADO | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tHUMOUT
       mv $tHUMOUT $HUMOUT
     fi
   fi
   RHOST=iot01f.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
-  LEN=`cat $tALEXSADO |wc -l`
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
+  LEN=`cat $tALEXSADO | wc -c`
   if [ $LEN -gt 2 ];then
-    cat $tALEXSADO | jq -r .gpio_i2c.temp >$tTEMP1FWASHITU
+    cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP1FWASHITU
     mv $tTEMP1FWASHITU $TEMP1FWASHITU
   fi
   RHOST=iot02f.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
-  LEN=`cat $tALEXSADO |wc -l`
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
+  LEN=`cat $tALEXSADO | wc -c`
   if [ $LEN -gt 2 ];then
-    cat $tALEXSADO | jq -r .gpio_i2c.temp >$tTEMP2FYOUSHITU
+    cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP2FYOUSHITU
     mv $tTEMP2FYOUSHITU $TEMP2FYOUSHITU
   fi
   RHOST=iot04f.local
-  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > /dev/null 2>&1
-  LEN=`cat $tALEXSADO |wc -l`
+  $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
+  LEN=`cat $tALEXSADO | wc -c`
   if [ $LEN -gt 2 ];then
-    cat $tALEXSADO | jq -r .i2ctemp.temp >$tTEMP2FWASHITU
+    cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP2FWASHITU
     mv $tTEMP2FWASHITU $TEMP2FWASHITU
   fi
   msleep $LOOPTIME
