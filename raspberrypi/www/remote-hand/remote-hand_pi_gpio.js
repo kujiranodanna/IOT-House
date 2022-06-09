@@ -1,7 +1,7 @@
-/*
+/*!
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.5.4
-* remote-hand_pi_gpio.js  ver0.21 2022.5.4
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.5
+* remote-hand_pi_gpio.js  ver0.21 2022.6.5
 */
 function blink(){
   if (!document.all){ return; }
@@ -234,7 +234,7 @@ function irkit_reg(ir_num,ir_id){
       $("#irkit_ip").text("Server-Success!");
     },
     error: function(){
-      $("#irkit_ip").text("Server-Timout!");
+      $("#irkit_ip").text("Server-Timeout!");
     }
   });
 }
@@ -274,7 +274,7 @@ function irkit_post(do_ch,do_time){
       $("#irkit_ip").text("Server-Success!");
     },
     error: function(){
-      $("#irkit_ip").text("Server-Timout!");
+      $("#irkit_ip").text("Server-Timeout!");
     }
   });
 }
@@ -313,7 +313,7 @@ function irkit_search(){
       $("#irkit_ip").text("Server-Success!");
     },
     error: function(){
-      $("#irkit_ip").text("Server-Timout!");
+      $("#irkit_ip").text("Server-Timeout!");
    }
   });
 }
@@ -401,7 +401,7 @@ function start_photo(dev){
         });
       },
       error: function(){
-        $("#disp_menu5").text("Server-Timout Live Photo!");
+        $("#disp_menu5").text("Server-Timeout Live Photo!");
         return false;
       }
     });
@@ -417,7 +417,7 @@ function start_photo(dev){
       $("#disp_menu5").text("Server-Success!");
     },
     error: function(){
-      $("#disp_menu5").text("Server-Timout Live Photo!");
+      $("#disp_menu5").text("Server-Timeout Live Photo!");
       return false;
     }
   });
@@ -502,7 +502,7 @@ function start_video(dev){
         });
       },
       error: function(){
-        $("#disp_menu5").text("Server-Timout Live Photo!");
+        $("#disp_menu5").text("Server-Timeout Live Photo!");
         return false;
       }
     });
@@ -518,7 +518,7 @@ function start_video(dev){
       $("#disp_menu5").text("Server-Success!");
     },
     error: function(){
-      $("#disp_menu5").text("Server-Timout Live Photo!");
+      $("#disp_menu5").text("Server-Timeout Live Photo!");
       return false;
     }
   });
@@ -551,7 +551,7 @@ function streaming_start_stop(dev,start_stop){
       });
     },
     error: function(){
-      $("#disp_menu5").text("Server-Timout " + start_stop + "streming");
+      $("#disp_menu5").text("Server-Timeout " + start_stop + "streming");
       return false;
     }
   });
@@ -572,7 +572,7 @@ function send_do(do_ch,do_val,do_time){
         $("#disp_menu5").text("Digtal Out Success!");
       },
       error: function(do_sel){
-        $("#disp_menu5").text("Server-Timout!");
+        $("#disp_menu5").text("Server-Timeout!");
        }
     });
   }
@@ -680,7 +680,7 @@ function s_phone_update_do(tdo_id){
         send_do(tdo_ch,tdo_val,tdo_time);
       },
       error: function(do_id_val){
-        $("#disp_menu5").text("Server-Timout!");
+        $("#disp_menu5").text("Server-Timeout!");
         return;
        }
     });
@@ -700,7 +700,7 @@ function sendmail_pic(pic_val,mail_address){
       $("#disp_menu5").text("Mail send Success!");
     },
     error: function(do_sel){
-      $("#disp_menu5").text("Server-Timout!");
+      $("#disp_menu5").text("Server-Timeout!");
     }
   });
 }
@@ -2868,7 +2868,7 @@ function update_di(item){
         }
        },
        error: function(di2json){
-          $("#disp_menu5").text("Server-Timout");
+          $("#disp_menu5").text("Server-Timeout");
        }
     });
   });

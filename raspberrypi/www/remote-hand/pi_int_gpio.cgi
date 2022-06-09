@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.5.6
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.9
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2022.5.6"
+DATE="2022.6.9"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -17,7 +17,8 @@ else
   DIST_NAME="IOT-House_pi"
 fi
 echo -en '
-<HTML>
+<!DOCTYPE HTML>
+<HTML LANG="ja">
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
@@ -135,9 +136,9 @@ done
 SMART_PHONE=`echo "$HTTP_USER_AGENT" |awk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
 if [ $SMART_PHONE = "YES" ];then
   cat >$PAGE1<<END
-<?xml version="1.0" encoding="UTF-8"?>
-<HTML>
-<HEAD>
+
+<!DOCTYPE HTML>
+<HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META name="Auther" content="yamauchi.isamu">
 <META name="Copyright" content="pepolinux">
@@ -276,9 +277,9 @@ END
   PAGE1=$PAGE3
   PAGE2=$PAGE4
   cat >$PAGE5<<END
-<?xml version="1.0" encoding="UTF-8"?>
-<HTML>
-<HEAD>
+
+<!DOCTYPE HTML>
+<HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META name="Auther" content="yamauchi.isamu">
 <META name="Copyright" content="pepolinux">
@@ -321,9 +322,9 @@ fi
 
 # Not Smart Phone
 cat >$PAGE1<<END
-<?xml version="1.0" encoding="UTF-8"?>
-<HTML>
-<HEAD>
+
+<!DOCTYPE HTML>
+<HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META name="Auther" content="yamauchi.isamu">
 <META name="Copyright" content="pepolinux">
@@ -3602,7 +3603,7 @@ cat >>$PAGE1<<END
 <BR>
 <FORM NAME="menu11" id="menu11_form" ACTION="gmail_set.cgi" METHOD="post" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
 Gmail User<INPUT TYPE="text" style="width:80px;text-align:right;" VALUE="$vGMAILUSER" NAME="gmailuser">@gmail.com<BR>
-Gmail Password<INPUT TYPE="password" style="width:80px;text-align:left;" VALUE="$vGMAILPASSWORD" NAME="gmailpassword"><BR>
+Gmail App Password<INPUT TYPE="password" style="width:80px;text-align:left;" VALUE="$vGMAILPASSWORD" NAME="gmailpassword"><BR>
 Mail Address<INPUT TYPE="text" style="width:180px;text-align:left;" VALUE="$vPERMITMAIL" NAME="permitmail">&nbsp;Allow Email address<BR>
 Key Word<INPUT TYPE="text" style="width:80px;text-align:left;" VALUE="$vKEYWORD" NAME="keyword">&nbsp;Subject(keyword)<BR>
 Mail Check <INPUT TYPE="text" style="width:20px;text-align:left;" VALUE="$vLOOPTIME" NAME="looptime">&nbsp;New Email check interval(Sec)<BR>

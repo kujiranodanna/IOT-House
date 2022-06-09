@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.6
 # di_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin
@@ -10,13 +10,12 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2022.4.26">
+<META NAME="Build" content="2022.6.6">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital -in)</TITLE>
 <script type="text/javascript">
 function blink() {
-//  if (!document.all) { return; }
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);
     if (obj.className == "blink") {
@@ -172,46 +171,61 @@ di_wgetmail() {
   count=$DIR/."$ct".count
   mail_to="$2"
   msg="$3"+"$4"
-  IMAGE="$5"
+  act="$5"
   msg_box="$6"
-  cat > $file <<EOF
+  FFMPEGCTL=/usr/local/bin/pepomp4ctl
+  cat >$file<<EOF
 #!/bin/bash
-msleep 1000
+WGETMAIL=/usr/local/bin/peposendmail
+if [ $act = "mail" ];then
+  WGETMAIL=/usr/local/bin/peposendmail
+  SUBJECT=$msg
+elif [ $act = "mail_message" ];then
+  WGETMAIL=/usr/local/bin/pepomsgsend
+  SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+elif [ $act = "web_camera_still" ];then
+  IMAGE=remote_hand.jpg
+  $FFMPEGCTL /dev/video0 \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+elif [ $act = "web_camera_video" ];then
+  IMAGE=remote_hand.mp4
+  $FFMPEGCTL /dev/video0 \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+elif [ $act = "mod_camera_still" ];then
+  IMAGE=remote_hand.jpg
+  $FFMPEGCTL /dev/vchiq \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+elif [ $act = "mod_camera_video" ];then
+  IMAGE=remote_hand.mp4
+  \$FFMPEGCTL /dev/vchiq \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+fi
 if [ -e $count ];then
   WTMP=$DIR/.dio_low_high.tmp.\$$
-# .dio0high.count --> dio0high
   DIO=$count
   echo Count=\"\`cat \$DIO |awk '/^#[0-9]+/{N=\$1;gsub(/\#/,"",N);print N }'\`\" >\$WTMP
   echo Reset=\"\`cat \$DIO |grep -E "Reset " |awk '{gsub(/Reset /,"",\$0);print \$0}'\`\" >>\$WTMP
   echo Event=\"\`cat \$DIO |grep -E "Update "|awk '{gsub(/Update /,"",\$0);split(\$0,yy," ");split(yy[1],mm,"/");m=mm[2]"/"mm[3];print m,yy[2]}'\`\" >>\$WTMP
-  SUBJECT="$msg"
   MESSAGE=\`cat \$WTMP|awk '{gsub(/ /,"+",\$0);printf \$0"+++"}'\`
   rm  \$WTMP
   unset WTMP
-  if [ $IMAGE = "mail" ];then
-    WGETMAIL=/usr/local/bin/peposendmail
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "mail_message" ];then
-    WGETMAIL=/usr/local/bin/pepomsgsend
-    MSG_BOX=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
-    \$WGETMAIL "$mail_to" \$MSG_BOX \$MESSAGE
-  elif [ $IMAGE = "web_camera_still" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4jpg video0"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "web_camera_video" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4pic video0"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "mod_camera_still" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4jpg vchiq"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "mod_camera_video" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4pic vchiq"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  fi
+  \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE \$IMAGE
 fi
 EOF
   chmod +x $file

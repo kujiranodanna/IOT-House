@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.6
 # di_control_pi1.cgi
 
 PATH=$PATH:/usr/local/bin
@@ -10,13 +10,12 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2022.4.26">
+<META NAME="Build" content="2022.6.6">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital-in)</TITLE>
 <script type="text/javascript">
 function blink() {
-//  if (!document.all) { return; }
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);
     if (obj.className == "blink") {
@@ -106,6 +105,7 @@ irkit_exec() {
   time=$3
 cat > $file <<EOF
 #!/bin/bash
+$IRKITPOST $ir_num $timer
 if [ -e $count ];then
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
@@ -117,7 +117,6 @@ if [ -e $count ];then
   mv ${log}.tmp $log
   chown www-data.www-data $count $log
 fi
-$IRKITPOST $ir_num $timer
 EOF
   chmod +x $file
 }
@@ -137,6 +136,12 @@ tocos_high_low() {
   cmd=/usr/local/bin/pepotocoshelp
   cat > $file <<EOF
 #!/bin/bash
+high_low=$high_low
+if [ $invert != "none" ];then
+  [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
+  [ \${do[$do_ch]} -eq 0 ] && high_low="1" || high_low="0"
+fi
+$cmd $ch \$high_low $time
 if [ -e $count ];then
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
@@ -148,12 +153,6 @@ if [ -e $count ];then
   mv ${log}.tmp $log
   chown www-data.www-data $count $log
 fi
-high_low=$high_low
-if [ $invert != "none" ];then
-  [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
-  [ \${do[$do_ch]} -eq 0 ] && high_low="1" || high_low="0"
-fi
-$cmd $ch \$high_low $time
 EOF
   chmod +x $file
 }
@@ -172,6 +171,12 @@ do_high_low() {
   cmd=/usr/local/bin/pepodioctl
   cat > $file <<EOF
 #!/bin/bash
+high_low=$high_low
+if [ $invert != "none" ];then
+  [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
+  [ \${do[$ch]} -eq 0 ] && high_low="1" || high_low="0"
+fi
+$cmd $ch \$high_low $time
 if [ -e $count ];then
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
@@ -183,12 +188,6 @@ if [ -e $count ];then
   mv ${log}.tmp $log
   chown www-data.www-data $count $log
 fi
-high_low=$high_low
-if [ $invert != "none" ];then
-  [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
-  [ \${do[$ch]} -eq 0 ] && high_low="1" || high_low="0"
-fi
-$cmd $ch \$high_low $time
 EOF
   chmod +x $file
 }
@@ -222,17 +221,58 @@ EOF
 
 di_wgetmail() {
 # di_mail file_name mail_address message1 message2 message3 message4
-  local file mail msg log msg_box
+  local file mail msg log act msg_box
   di_count $1
   file=$DIR/"$1"
   count=$DIR/."$1".count
   log=$DIR/."$1".log
   mail_to="$2"
   msg="$3"+"$4"
-  IMAGE="$5"
+  act="$5"
   msg_box="$6"
+  FFMPEGCTL=/usr/local/bin/pepomp4ctl
   cat >$file<<EOF
 #!/bin/bash
+WGETMAIL=/usr/local/bin/peposendmail
+if [ $act = "mail" ];then
+  WGETMAIL=/usr/local/bin/peposendmail
+  SUBJECT=$msg
+elif [ $act = "mail_message" ];then
+  WGETMAIL=/usr/local/bin/pepomsgsend
+  SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+elif [ $act = "web_camera_still" ];then
+  IMAGE=remote_hand.jpg
+  $FFMPEGCTL /dev/video0 \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+elif [ $act = "web_camera_video" ];then
+  IMAGE=remote_hand.mp4
+  $FFMPEGCTL /dev/video0 \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+elif [ $act = "mod_camera_still" ];then
+  IMAGE=remote_hand.jpg
+  $FFMPEGCTL /dev/vchiq \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+elif [ $act = "mod_camera_video" ];then
+  IMAGE=remote_hand.mp4
+  \$FFMPEGCTL /dev/vchiq \$IMAGE \$$
+  if [ ! -z "$msg_box" ];then
+    SUBJECT=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
+  else
+    SUBJECT=$msg
+  fi
+fi
 if [ -e $count ];then
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
@@ -249,34 +289,10 @@ if [ -e $count ];then
   echo Count=\"\`cat \$DIO |awk '/^#[0-9]+/{N=\$1;gsub(/\#/,"",N);print N }'\`\" >\$WTMP
   echo Reset=\"\`cat \$DIO |grep -E "Reset " |awk '{gsub(/Reset /,"",\$0);print \$0}'\`\" >>\$WTMP
   echo Event=\"\`cat \$DIO |grep -E "Update "|awk '{gsub(/Update /,"",\$0);split(\$0,yy," ");split(yy[1],mm,"/");m=mm[2]"/"mm[3];print m,yy[2]}'\`\" >>\$WTMP
-  SUBJECT="$msg"
   MESSAGE=\`cat \$WTMP|awk '{gsub(/ /,"+",\$0);printf \$0"+++"}'\`
   rm \$WTMP
   unset WTMP
-  if [ $IMAGE = "mail" ];then
-    WGETMAIL=/usr/local/bin/peposendmail
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "mail_message" ];then
-    WGETMAIL=/usr/local/bin/pepomsgsend
-    MSG_BOX=`echo -en $msg_box |awk '{gsub(/ /,"+",$0);printf $0}'`
-    \$WGETMAIL "$mail_to" \$MSG_BOX \$MESSAGE
-  elif [ $IMAGE = "web_camera_still" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4jpg video0"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "web_camera_video" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4pic video0"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "mod_camera_still" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4jpg vchiq"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  elif [ $IMAGE = "mod_camera_video" ];then
-    WGETMAIL="/usr/local/bin/pepogmail4pic vchiq"
-    SUBJECT=\${SUBJECT}"+image_file"
-    \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE
-  fi
+  \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE \$IMAGE
 fi
 EOF
   chmod +x $file
@@ -328,6 +344,7 @@ di_sound(){
   cmd=/usr/local/bin/peposound
   cat > $file <<EOF
 #!/bin/bash
+$cmd $ch $time
 if [ -e $count ];then
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
@@ -339,7 +356,6 @@ if [ -e $count ];then
   mv ${log}.tmp $log
   chown www-data.www-data $count $log
 fi
-$cmd $ch $time
 EOF
   chmod +x $file
 }
@@ -384,6 +400,8 @@ while [ $n -lt 22 ];do
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$DICH"
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$sDICH"
       elif [ "${di_act[$n]}" = "mail" -o "${di_act[$n]}" = "web_camera_still" -o "${di_act[$n]}" = "web_camera_video" -o "${di_act[$n]}" = "mod_camera_still" -o "${di_act[$n]}" = "mod_camera_video" ];then
+        echo "di_mail_message[$n]=""${di_mail_message[$n]}" >>"$DICH"
+        echo "di_mail_message[$n]=""${di_mail_message[$n]}" >>"$sDICH"
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$DICH"
         echo "di_mail[$n]="\"${di_mail[$n]}\" >>"$sDICH"
       else
@@ -633,7 +651,6 @@ if [ -e "$sDICH" ];then
         "mail" | "mail_message" | "web_camera_still" |  "web_camera_video" | "mod_camera_still" | "mod_camera_video")
           don_time[$n]=""
           di_tel[$n]=""
-          [ "${di_act[$n]}" != "mail_message" ] && di_mail_message[$n]=""
           case "$n" in
             0 | 11) m=0 ;;
             1 | 12) m=1 ;;
@@ -663,13 +680,13 @@ if [ -e "$sDICH" ];then
           elif [ ${di_act[$n]} = "mail_message" ];then
             $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "mail_message" "${di_mail_message[$n]}"
           elif [ ${di_act[$n]} = "web_camera_still" ];then
-            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "web_camera_still"
+            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "web_camera_still" "${di_mail_message[$n]}"
           elif [ ${di_act[$n]} = "web_camera_video" ];then
-            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "web_camera_video"
+            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "web_camera_video" "${di_mail_message[$n]}"
           elif [ ${di_act[$n]} = "mod_camera_still" ];then
-            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "mod_camera_still"
+            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "mod_camera_still" "${di_mail_message[$n]}"
           elif [ ${di_act[$n]} = "mod_camera_video" ];then
-            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "mod_camera_video"
+            $MAIL "$FIL" "${di_mail[$n]}" "$DI_NAME" "$FIL" "mod_camera_video" "${di_mail_message[$n]}"
           fi
          ;;
         "SOUND_0")

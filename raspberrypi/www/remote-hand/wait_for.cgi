@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.9
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -33,7 +33,7 @@ if [ -e $DICHANG1 ];then
   [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 DICHANG2=$DIR/.di_change2
-if [ -e $DICHANG1 ];then
+if [ -e $DICHANG2 ];then
   timeSTAMP=`date +%s -r $DICHANG2`
   [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
