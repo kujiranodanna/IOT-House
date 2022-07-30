@@ -1,7 +1,7 @@
 /*!
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.5
-* remote-hand_pi_gpio.js  ver0.21 2022.6.5
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.7.28
+* remote-hand_pi_gpio.js  ver0.21 2022.7.28
 */
 function blink(){
   if (!document.all){ return; }
@@ -3011,6 +3011,7 @@ function user_ck(user,pass){
     alert("User name or password is blank");
     return -1;
   }
+  if (pass == "*") return -1;
   if(user.match(/[^0-9A-Za-z]+/)){
     alert("Please be Input only with the user name is alphanumeric");
     return -1;
