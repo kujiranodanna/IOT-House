@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2020.6.29
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2022.8.9
 
 echo -en '
 <HTML>
@@ -43,7 +43,7 @@ DIR=/www/remote-hand/tmp
 CMD=$DIR/ping_watch_don.pepocmd
 PING_DON=$DIR/.ping_don_list
 PING_TMP=$DIR/.ping_don_tmp
-PING_WATCH=/pepolinux/ping_watch_don
+PING_WATCH=/www/pepolinux/ping_watch_don
 PING_CRON=$DIR/.ping_watch.cron
 tPING_CRON=$DIR/.ping_watch.cron.tmp
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.8.9
 
 echo -en '
 <HTML>
@@ -42,7 +42,7 @@ function blink() {
 CMD=/www/remote-hand/tmp/ping_watch_phone.pepocmd
 PING_TEL=/www/remote-hand/tmp/.ping_phone_list
 PING_TMP=/www/remote-hand/tmp/.ping_phone_list.tmp
-PING_WATCH=/pepolinux/phone/ping_watch_phone
+PING_WATCH=/www/pepolinux/phone/ping_watch_phone
 PING_CRON=/www/remote-hand/tmp/.ping_watch.cron
 tPING_CRON=/www/remote-hand/tmp/.ping_watch.cron.tmp
 
