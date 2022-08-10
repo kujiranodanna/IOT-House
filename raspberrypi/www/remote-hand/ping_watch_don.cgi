@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2022.8.9
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2022.8.10
 
 echo -en '
 <HTML>
@@ -57,8 +57,8 @@ for n in 0 1 2 3 ; do
         cat "$PING_DON" | grep -F -v "${ip[$n]}" > "$PING_TMP"
         mv "$PING_TMP" "$PING_DON"
       fi
-      [ -z "${ping_don_time[$n]}" ] && ping_don_wtime[$n]="*" || ping_don_wtime[$n]=ping_don_time[$n]
-      echo "$PING_WATCH" "${ip[$n]}" "${ping_don[$n]}" "${ping_don_wtime[$n]}" "${interval[0]}" >> "$PING_DON"
+      [ -z "${ping_don_time[$n]}" ] && ping_don_time[$n]="*" || ping_don_time[$n]=${ping_don_time[$n]}
+      echo "$PING_WATCH" "${ip[$n]}" "${ping_don[$n]}" "${ping_don_time[$n]}" "${interval[0]}" >> "$PING_DON"
       if [ -e "$PING_CRON" ];then
         cat "$PING_CRON" | grep -F -v "$PING_WATCH" > "$tPING_CRON"
         cat "$PING_CRON" | grep -F "$PING_WATCH" | grep -F -v "${ip[$n]}" > "$PING_TMP"
