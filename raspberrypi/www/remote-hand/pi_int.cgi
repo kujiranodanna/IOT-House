@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.8.9
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.8.10
 # pi_int.cgi ;piface main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2022.8.9"
+DATE="2022.8.10"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -273,7 +273,7 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Temp&Hum Disp" onclick="location.href='./temp_hum.html'";>
 <BR>
 <BR>
-<INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./wait_for.cgi'">&nbsp;
+<INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./setup.html'";>
@@ -9574,7 +9574,7 @@ web password
 </DD>
 </DL>
 
-<INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./wait_for.cgi'">&nbsp;
+<INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>
 <TR><TD><FONT SIZE="-1">&copy;2022-2025 pepolinux.com&nbsp;
