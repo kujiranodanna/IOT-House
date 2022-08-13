@@ -37,6 +37,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <setjmp.h>
 #include <sys/wait.h>
 #include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
