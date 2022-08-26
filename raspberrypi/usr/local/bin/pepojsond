@@ -1,10 +1,11 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2022.4.26
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2022.8.26
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
+JTALK=/usr/local/bin/pepojtalk
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
 ALIAS_DI=$DIR/.alias_di
@@ -14,6 +15,8 @@ ALIAS_VDO=$DIR/.alias_vdo
 DIORD=$DIR/.di_read_data
 DIOWD=$DIR/.do_write_data
 GPIORD=$DIR/.gpiodi_read_data
+DIRDIP=$DIR/.di_read_data_ip
+DOWDIP=$DIR/.do_write_data_ip
 VOICEREQ=$DIR/.voice_req
 tVOICEREQ=$DIR/.voice_req.tmp
 LIVEIMG=$DIR/remote-hand.jpg
@@ -334,9 +337,10 @@ END
     fi
   done
 #i2c Temperature,Humidity & CPU Temperature & GPIO Temperature convert to digital set
-  if [ -e $GPIORD ];then
+  if [ -e $GPIORD -o -e $DIRDIP ];then
     unset gpio_i2c
-    . $GPIORD
+    [ -e $DIRDIP ] && . $DIRDIP
+    [ -e $GPIORD ] && . $GPIORD
     if [ $gpio_i2c != "-1" ];then
       gpio_i2c=`echo -en $gpio_i2c | awk '{gsub(","," ",$0);printf $0}'`
       echo -e $gpio_i2c| awk '{J=split($0,I," ");if(J>3){printf("\"gpio_i2c\":{\"date\":\"%s\",\"temp\":\"%s℃\",\"hum\":\"%s％\",\"pres\":\"%shPa\",\"gas\":\"%sΩ\",\"iaq\":\"%s\"},\n",I[1],I[2],I[3],I[4],I[5],I[6])}else{printf("\"gpio_i2c\":{\"date\":\"%s\",\"temp\":\"%s℃\",\"hum\":\"%s％\",\"pres\":\"%snone\",\"gas\":\"%snone\",\"iaq\":\"%snone\"},\n",I[1],I[2],I[3],I[4],I[5],I[6])}}' >>$tJSONRD
@@ -434,6 +438,9 @@ END
     rm ${tVOICEREQ}
   fi
   echo -e \"voice_req\":\"${voice_req}\", >>$tJSONRD
+  if [ voice_req != "none" -a -e $JTALK ];then
+    $JTALK
+  fi
   HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
   echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\", >>$tJSONRD
   liveimg="none"
