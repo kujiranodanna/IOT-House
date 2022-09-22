@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , update 2022.8.10
+# Copyright (c) 2021-2027 Isamu.Yamauchi , update 2022.9.20
 PATH=$PATH:/usr/local/bin
 # for raspberry pi
 DIR=/www/remote-hand/tmp
@@ -44,6 +44,6 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Setting server initial data</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2023 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2023 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'

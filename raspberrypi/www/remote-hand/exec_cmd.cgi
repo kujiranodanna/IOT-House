@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2021.4.16
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.22
 
 echo -en '
 <HTML>
@@ -9,7 +9,7 @@ echo -en '
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
 <META http-equiv="Refresh" content="60;URL=/remote-hand/wait_for.cgi">
-<META NAME="build" content="2021.4.16">
+<META NAME="build" content="2022.9.22">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>command of execution</TITLE>
 <script type="text/javascript">
@@ -36,7 +36,7 @@ function blink() {
 </TABLE>
 <BR>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 CMD=/www/remote-hand/tmp/exec_cmd.pepocmd
@@ -51,6 +51,7 @@ rm /etc/network/interfaces ;touch /etc/network/interfaces
 rm /etc/wpa_supplicant/wpa_supplicant.conf ;touch /etc/wpa_supplicant/wpa_supplicant.conf
 rm /etc/exim4/passwd.client
 rm /boot/iothouse_config.txt
+rm /etc/rc.pepo/linenotify
 echo -en >/home/pi/.bash_history
 echo -en >/root/.bash_history
 hostnamectl set-hostname iot000
