@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.9
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.26
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -79,7 +79,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2019.12.15">
+<META NAME="Build" content="2022.9.23">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Remote-hand wait for process</TITLE>
 <script type="text/javascript">
@@ -201,6 +201,7 @@ if [ -e \$STARTUP ];then
   . \$tSTARTUP
   echo "vWEBUSER=\$SET_WEBUSER" >> \$tSTARTUP
   echo "vWEBPASSWORD=\$SET_WEBPASSWORD" >> \$tSTARTUP
+  echo "vLINENOTIFY=\$SET_LINENOTIFY" >> \$tSTARTUP
   chown www-data.www-data \$tSTARTUP
 fi
 EOF

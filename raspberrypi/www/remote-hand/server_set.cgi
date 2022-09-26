@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.22
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.26
 
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2022.9.22">
+<META NAME="build" content="2022.9.26">
 <META http-equiv="Refresh" content="10;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Server initial settings</TITLE>
@@ -54,9 +54,7 @@ cat>$tSTARTUP<<EOF
 SET_WEBUSER="${SET_WEBUSER}"
 SET_WEBPASSWORD="${SET_WEBPASSWORD}"
 [ ! -z "${SET_WEBUSER}" ] && [ ! -z "${SET_WEBPASSWORD}" ] && htpasswd -bc /etc/rc.pepo/password ${SET_WEBUSER} ${SET_WEBPASSWORD} >/dev/null 2>&1
-if [ ! -z "${SET_LINENOTIFY}" ];then
-  SET_LINENOTIFY="*"
-fi
+SET_LINENOTIFY=\`[ -e $LINENOTIFY_FILE ] && echo -en "OK" || echo -en ""\`
 EOF
 chmod +x $tSTARTUP
 cat>$CMD<<END
@@ -66,6 +64,8 @@ if [ ! -z "${SET_LINENOTIFY}" ];then
 else
   rm ${LINENOTIFY_FILE}
 fi
+. ${tSTARTUP}
+mv ${tSTARTUP} ${STARTUP}
 cd /usr/bin
 DIO_SH=\`ls |grep -E 'dio(0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22)[low|high]+\$'\`
 if [ \`echo \${DIO_SH} | wc -w\` != 0 ];then
@@ -73,7 +73,7 @@ if [ \`echo \${DIO_SH} | wc -w\` != 0 ];then
   mv ${DIR}/dio_sh.tar.gz /www/remote-hand/
 fi
 msleep 1000
-tar cfz /usr/src/pepolinux/back_up.tar.gz ./
-. ${tSTARTUP}
-mv ${tSTARTUP} ${STARTUP}
+cd /www/remote-hand/
+tar cfz /www/tmp/back_up.tar.gz ./
+mv /www/tmp/back_up.tar.gz /usr/src/pepolinux/
 END
