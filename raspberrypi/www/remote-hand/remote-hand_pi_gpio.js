@@ -1,7 +1,7 @@
 /*!
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.4
-* remote-hand_pi_gpio.js  ver0.21 2022.9.4
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.28
+* remote-hand_pi_gpio.js  ver0.21 2022.9.28
 */
 function blink(){
   if (!document.all){ return; }
@@ -1460,26 +1460,31 @@ function voice_do(do_sel,results_voice){
         tdo_id = di2json.gpio_i2c.gas;
       }
       if (i == 78){
-        tdo_ch = array_voice_alias[78];
-        tdo_id = di2json.gpio_i2c.iaq;
-        if (tdo_id != "none"){
-          var iaq_val = tdo_id;
+        var tdo_temp = di2json.gpio_i2c.temp;
+        var tdo_hum = di2json.gpio_i2c.hum;
+        var tdo_pres = di2json.gpio_i2c.pres;
+        var tdo_iaq = di2json.gpio_i2c.iaq;
+        if (tdo_iaq != "none"){
+          var iaq_val = tdo_iaq;
           var iaq_color = "";
           if ( iaq_val <= 50) {
-            iaq_color = "good";
+            iaq_color = "良い";
           } else if ( iaq_val <= 100) {
-            iaq_color = "average";
+            iaq_color = "普通";
           } else if ( iaq_val <= 150) {
-            iaq_color = "littlebad";
+            iaq_color = "少し悪い";
           } else if ( iaq_val <= 200) {
-             iaq_color = "bad";
+             iaq_color = "かなり悪い";
           } else if ( iaq_val <= 300) {
-            iaq_color = "worse";
+            iaq_color = "かなり悪い";
           } else if ( iaq_val > 300) {
-            iaq_color = "verybad";
+            iaq_color = "大変悪い";
           }
-          tdo_id = tdo_id + "で" + iaq_color;
+          tdo_id = tdo_iaq + "で" + iaq_color + "です";
         }
+         voice_tmp = "部屋の温度," + tdo_temp + ",湿度," + tdo_hum + ",気圧," +　tdo_pres + ",空気," + tdo_id;
+　　      speak_main(voice_tmp,voice_lang);
+        return;
       }
       if (i == 79 || i == 80){
          voice_tmp = "どう致しまして";

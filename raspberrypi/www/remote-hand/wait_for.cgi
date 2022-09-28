@@ -79,7 +79,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2022.9.23">
+<META NAME="Build" content="2022.9.26">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Remote-hand wait for process</TITLE>
 <script type="text/javascript">
