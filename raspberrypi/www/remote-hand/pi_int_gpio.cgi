@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.29
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2022.9.28"
+DATE="2022.9.29"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -148,7 +148,7 @@ if [ $SMART_PHONE = "YES" ];then
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
-<script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
 <TITLE>$DIST_NAME Smart Phone Control</TITLE>
 </HEAD>
 <BODY BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
@@ -289,7 +289,7 @@ END
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
-<script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
 <TITLE>IOT-House Temperature&Humidity</TITLE>
 </HEAD>
 <BODY BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
@@ -335,7 +335,7 @@ cat >$PAGE1<<END
 <link rel="stylesheet" href="pepo_ui.tabs.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
 <script src="jquery-ui.min.js" type="text/javascript"></script>
-<script src="remote-hand_pi_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
 <script type="text/javascript">
   \$(function() {
     \$("#tabs").tabs();

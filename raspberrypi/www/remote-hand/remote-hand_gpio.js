@@ -1,7 +1,7 @@
-/*!
+/*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.28
-* remote-hand_pi_gpio.js  ver0.21 2022.9.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.29
+* remote-hand_pi_gpio.js  ver0.21 2022.9.29
 */
 function blink(){
   if (!document.all){ return; }
@@ -1460,6 +1460,7 @@ function voice_do(do_sel,results_voice){
         tdo_id = di2json.gpio_i2c.gas;
       }
       if (i == 78){
+        tdo_ch = array_voice_alias[78];
         var tdo_temp = di2json.gpio_i2c.temp;
         var tdo_hum = di2json.gpio_i2c.hum;
         var tdo_pres = di2json.gpio_i2c.pres;
@@ -1482,7 +1483,7 @@ function voice_do(do_sel,results_voice){
           }
           tdo_id = tdo_iaq + "で" + iaq_color + "です";
         }
-         voice_tmp = "部屋の温度," + tdo_temp + ",湿度," + tdo_hum + ",気圧," +　tdo_pres + ",空気," + tdo_id;
+         voice_tmp = tdo_ch + ",温度," + tdo_temp + ",湿度," + tdo_hum + ",気圧," +　tdo_pres + ",空気質," + tdo_id;
 　　      speak_main(voice_tmp,voice_lang);
         return;
       }
@@ -2828,44 +2829,44 @@ function update_di(item){
         }
 // Disp Sound File
         if (di2json.disp_sound_0){
-           val = di2json.disp_sound_0;
+          val = di2json.disp_sound_0;
           $("#disp_sound_0").text(val);
         }
         if (di2json.disp_sound_1){
-           val = di2json.disp_sound_1;
+          val = di2json.disp_sound_1;
           $("#disp_sound_1").text(val);
         }
         if (di2json.disp_sound_2){
-           val = di2json.disp_sound_2;
+          val = di2json.disp_sound_2;
           $("#disp_sound_2").text(val);
         }
         if (di2json.disp_sound_3){
-           val = di2json.disp_sound_3;
+          val = di2json.disp_sound_3;
           $("#disp_sound_3").text(val);
         }
         if (di2json.disp_sound_4){
-           val = di2json.disp_sound_4;
+          val = di2json.disp_sound_4;
           $("#disp_sound_4").text(val);
         }
         if (di2json.disp_sound_5){
-           val = di2json.disp_sound_5;
+          val = di2json.disp_sound_5;
           $("#disp_sound_5").text(val);
         }
         if (di2json.disp_sound_6){
-           val = di2json.disp_sound_6;
+          val = di2json.disp_sound_6;
           $("#disp_sound_6").text(val);
         }
         if (di2json.disp_sound_7){
-           val = di2json.disp_sound_7;
+          val = di2json.disp_sound_7;
           $("#disp_sound_7").text(val);
         }
         if (di2json.disp_sound_8){
-           val = di2json.disp_sound_8;
+          val = di2json.disp_sound_8;
           $("#disp_sound_8").text(val);
         }
         if (di2json.disp_sound_9){
-           val = di2json.disp_sound_9;
-          $("#disp_sound_4").text(val);
+          val = di2json.disp_sound_9;
+          $("#disp_sound_9").text(val);
         }
        },
        error: function(di2json){
