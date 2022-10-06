@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.6.6
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.10.5
 # di_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin
@@ -10,7 +10,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2022.6.6">
+<META NAME="Build" content="2022.10.5">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital -in)</TITLE>
@@ -69,12 +69,19 @@ tocos_high_low() {
   cmd=/usr/local/bin/pepotocoshelp
   cat > $file <<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 high_low=$high_low
 if [ $invert != "none" ];then
   [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
   [ \${do[$do_ch]} -eq 0 ] && high_low="1" || high_low="0"
 fi
 $cmd $ch \$high_low $time
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -92,12 +99,19 @@ do_high_low() {
   cmd=/usr/local/bin/pepodioctl
   cat > $file <<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 high_low=$high_low
 if [ $invert != "none" ];then
   [ -e $DO_WRITE_DATA ] && . $DO_WRITE_DATA
   [ \${do[$ch]} -eq 0 ] && high_low="1" || high_low="0"
 fi
 $cmd $ch \$high_low $time
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -110,7 +124,14 @@ irkit_exec() {
   time=$3
 cat > $file <<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 $IRKITPOST $ir_num $timer
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -123,7 +144,14 @@ di_tel() {
   tel_file="$3"
   cat > $file <<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 echo $tel >$tel_file
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -176,6 +204,12 @@ di_wgetmail() {
   FFMPEGCTL=/usr/local/bin/pepomp4ctl
   cat >$file<<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 WGETMAIL=/usr/local/bin/peposendmail
 if [ $act = "mail" ];then
   WGETMAIL=/usr/local/bin/peposendmail
@@ -227,6 +261,7 @@ if [ -e $count ];then
   unset WTMP
   \$WGETMAIL "$mail_to" \$SUBJECT \$MESSAGE \$IMAGE
 fi
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -277,6 +312,12 @@ di_sendmail() {
   hostname=`hostname`
   cat > $file <<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 msg_file="$file".mailmsg
 cat >\$msg_file<<END
 To:$mail
@@ -287,6 +328,7 @@ if [ -e $count ];then
   cat $count >>\$msg_file
 fi
 /usr/sbin/sendmail -i $mail <\$msg_file
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -300,7 +342,14 @@ di_sound(){
   cmd=/usr/local/bin/peposound
   cat > $file <<EOF
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 $cmd $ch $time
+rm \$LOCK
 EOF
   chmod +x $file
 }
@@ -312,7 +361,14 @@ del_all() {
   CMD=$DIR/dio_control_del_$1.pepocmd
   cat >$CMD<<END
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 rm -f $file
+rm \$LOCK
 END
 }
 
@@ -687,6 +743,12 @@ if [ -e "$sDICH" ];then
   CMD=$DIR/dio_control2.pepocmd
   cat >$CMD<<END
 #!/bin/bash
+LOCK=${DIR}/`echo $file |awk 'BEGIN{FS="/"};{print $NF}'`.lock
+if [ -e \$LOCK ];then
+  exit
+else
+  echo -en \$\$ >\$LOCK
+fi
 DIR=$DIR
   CT=\`ls $DIR/|grep -E 'dio(11|12|13|14|15|16|17|18|19|20|21|22)[low|high]+$'\`
   if [ -n \`echo \$CT | wc -w\` ];then
@@ -696,6 +758,7 @@ DIR=$DIR
       mv -f \$MVCMD /usr/bin/
     done
   fi
+rm \$LOCK
 END
 fi
 echo -en '
