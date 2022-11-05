@@ -1,3 +1,5 @@
+# The run inside the directory here is a link file that starts the service with daemontools
+
 -rwxr-xr-x 1 root root 1697 Aug 14  2021 ping_watch_don*
 -rwxrwxrwx 1 root root   49 Jul 29  2017 term.sh*
 
