@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.4.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.11.5
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 /etc/init.d/networking stop
 /etc/init.d/apache2 stop
@@ -283,6 +283,6 @@ ln -s /www/tmp/logrotate /var/lib/logrotate
 /etc/init.d/networking restart
 /etc/init.d/ntp restart
 /etc/init.d/apache2 restart
-/etc/init.d/exim4 restart
+#/etc/init.d/exim4 restart
 /etc/init.d/cron restart
 /etc/init.d/avahi-daemon restart
