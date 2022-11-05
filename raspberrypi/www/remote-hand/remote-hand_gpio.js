@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.29
-* remote-hand_pi_gpio.js  ver0.21 2022.9.29
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.10.31
+* remote-hand_pi_gpio.js  ver0.21 2022.10.31
 */
 function blink(){
   if (!document.all){ return; }
@@ -3242,7 +3242,7 @@ function menu4_ck(button_id,disp_id){
     $.ajax({
       type: "POST",
       url: call_cgi,
-      timeout : 180000,
+      timeout : 60000,
       dataType: "html",
       data: formdata,
       cache       : false,
@@ -3757,13 +3757,9 @@ function menu11_ck (){
   }
   if (gmailuser  != "*" && gmailuser  != ""){
     check++;
-    if (gmailuser.match(/[^a-zA-Z0-9.\-_]+/)) error_ct++;
   }
   if (gmailpassword != "*" && gmailpassword != "") check++;
-  if (permitmail != "*" && permitmail != ""){
-    check++;
-    if (mail_ck(permitmail) == -1) error_ct++;
-  }
+  if (permitmail != "*" && permitmail != "") check++;
   if (keyword != "*" && keyword !="") check++;
   if (looptime != ""){
     check++;
@@ -3779,10 +3775,8 @@ function menu11_ck (){
     return;
   }
   else {
-    if (check < 6){
-      alert("There is an error in the item or Input content that has not been Input");
-    }
-  return false;
+    alert("There is an error in the item or Input content that has not been Input");
+    return false;
   }
 }
 

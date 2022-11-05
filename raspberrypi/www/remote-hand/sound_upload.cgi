@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.10.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.10.29
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,8 +9,8 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2022.10.24">
-<META http-equiv="Refresh" content="30;URL=/remote-hand/wait_for.cgi">
+<META NAME="build" content="2022.10.29">
+<META http-equiv="Refresh" content="60;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Upload Sound File settings</TITLE>
 <script type="text/javascript">
@@ -35,7 +35,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Processing Upload Sound File settings</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>'
 
 DIR=/www/remote-hand/tmp
@@ -45,12 +45,19 @@ SOUND_FILE=$DIR/.sound_file
 tSOUND_FILE=$DIR/.sound_file_tmp
 ttSOUND_FILE=${tSOUND_FILE}.tmp
 CMD=$DIR/sound_upload.pepocmd
+JITTER=180
 if [ -e $tSOUND_FILE ];then
-  cat >$ttSOUND_FILE
-  rm $ttSOUND_FILE
-  echo -en '
-  </HTML>'
-  exit
+  NOWTIME=`date +%s`
+  timeSTAMP=`date +%s -r $tSOUND_FILE`
+  if [ $(($NOWTIME - $timeSTAMP)) -gt $JITTER ];then
+    [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
+  else
+    cat >$ttSOUND_FILE
+    [ -e $ttSOUND_FILE ] && rm $ttSOUND_FILE
+    echo -en '
+    </HTML>'
+    exit
+  fi
 fi
 cat >$tSOUND_FILE
 cat $tSOUND_FILE | sed -n 6,6p|awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
@@ -129,7 +136,9 @@ cat $tSOUND_FILE | sed '1,8d' >$SOUND_FILE
 dd if=$SOUND_FILE of=$inputFILE bs=1 count=$SIZE
 if [ $convertFILE = "YES" ];then
   ffmpeg -i $inputFILE -ab 64k -y $outputFILE >/dev/null 2>&1
-  rm -f $inputFILE
+  [ -e $inputFILE ] && rm $inputFILE
 fi
-rm -f $tSOUND_FILE $tFILE_NAME $SOUND_FILE
+[ -e $tSOUND_FILE ] && rm $tSOUND_FILE
+[ -e $tFILE_NAME ] && rm $tFILE_NAME
+[ -e $SOUND_FILE ] && rm $SOUND_FILE
 EOF
