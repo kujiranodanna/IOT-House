@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.10.31
-* remote-hand_pi_gpio.js  ver0.21 2022.10.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.13
+* remote-hand_pi_gpio.js  ver0.21 2022.2.13
 */
 function blink(){
   if (!document.all){ return; }
@@ -3089,6 +3089,7 @@ function menu4_ck(button_id,disp_id){
   var error_ct = 0;
   var call_cgi = "none";
   var file_name = "none";
+  var max_filesize = 512 * 1024; /* 512k */
   var formdata = new FormData($('#menu4').get(0));
   switch (button_id){
     case 'menu4_sound_del':
@@ -3233,6 +3234,12 @@ function menu4_ck(button_id,disp_id){
     return false;
   }
   if (call_cgi == "sound_upload.cgi"){
+    if (formdata.get('size') > max_filesize){
+      var text_max_filesize = max_filesize / 1024 + "KB";
+      $(disp_id).text("File size is less than " + text_max_filesize);
+      formdata.dalete;
+      return false;
+    }
     setInterval(function(){
       $(disp_id).text("File upload in progress.");
       $(disp_id).fadeOut('slow',function(){
