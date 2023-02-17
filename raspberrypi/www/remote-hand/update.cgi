@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , update 2022.9.20
+# Copyright (c) 2021-2027 Isamu.Yamauchi , update 2023.2.15
 PATH=$PATH:/usr/local/bin
 # for raspberry pi
 DIR=/www/remote-hand/tmp
@@ -19,7 +19,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2022.8.10">
+<META NAME="build" content="2023.2.15">
 <META http-equiv="Refresh" content="1;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Only update process</TITLE>
@@ -44,6 +44,6 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Setting server initial data</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2023 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'

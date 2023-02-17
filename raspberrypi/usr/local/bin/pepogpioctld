@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2020.6.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2023.2.15
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
@@ -95,6 +95,15 @@ while true;do
   if [ $LOOPI2C = 0 ];then
     LOOPI2C=$LOOPI2CT
     if [ -e $BME680_RD ];then
+      if [ $(($(date  "+%s") - $(date "+%s" -r $BME680_RD))) -gt 10 ];then
+        rm $BME680_RD
+      else
+        if [ $(cat $BME680_RD| wc -c) -lt 20 ];then
+          rm $BME680_RD
+        fi
+      fi
+    fi
+    if [ -e $BME680_RD ];then
       LOOPI2C=$LOOPI2CT_BME680
       gpio_i2c=`cat $BME680_RD | awk 'BEGIN{FS=","};{split($1,I,"/");split($4,J,".");printf("%s,%s,%s,%s,%s",I[4],$2,$3,J[1],$5)}'`
       BME680TEMP=`cat $BME680_RD | awk 'BEGIN{FS=","};{printf("%s",$2)}'`
@@ -115,7 +124,7 @@ while true;do
       TEMP_WEIGHT=10
       TEMP_WEIGHT=$(($TEMP_WEIGHT * 5))
       GAS_WEIGHT=80
-      GAS_WEIGHT=$(($GAS_WEIGHT * 5))   
+      GAS_WEIGHT=$(($GAS_WEIGHT * 5))
       GAS_BASE_CONF=${slice_ai[24]}
       GAS_BASE_AUTO_FIX=${slice_ai[25]}
       [ -z $GAS_BASE_AUTO_FIX ] && GAS_BASE_AUTO_FIX="Auto"
@@ -158,7 +167,7 @@ while true;do
             mv $tALIAS_DI $ALIAS_DI
           fi
         fi
-      fi 
+      fi
       if [ $BME680TEMP -gt $TEMP_BASEHIGH ];then
         TEMP_OFFSET=$(($BME680TEMP - $TEMP_BASEHIGH))
         TEMP_SCORE=$(($(($TEMP_OFFSET * $TEMP_WEIGHT)) / $((50 - $TEMP_BASEHIGH))))
@@ -186,16 +195,16 @@ while true;do
     else
       RD=`$GPIOCTL_I2C 2>&1`
       NUM=`echo -en $RD | awk 'BEGIN{I="YES"};{if(/[a-z|A-Z]+/){I="NO"};printf I}'`
-echo NUM:$NUM
       if [ $NUM = "YES" ];then
         NOWDATE=`date '+%H:%M'|awk '{printf("%s",$1)}'`
         gpio_i2c=`echo -en ${NOWDATE} ${RD}|awk '{printf("%s,%s,%s",$1,$2,$3)}'`
-echo gpio_i2c:$gpio_i2c
+      else
+        gpio_i2c="-1"
       fi
     fi
   else
     LOOPI2C=$(($LOOPI2C - 1))
-  fi  
+  fi
   RD="-1"
   RD=`$GPIOCTL 2>&1`
   LEN=`echo $RD|awk '{print(length($0))}'`
@@ -235,4 +244,3 @@ END
   mv $tGPIOGPIORD $GPIOGPIORD ; mv $tGPIOGPIOWD $GPIOGPIOWD
   msleep $LOOPTIME
 done
-

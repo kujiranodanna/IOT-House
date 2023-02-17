@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.15
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -79,7 +79,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.com">
-<META NAME="Build" content="2022.9.26">
+<META NAME="Build" content="2023.2.15">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Remote-hand wait for process</TITLE>
 <script type="text/javascript">
@@ -126,7 +126,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
 exit -1
@@ -149,7 +149,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.com</TD><TR></TABLE>
 </BODY>
 </HTML>'
   msleep 20000
@@ -238,7 +238,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
   msleep 1000
@@ -271,7 +271,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.com</TD></TR></TABLE>
 </BODY>
 </HTML>'
 fi
