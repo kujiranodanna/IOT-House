@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.19
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,7 +9,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2023.2.13">
+<META NAME="build" content="2023.2.19">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Upload Sound File settings</TITLE>
@@ -40,31 +40,11 @@ function blink() {
 
 DIR=/www/remote-hand/tmp
 FILE_NAME=$DIR/.sound_file_name
-tFILE_NAME=$DIR/.sound_file_name_tmp
-SOUND_FILE=$DIR/.sound_file
-tSOUND_FILE=$DIR/.sound_file_tmp
-ttSOUND_FILE=${tSOUND_FILE}.tmp
-CMD=$DIR/sound_upload.pepocmd
-if [ -e $CMD ];then
-  echo -en '
-  </HTML>'
-  exit
-fi
-JITTER=180
-MAXFILESIZE=$((1024 * 512))
-NOWTIME=`date +%s`
-if [ -e $tSOUND_FILE ];then
-  timeSTAMP=`date +%s -r $tSOUND_FILE`
-  if [ $(($NOWTIME - $timeSTAMP)) -gt $JITTER ];then
-    [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
-  else
-    cat >$ttSOUND_FILE
-    [ -e $ttSOUND_FILE ] && rm $ttSOUND_FILE
-    echo -en '
-    </HTML>'
-    exit
-  fi
-fi
+tFILE_NAME=$DIR/.$$sound_file_name_tmp
+SOUND_FILE=$DIR/.$$sound_file
+tSOUND_FILE=$DIR/.$$sound_file_tmp
+CMD=$DIR/$$sound_upload.pepocmd
+MAXFILESIZE=$((1024 * 1024))
 cat >$tSOUND_FILE
 cat $tSOUND_FILE | sed -n 6,6p|awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
 . $tFILE_NAME
@@ -133,7 +113,9 @@ else
 fi
 if [ -e $FILE_NAME ];then
   . $FILE_NAME
-  [ -e $DIR/${sound_file[$n]} ] && rm -f $DIR/${sound_file[$n]}
+  if [ $(echo -en ${sound_file[$n]} | wc -c) -ne 0 ];then
+    [ -e $DIR/${sound_file[$n]} ] && rm $DIR/${sound_file[$n]}
+  fi
   cat $FILE_NAME |grep -F -v $tmp >$tFILE_NAME
   echo "$tmp"="$tmpFILENAME" >> $tFILE_NAME
   mv $tFILE_NAME $FILE_NAME

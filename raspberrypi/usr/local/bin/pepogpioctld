@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2023.2.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2023.2.19
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
@@ -18,27 +18,27 @@ EPOCHOLD=`date -ud "0 second ago" +%s`
 EPOC5MIN=300
 gpio_i2c="-1"
 DIR=/www/remote-hand/tmp
-GPIOGPIORD=$DIR/.gpiodi_read_data
-tGPIOGPIORD=$DIR/.gpiodi_read_data.tmp
-GPIOGPIOWD=$DIR/.gpiodo_write_data
-tGPIOGPIOWD=$DIR/.gpiodo_write_data.tmp
+GPIORD=$DIR/.gpiodi_read_data
+tGPIORD=$DIR/.gpiodi_read_data.tmp
+GPIOWD=$DIR/.gpiodo_write_data
+tGPIOWD=$DIR/.gpiodo_write_data.tmp
 DOWDHELP=$DIR/.gpiodo_write_helper
 ALIAS_DI=$DIR/.alias_di
 tALIAS_DI=$DIR/.alias_di_pepogpioctld
-GPIOGPIO_INIT_FLAG=YES
+GPIO_INIT_FLAG=YES
 BME680_RD=$DIR/.pepobme680
 error(){
-  [ -e $tGPIOGPIORD ] && rm -f $tGPIORD
-  [ -e $GPIOGPIORD ] && rm -f $GPIOGPIORD
-  [ -e $GPIOGPIOWD ] && rm -f $GPIOGPIOWD
+  [ -e $tGPIORD ] && rm -f $tGPIORD
+  [ -e $GPIORD ] && rm -f $GPIORD
+  [ -e $GPIOWD ] && rm -f $GPIOWD
   pkill -f $GPIOCTL_I2CBME680
   exit 0
 }
 trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
-[ -e $tGPIOGPIORD ] && rm -f $tGPIOGPIORD
-[ -e $GPIOGPIORD ] && rm -f $GPIOGPIORD
-[ -e $GPIOGPIOWD ] && rm -f $GPIOGPIOWD
-[ -e $tGPIOGPIOWD ] && rm -f $tGPIOGPIOWD
+[ -e $tGPIORD ] && rm -f $tGPIORD
+[ -e $GPIORD ] && rm -f $GPIORD
+[ -e $GPIOWD ] && rm -f $GPIOWD
+[ -e $tGPIOWD ] && rm -f $tGPIOWD
 LOOPDO=${LOOPDOCT}
 LOOPI2C=${LOOPI2CT}
 pkill -f $GPIOCTL_I2CBME680
@@ -53,9 +53,9 @@ while true;do
   unset DI_TTY
   [ -e $ALIAS_DI ] && . $ALIAS_DI
   if [ "$DI_TTY" = "piface" -o  "$DI_TTY" = "none" ];then
-    [ -e $GPIOGPIORD ] && rm -f $GPIOGPIORD
-    [ -e $GPIOGPIOWD ] && rm -f $GPIOGPIOWD
-    GPIOGPIO_INIT_FLAG=YES
+    [ -e $GPIORD ] && rm -f $GPIORD
+    [ -e $GPIOWD ] && rm -f $GPIOWD
+    GPIO_INIT_FLAG=YES
     LOOPTIME=$LOOPSLEEP
     msleep $LOOPTIME
     pkill -f $GPIOCTL_I2CBME680
@@ -65,9 +65,9 @@ while true;do
   for i in 0 1 2 3 4 5 6 7; do old[$i]="-1" ;done
   LOOPTIME=$LOOPSLEEP
 # gpio_do initialize
-  if [ $GPIOGPIO_INIT_FLAG = YES ];then
+  if [ $GPIO_INIT_FLAG = YES ];then
     RD=`$GPIOINT 2>&1`
-    GPIOGPIO_INIT_FLAG=NO
+    GPIO_INIT_FLAG=NO
     $GPIOCTL_I2CBME680 &
   fi
 #DO write
@@ -209,7 +209,7 @@ while true;do
   RD=`$GPIOCTL 2>&1`
   LEN=`echo $RD|awk '{print(length($0))}'`
   if [ "$RD" != "-1" -o "LEN" = 2 ];then
-    GPIOGPIO_INIT_FLAG=NO
+    GPIO_INIT_FLAG=NO
     for i in 1 2 4 8 16 32 64 128; do
       case "$i" in
         1) tRD="$(($((0x$RD & 1)) / 1))" ;j=0 ;;
@@ -224,23 +224,23 @@ while true;do
     old[$j]=$tRD
     done
   else
-    GPIOGPIO_INIT_FLAG=YES
-    rm -f $GPIOGPIORD $GPIOGPIOWD
+    GPIO_INIT_FLAG=YES
+    rm -f $GPIORD $GPIOWD
   fi
-  cat>$tGPIOGPIORD<<END
+  cat>$tGPIORD<<END
 di[0]=${old[4]}
 di[1]=${old[5]}
 di[2]=${old[6]}
 di[3]=${old[7]}
 gpio_i2c=${gpio_i2c}
 END
-cat>$tGPIOGPIOWD<<END
+cat>$tGPIOWD<<END
 do[0]=${old[0]}
 do[1]=${old[1]}
 do[2]=${old[2]}
 do[3]=${old[3]}
 END
-  chown www-data.www-data $tGPIOGPIORD $tGPIOGPIOWD
-  mv $tGPIOGPIORD $GPIOGPIORD ; mv $tGPIOGPIOWD $GPIOGPIOWD
+  chown www-data.www-data $tGPIORD $tGPIOWD
+  mv $tGPIORD $GPIORD ; mv $tGPIOWD $GPIOWD
   msleep $LOOPTIME
 done
