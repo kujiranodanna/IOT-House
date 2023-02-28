@@ -1,0 +1,15 @@
+#!/bin/bash
+# The MIT License
+# Copyright (c) 2022-2028 Isamu.Yamauchi , 2023.2.24 update 2023.2.24
+# pepojtakpi; for raspberry pi old version
+
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+DIR=/www/remote-hand/tmp
+CMD=$DIR/pepojtalkpi.pepocmd
+VOICEREQ=$DIR/voice_req.wav
+[ ! -e $VOICEREQ ] && exit
+cat >$CMD<<END
+#!/bin/bash
+aplay $VOICEREQ
+rm $VOICEREQ
+END
