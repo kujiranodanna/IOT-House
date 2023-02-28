@@ -1,6 +1,9 @@
 /*
- Copyright Isamu.Yamauchi 2011.11.5
- pepodioexec.c help diod for daemon contorl digital-Input to ANDDIO
+ Copyright Isamu.Yamauchi 2011.11.5 update 2023.3.1
+ pepodioexec.c is for background processing of bash scripts.
+ ver 2023.3.1
+ changed from sh to bash so arrays can be used.
+ changed to compilable with  relatively new gcc with no warning.
 */
 
 /*
@@ -18,14 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdio.h>
 #include <stdlib.h>
-void exec_cmd(char *cmd) {
-  char *cmds[4];
-  cmds[0] = "/bin/sh";
-  cmds[1] = cmd;
-  cmds[2] = 0;
-  execv(cmds[0], cmds);
-}
+#include <unistd.h>
 
+void exec_cmd(char *) ;
 int main (int argc, char *argv[]) {
   int pid;
   switch( pid = fork() ) {
@@ -36,4 +34,12 @@ int main (int argc, char *argv[]) {
       return 0;
     break;
   }
+}
+
+void exec_cmd(char *cmd) {
+  char *cmds[4];
+  cmds[0] = "/bin/bash";
+  cmds[1] = cmd;
+  cmds[2] = 0;
+  execv(cmds[0], cmds);
 }
