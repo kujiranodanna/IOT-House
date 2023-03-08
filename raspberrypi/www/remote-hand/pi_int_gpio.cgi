@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.3.8
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2023.2.15"
+DATE="2023.3.8"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -1435,6 +1435,16 @@ while [ $n -lt 22 ];do
       vdi_act[$n]="Sound_4" ;;
     "SOUND_4")
       vdi_act[$n]="Sound_5" ;;
+    "SOUND_5")
+      vdi_act[$n]="Sound_6" ;;
+    "SOUND_6")
+      vdi_act[$n]="Sound_7" ;;
+    "SOUND_7")
+      vdi_act[$n]="Sound_8" ;;
+    "SOUND_8")
+      vdi_act[$n]="Sound_9" ;;
+     "SOUND_9")
+      vdi_act[$n]="Sound_10" ;; 
     *)
       di_act[$n]="none"
       vdi_act[$n]="none" ;;
@@ -2580,6 +2590,16 @@ while [ $n -lt 22 ];do
       vdi_act[$n]="Sound_4" ;;
     "SOUND_4")
       vdi_act[$n]="Sound_5" ;;
+    "SOUND_5")
+      vdi_act[$n]="Sound_6" ;;
+    "SOUND_6")
+      vdi_act[$n]="Sound_7" ;;
+    "SOUND_7")
+      vdi_act[$n]="Sound_8" ;;
+    "SOUND_8")
+      vdi_act[$n]="Sound_9" ;;
+    "SOUND_9")
+      vdi_act[$n]="Sound_10" ;;
     *)
       di_act[$n]="none"
       vdi_act[$n]="none" ;;
@@ -3794,6 +3814,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT0_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT0_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT0_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT0_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT0_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT0_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT0_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT0_VAL[0]="none";;
       esac
@@ -3868,6 +3898,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT1_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT1_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT1_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT1_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT1_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT1_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT1_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT1_VAL[0]="none";;
       esac
@@ -3942,6 +3982,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT2_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT2_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT2_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT2_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT2_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT2_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT2_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT2_VAL[0]="none";;
       esac
@@ -4014,6 +4064,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT3_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT3_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT3_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT3_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT3_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT3_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT3_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT3_VAL[0]="none";;
       esac
@@ -4086,6 +4146,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT4_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT4_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT4_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT4_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT4_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT4_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT4_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT4_VAL[0]="none";;
       esac
@@ -4158,6 +4228,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT5_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT5_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT5_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT5_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT5_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT5_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT5_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT5_VAL[0]="none";;
       esac
@@ -4230,6 +4310,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT6_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT6_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT6_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT6_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT6_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT6_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT6_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT6_VAL[0]="none";;
       esac
@@ -4302,6 +4392,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT7_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT7_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT7_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT7_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT7_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT7_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT7_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT7_VAL[0]="none";;
       esac
@@ -4374,6 +4474,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT8_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT8_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT8_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT8_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT8_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT8_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT8_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT8_VAL[0]="none";;
       esac
@@ -4446,6 +4556,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT9_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT9_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT9_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT9_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT9_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT9_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT9_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT9_VAL[0]="none";;
       esac
@@ -4518,6 +4638,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT10_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT10_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT10_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT10_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT10_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT10_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT10_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT10_VAL[0]="none";;
       esac
@@ -4590,6 +4720,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT11_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT11_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT11_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT11_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT11_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT11_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT11_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT11_VAL[0]="none";;
       esac
@@ -4662,6 +4802,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT12_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT12_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT12_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT12_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT12_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT12_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT12_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT12_VAL[0]="none";;
       esac
@@ -4734,6 +4884,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT13_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT13_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT13_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT13_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT13_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT13_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT13_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT13_VAL[0]="none";;
       esac
@@ -4806,6 +4966,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT14_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT14_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT14_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT14_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT14_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT14_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT14_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT14_VAL[0]="none";;
       esac
@@ -4878,6 +5048,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT15_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT15_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT15_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT15_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT15_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT15_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT15_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT15_VAL[0]="none";;
       esac
@@ -4950,6 +5130,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT16_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT16_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT16_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT16_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT16_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT16_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT16_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT16_VAL[0]="none";;
       esac
@@ -5022,6 +5212,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT17_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT17_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT17_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT17_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT17_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT17_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT17_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT17_VAL[0]="none";;
       esac
@@ -5094,6 +5294,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT18_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT18_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT18_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT18_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT18_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT18_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT18_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT18_VAL[0]="none";;
       esac
@@ -5166,6 +5376,16 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20;do
           vAUTO_ACT19_VAL[0]=Sound_4 ;;
         SOUND_4)
           vAUTO_ACT19_VAL[0]=Sound_5 ;;
+        SOUND_5)
+          vAUTO_ACT19_VAL[0]=Sound_6 ;;
+        SOUND_6)
+          vAUTO_ACT19_VAL[0]=Sound_7 ;;
+        SOUND_7)
+          vAUTO_ACT19_VAL[0]=Sound_8 ;;
+        SOUND_8)
+          vAUTO_ACT19_VAL[0]=Sound_9 ;;
+        SOUND_9)
+          vAUTO_ACT19_VAL[0]=Sound_10 ;;
         none)
           vAUTO_ACT19_VAL[0]="none";;
       esac
@@ -5242,7 +5462,6 @@ cat >>$PAGE1<<END
 <OPTION VALUE="DOFF_2">${ALIAS_DO[2]}low
 <OPTION VALUE="DON_3">${ALIAS_DO[3]}high
 <OPTION VALUE="DOFF_3">${ALIAS_DO[3]}low
-
 <OPTION VALUE="IREXEC_0">${ALIAS_DO[8]}
 <OPTION VALUE="IREXEC_1">${ALIAS_DO[9]}
 <OPTION VALUE="IREXEC_2">${ALIAS_DO[10]}
@@ -5361,7 +5580,6 @@ cat >>$PAGE1<<END
 <OPTION VALUE="DOFF_2">${ALIAS_DO[2]}low
 <OPTION VALUE="DON_3">${ALIAS_DO[3]}high
 <OPTION VALUE="DOFF_3">${ALIAS_DO[3]}low
-
 <OPTION VALUE="IREXEC_0">${ALIAS_DO[8]}
 <OPTION VALUE="IREXEC_1">${ALIAS_DO[9]}
 <OPTION VALUE="IREXEC_2">${ALIAS_DO[10]}
@@ -5480,7 +5698,6 @@ cat >>$PAGE1<<END
 <OPTION VALUE="DOFF_2">${ALIAS_DO[2]}low
 <OPTION VALUE="DON_3">${ALIAS_DO[3]}high
 <OPTION VALUE="DOFF_3">${ALIAS_DO[3]}low
-
 <OPTION VALUE="IREXEC_0">${ALIAS_DO[8]}
 <OPTION VALUE="IREXEC_1">${ALIAS_DO[9]}
 <OPTION VALUE="IREXEC_2">${ALIAS_DO[10]}
