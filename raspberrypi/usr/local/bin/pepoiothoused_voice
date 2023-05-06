@@ -1,7 +1,7 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.4.16
-# pepoiothoused_voice is a script that converts BME680 environmental sensor values ​​into voice even on low power raspberry pi.
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.5.6
+# pepoiothoused_voice is a script that converts BME680 environmental sensor values into voice even on low power raspberry pi.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
 prog=pepoiothoused_voice
@@ -15,17 +15,22 @@ WAIT2=30000
 WAIT3=60000
 OPENJTALK=/usr/bin/open_jtalk
 tTALK=$DIR/${prog}_tmp_talk.wav
-TALK=$DIR/${prog}_talk.wav
+ttTALK=$DIR/${prog}_tmp_tmp_talk.mp3
+TALK=$DIR/${prog}_talk.mp3
 VROOMTEMP=$DIR/${prog}_vtemp.wav
 VROOMHUM=$DIR/${prog}_vhum.wav
 VROOMPRES=$DIR/${prog}_vpres.wav
 VROOMIAQ=$DIR/${prog}_viaq.wav
+ROOMNAME="部屋"
+MEIVOICE="/var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice"
+TAKMIVOICE="/var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/takumi/takumi_normal.htsvoice"
 RHOST=localhost
 tALEXSADO=$DIR/${prog}.tmp
 error(){
   [ -e $tALEXSADO ] && rm $tALEXSADO
   [ -e $TALK ] && rm $TALK
   [ -e $tTALK ] && rm $tTALK
+  [ -e $ttTALK ] && rm $ttTALK
   [ -e $FFMPEGINPUT ] && rm $FFMPEGINPUT
   [ -e $VROOMTEMP ] && rm $VROOMTEMP
   [ -e $VROOMHUM ] && rm $VROOMHUM
@@ -68,10 +73,10 @@ while true;do
         IAQ_STATUS="さいあく"
       fi
       IAQROOM="空気の状態,"${IAQ}"で"${IAQ_STATUS}"です"
-      echo -en "部屋の温度,"${TEMPROOM}"度," |$OPENJTALK -r $VOICE_PITCH -x /var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice -ow $VROOMTEMP
-      echo -en "湿度,"${HUMROOM}"%," |$OPENJTALK -r $VOICE_PITCH -x /var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice -ow $VROOMHUM
-      echo -en "気圧,"${PRESROOM}"hPa," |$OPENJTALK -r $VOICE_PITCH -x /var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice -ow $VROOMPRES
-      echo -en ${IAQROOM}"," |$OPENJTALK -r $VOICE_PITCH -x /var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice -ow $VROOMIAQ
+      echo -en ${ROOMNAME}"の温度,"${TEMPROOM}"度," |$OPENJTALK -r $VOICE_PITCH -x $TAKMIVOICE -ow $VROOMTEMP
+      echo -en "湿度,"${HUMROOM}"%," |$OPENJTALK -r $VOICE_PITCH -x $TAKMIVOICE -ow $VROOMHUM
+      echo -en "気圧,"${PRESROOM}"hPa," |$OPENJTALK -r $VOICE_PITCH -x $TAKMIVOICE -ow $VROOMPRES
+      echo -en ${IAQROOM}"," |$OPENJTALK -r $VOICE_PITCH -x $TAKMIVOICE -ow $VROOMIAQ
       cat >$FFMPEGINPUT<<END
 file $VROOMTEMP
 file $VROOMHUM
@@ -79,12 +84,14 @@ file $VROOMPRES
 file $VROOMIAQ
 END
       $FFMPEG -safe 0 -f concat -i $FFMPEGINPUT -c copy -y $tTALK
-      mv $tTALK $TALK
+      $FFMPEG -i $tTALK $ttTALK
+      mv $ttTALK $TALK
       [ -e $VROOMTEMP ] && rm $VROOMTEMP
       [ -e $VROOMHUM ] && rm $VROOMHUM
       [ -e $VROOMPRES ] && rm $VROOMPRES
       [ -e $VROOMIAQ ] && rm $VROOMIAQ
-      [ -e $FFMPEGINPUT ] && rm $FFMPEGINPUT      
+      [ -e $FFMPEGINPUT ] && rm $FFMPEGINPUT
+      [ -e $tTALK ] && rm $tTALK
     fi
   fi
   msleep $WAIT3
