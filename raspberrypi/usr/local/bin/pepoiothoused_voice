@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.5.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.5.17
 # pepoiothoused_voice is a script that converts BME680 environmental sensor values into voice even on low power raspberry pi.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
@@ -15,8 +15,7 @@ WAIT2=30000
 WAIT3=60000
 OPENJTALK=/usr/bin/open_jtalk
 tTALK=$DIR/${prog}_tmp_talk.wav
-ttTALK=$DIR/${prog}_tmp_tmp_talk.mp3
-TALK=$DIR/${prog}_talk.mp3
+TALK=$DIR/${prog}_talk.wav
 VROOMTEMP=$DIR/${prog}_vtemp.wav
 VROOMHUM=$DIR/${prog}_vhum.wav
 VROOMPRES=$DIR/${prog}_vpres.wav
@@ -85,8 +84,7 @@ file $VROOMPRES
 file $VROOMIAQ
 END
       $FFMPEG -safe 0 -f concat -i $FFMPEGINPUT -c copy -y $tTALK
-      $FFMPEG -i $tTALK $ttTALK
-      mv $ttTALK $TALK
+      mv $tTALK $TALK
       [ -e $VROOMTEMP ] && rm $VROOMTEMP
       [ -e $VROOMHUM ] && rm $VROOMHUM
       [ -e $VROOMPRES ] && rm $VROOMPRES
@@ -96,5 +94,4 @@ END
     fi
   fi
   msleep $WAIT3
-done  
-
+done
