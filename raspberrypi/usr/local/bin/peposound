@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2022.4.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2022.5.31
 # peposound ; Play a sound file
 # usage peposound sound file_Num timer
 if [ $# -lt 1 -o $# -gt 2 ];then
@@ -15,7 +15,9 @@ SOUND_FILE_NAME=$DIR/.sound_file_name
 # lubuntu
 #SOUND_PLAYER=/usr/bin/mplayer
 # raspbery pi
-SOUND_PLAYER=/usr/bin/mpg321
+SOUND_PLAYER_MP3=/usr/bin/mpg321
+SOUND_PLAYER_WAV=/usr/bin/aplay
+SOUND_PLAYER_MPL=/usr/bin/mplayer
 MYPROG=/usr/local/bin/peposound
 SOUND_EXEC_CMD=$DIR/sound_player.pepocmd
 if [ -e $SOUND_FILE_NAME ];then
@@ -38,6 +40,15 @@ if [ $? = 0 ];then
   echo -en $$ >${LOCKFILE}
 else
   exit
+fi
+MP3_YES_NO=$(echo ${SOUND_FILE} |awk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
+WAV_YES_NO=$(echo ${SOUND_FILE} |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
+if [ $MP3_YES_NO = "YES" ];then
+  SOUND_PLAYER=$SOUND_PLAYER_MP3
+elif [ $WAV_YES_NO = "YES" ];then
+  SOUND_PLAYER=$SOUND_PLAYER_WAV
+else
+  SOUND_PLAYER=$SOUND_PLAYER_MPL
 fi
 cat>$SOUND_EXEC_CMD<<END
 #!/bin/bash

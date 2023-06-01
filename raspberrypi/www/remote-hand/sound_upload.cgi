@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.5.31
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,7 +9,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2023.2.26">
+<META NAME="build" content="2023.5.31">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Upload Sound File settings</TITLE>
@@ -44,7 +44,7 @@ tFILE_NAME=$DIR/.$$sound_file_name_tmp
 SOUND_FILE=$DIR/.$$sound_file
 tSOUND_FILE=$DIR/.$$sound_file_tmp
 CMD=$DIR/$$sound_upload.pepocmd
-MAXFILESIZE=$((1024 * 1024))
+MAXFILESIZE=$((2048 * 1024))
 cat >$tSOUND_FILE
 cat $tSOUND_FILE | sed -n 6,6p|awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
 . $tFILE_NAME
@@ -105,11 +105,14 @@ case $name in
      n=9
   ;;
 esac
-CONVERT_YES_NO=`echo $filename |awk 'BEGIN{TMP="YES"};/mp3$/{TMP="NO"};END{printf TMP}'`
-if [ $CONVERT_YES_NO = "YES" ];then
+MP3_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
+WAV_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
+if [ $MP3_YES_NO = "NO" -a $WAV_YES_NO = "NO" ];then
   tmpFILENAME=`echo $filename |awk -F "." '{printf("%s",$1".mp3")}'`
+  CONVERT_YES_NO="YES"
 else
   tmpFILENAME=$filename
+  CONVERT_YES_NO="NO"
 fi
 if [ -e $FILE_NAME ];then
   . $FILE_NAME
