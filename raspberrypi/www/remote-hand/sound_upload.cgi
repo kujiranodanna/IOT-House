@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.5.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.6.3
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,7 +9,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2023.5.31">
+<META NAME="build" content="2023.6.3">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Upload Sound File settings</TITLE>
@@ -39,22 +39,35 @@ function blink() {
 </BODY>'
 
 DIR=/www/remote-hand/tmp
+prog=sound_upload
 FILE_NAME=$DIR/.sound_file_name
-tFILE_NAME=$DIR/.$$sound_file_name_tmp
-SOUND_FILE=$DIR/.$$sound_file
-tSOUND_FILE=$DIR/.$$sound_file_tmp
-CMD=$DIR/$$sound_upload.pepocmd
+tFILE_NAME=$DIR/.${prog}.$$
+SOUND_FILE=$DIR/.${prog}_file.$$
+tSOUND_FILE=$DIR/.${prog}_file_tmp.$$
+CMD=$DIR/${prog}_$$.pepocmd
 MAXFILESIZE=$((2048 * 1024))
+error(){
+  [ -e ${tFILE_NAME} ] && rm ${tFILE_NAME}
+  [ -e ${SOUND_FILE} ] && rm ${SOUND_FILE}
+  [ -e ${tSOUND_FILE} ] && rm ${tSOUND_FILE}
+  exit 0
+}
+trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
 cat >$tSOUND_FILE
-cat $tSOUND_FILE | sed -n 6,6p|awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
-. $tFILE_NAME
-SIZE=`cat $tSOUND_FILE | awk 'NR == 4{gsub("\r","",$0);printf $1}'`
-if [ $SIZE -gt $MAXFILESIZE ];then
-  [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
-  [ -e $tFILE_NAME ] && rm $tFILE_NAME
-  [ -e $SOUND_FILE ] && rm $SOUND_FILE
-  echo -en '
-  </HTML>'
+if [ -e $tSOUND_FILE ];then
+  dd if=$tSOUND_FILE bs=256 count=1 |awk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE_NAME
+  . $tFILE_NAME  
+  if [ $size -gt $MAXFILESIZE ];then
+    [ -e $tFILE_NAME ] && rm $tFILE_NAME
+    [ -e $SOUND_FILE ] && rm $SOUND_FILE
+    [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
+    echo -en '</HTML>'
+    exit
+  fi
+  cat $tSOUND_FILE | sed -n 6,6p|awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
+  . $tFILE_NAME
+  SIZE=`cat $tSOUND_FILE | awk 'NR == 4{gsub("\r","",$0);printf $1}'`
+else
   exit
 fi
 tSIZE=$(wc -c $tSOUND_FILE | awk '{print $1}')
