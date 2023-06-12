@@ -1,14 +1,14 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.8.22 update 2023.4.17
+# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.8.22 update 2023.6.8
 # pepocurlupload; upload to remote cgi.
 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
 prog=pepocurlupload
-CMD=$DIR/${prog}.pepocmd
+CMD=$DIR/${prog}_$$.pepocmd
 UPLOAD_FILE=$2
-DOCFILE=$DIR/${prog}.tmp
+DOCFILE=$DIR/${prog}_$$.tmp
 RETRYTIME=10
 RETRY=1
 GETSIZE="1024"
@@ -16,7 +16,7 @@ RM_HOST=$1
 [ -e $CMD ] && exit
 [ -z "$RM_HOST" ] && exit
 [ -z "$UPLOAD_FILE" ] && exit
-USERAGENT="Chrome/112.0.5615.121"
+USERAGENT="Chrome/114.0.5735.106"
 START_UP=$DIR/.startup.s.tmp
 [ -e $START_UP ] && . $START_UP
 USER=$SET_WEBUSER

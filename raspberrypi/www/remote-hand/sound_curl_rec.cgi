@@ -1,7 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.26
-
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.6.8
 PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
@@ -9,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2023.2.26>
+<META NAME="build" content="2023.6.8>
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>Upload Sound File for curl</TITLE>
@@ -40,12 +39,21 @@ function blink() {
 <HTML>'
 
 DIR=/www/remote-hand/tmp
-SOUND_FILE=$DIR/sound_curl_file
-tSOUND_FILE=$DIR/sound_curl_file_tmp
-tFILE=$DIR/sound_curl_file_tmp_tmp
-LOCK=$DIR/sound_curl_file_lock
+prog=sound_curl_rec
+SOUND_FILE=$DIR/${prog}.$$
+tSOUND_FILE=$DIR/${prog}_tmp.$$
+tFILE=$DIR/${prog}_tmp_tmp.$$
+LOCK=$DIR/${prog}_lock
 MAXFILESIZE=$((2048 * 1024))
-CMD=$DIR/$$sound_curl_file.pepocmd
+error(){
+  [ -e ${tFILE_NAME} ] && rm ${tFILE_NAME}
+  [ -e ${SOUND_FILE} ] && rm ${SOUND_FILE}
+  [ -e ${tSOUND_FILE} ] && rm ${tSOUND_FILE}
+  [ -e ${PLAYFILE} ] && rm ${PLAYFILE}
+  exit 0
+}
+trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
+CMD=$DIR/sound_curl_file_$$.pepocmd
 cat >$tSOUND_FILE
 if [ -e $tSOUND_FILE ];then
   dd if=$tSOUND_FILE bs=1 count=128 |awk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE
@@ -65,6 +73,7 @@ WAV_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf T
 cat >$CMD<<END
 #!/bin/bash
 if [ ! -e $LOCK ];then
+  touch $LOCK
   cat $tSOUND_FILE | sed '1,8d' >$SOUND_FILE
   dd if=$SOUND_FILE of=$PLAYFILE bs=$filesize count=1
   if [ $MP3_YES_NO = "YES" ];then
@@ -72,9 +81,15 @@ if [ ! -e $LOCK ];then
   elif [ $WAV_YES_NO = "YES" ];then
     aplay $PLAYFILE
   fi
+  [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
+  [ -e $tFILE ] && rm $tFILE
+  [ -e $SOUND_FILE ] && rm $SOUND_FILE
+  [ -e $PLAYFILE ] && rm $PLAYFILE
+  [ -e $LOCK ] && rm $LOCK
+else
+  [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
+  [ -e $tFILE ] && rm $tFILE
+  [ -e $SOUND_FILE ] && rm $SOUND_FILE
+  [ -e $PLAYFILE ] && rm $PLAYFILE
 fi
-[ -e $tSOUND_FILE ] && rm $tSOUND_FILE
-[ -e $tFILE ] && rm $tFILE
-[ -e $SOUND_FILE ] && rm $SOUND_FILE
-[ -e $PLAYFILE ] && rm $PLAYFILE
 END
