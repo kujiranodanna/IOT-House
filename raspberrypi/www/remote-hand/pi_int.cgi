@@ -21,9 +21,9 @@ echo -en '
 <HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
-<META NAME="Copyright" content="pepolinux.com">
+<META NAME="Copyright" content="pepolinux.osdn.jp">
 <META NAME="Build" content="$DATE">
-<META NAME="reply-to" content="izamu@pepolinux.com">
+<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>$DIST_NAME command execution</TITLE>
 <script type="text/javascript">
 function blink() {
@@ -65,7 +65,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.com</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.osdn.jp</TD></TR></TABLE>
 </BODY>
 </HTML>'
   exit -1
@@ -141,7 +141,7 @@ if [ $SMART_PHONE = "YES" ];then
 <META name="Auther" content="yamauchi.isamu">
 <META name="Copyright" content="pepolinux">
 <META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.com">
+<META name="reply-to" content="izamu@pepolinux.osdn.jp">
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
@@ -282,7 +282,7 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2022-2025 pepolinux.com&nbsp;
+&copy;2022-2025 pepolinux.osdn.jp&nbsp;
 </H1>
 </BODY>
 </HTML>
@@ -298,7 +298,7 @@ END
 <META name="Auther" content="yamauchi.isamu">
 <META name="Copyright" content="pepolinux">
 <META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.com">
+<META name="reply-to" content="izamu@pepolinux.osdn.jp">
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
@@ -326,7 +326,7 @@ END
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
 <BR>
 <BR>
-&copy;2022-2025 pepolinux.com&nbsp;
+&copy;2022-2025 pepolinux.osdn.jp&nbsp;
 <span id="server_time" style="text-align:left"></span>
 </H1>
 </BODY>
@@ -343,7 +343,7 @@ cat >$PAGE1<<END
 <META name="Auther" content="yamauchi.isamu">
 <META name="Copyright" content="pepolinux">
 <META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.com">
+<META name="reply-to" content="izamu@pepolinux.osdn.jp">
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="pepo_ui.tabs.css" type="text/css" media="print, projection, screen">
@@ -9577,7 +9577,7 @@ web password
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>
-<TR><TD><FONT SIZE="-1">&copy;2022-2025 pepolinux.com&nbsp;
+<TR><TD><FONT SIZE="-1">&copy;2022-2025 pepolinux.osdn.jp&nbsp;
 <span id="server_time" style="text-align:left"></span>&nbsp;
 </TR>
 </TABLE>

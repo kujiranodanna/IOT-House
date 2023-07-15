@@ -9,9 +9,9 @@ echo -en '
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
-<META NAME="Copyright" content="pepolinux.com">
+<META NAME="Copyright" content="pepolinux.osdn.jp">
 <META NAME="Build" content="2020.7.21">
-<META NAME="reply-to" content="izamu@pepolinux.com">
+<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>Streming start_stop</TITLE>
 <script type="text/javascript">
@@ -37,7 +37,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>Streming start_stop</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.osdn.jp</TD><TR></TABLE>
 </BODY>
 </HTML>'
 

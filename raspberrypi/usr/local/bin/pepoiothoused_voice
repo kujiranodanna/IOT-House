@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.5.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.7.10
 # pepoiothoused_voice is a script that converts BME680 environmental sensor values into voice even on low power raspberry pi.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
@@ -33,9 +33,13 @@ error(){
   [ -e $ttTALK ] && rm $ttTALK
   [ -e $FFMPEGINPUT ] && rm $FFMPEGINPUT
   [ -e $VROOMTEMP ] && rm $VROOMTEMP
+  [ -e $tVROOMTEMP ] && rm $tVROOMTEMP
   [ -e $VROOMHUM ] && rm $VROOMHUM
+  [ -e $tVROOMHUM ] && rm $tVROOMHUM
   [ -e $VROOMPRES ] && rm $VROOMPRES
+  [ -e $tVROOMPRES ] && rm $tVROOMPRES
   [ -e $VROOMIAQ ] && rm $VROOMIAQ
+  [ -e $tVROOMIAQ ] && rm $tVROOMIAQ
   exit
 }
 trap error SIGQUIT SIGINT SIGTERM SIGHUP

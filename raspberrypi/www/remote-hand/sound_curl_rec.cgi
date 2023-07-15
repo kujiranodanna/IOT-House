@@ -7,10 +7,10 @@ echo -en '
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
-<META NAME="copyright" content="pepolinux.com">
+<META NAME="copyright" content="pepolinux.osdn.jp">
 <META NAME="build" content="2023.6.8>
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
-<META NAME="reply-to" content="izamu@pepolinux.com">
+<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Upload Sound File for curl</TITLE>
 <script type="text/javascript">
 function blink() {
@@ -34,7 +34,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Processing Upload Sound File</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.com</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.osdn.jp</TD><TR></TABLE>
 </BODY>
 <HTML>'
 
