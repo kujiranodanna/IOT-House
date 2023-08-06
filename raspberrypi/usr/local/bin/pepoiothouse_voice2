@@ -1,0 +1,53 @@
+#!/bin/bash
+# The MIT License
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.7.23
+# pepoiothouse_voice2 is a script that instantly converts the Raspberry Pi's BME680 environmental value sensor into voice.
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+DIR=/www/remote-hand/tmp
+prog=pepoiothoused_voice2
+VOICE_PITCH=0.7
+WAIT1=10000
+WAIT2=30000
+WAIT3=60000
+OPENJTALK=/usr/bin/open_jtalk
+JSON_DATA=/www/remote-hand/.di_read_data.json
+tJSON_DATA=$DIR/${prog}.tmp
+TALK=$DIR/${prog}_talk.wav
+VROOMIAQ=$DIR/${prog}_viaq.wav
+ROOMNAME="部屋"
+MEIVOICE="/var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice"
+TAKMIVOICE="/var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/takumi/takumi_normal.htsvoice"
+USEVOICE=${TAKMIVOICE}
+error(){
+  [ -e $tJSON_DATA ] && rm $tJSON_DATA
+  [ -e $VROOMIAQ ] && rm $VROOMIAQ
+  exit
+}
+trap error SIGQUIT SIGINT SIGTERM SIGHUP
+[ -e $tJSON_DATA ] && exit
+[ ! -e $JSON_DATA ] && exit
+cat $JSON_DATA | jq -r .gpio_i2c >$tJSON_DATA
+TEMPROOM=$(cat $tJSON_DATA | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+HUMROOM=$(cat $tJSON_DATA | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+PRESROOM=$(cat $tJSON_DATA | jq -r .pres | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+IAQ=$(cat $tJSON_DATA | jq -r .iaq | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+IAQ_STATUS="good"
+if [ $IAQ -lt 51 ];then
+  IAQ_STATUS="よい"
+elif [ $IAQ -lt 101 ];then
+  IAQ_STATUS="ふつう"
+elif [ $IAQ -lt 151 ];then
+  IAQ_STATUS="少しわるい"
+elif [ $IAQ -lt 201 ];then
+  IAQ_STATUS="わるい"
+elif [ $IAQ -lt 301 ];then
+  IAQ_STATUS="とってもわるい"
+elif [ $IAQ -gt 300 ];then
+  IAQ_STATUS="さいあく"
+fi
+IAQROOM="空気の状態,"${IAQ}"で"${IAQ_STATUS}"です"
+TALK=${ROOMNAME}の温度,${TEMPROOM}度,湿度,${HUMROOM}%,気圧,${PRESROOM}hPa,${IAQROOM}
+echo $TALK |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMIAQ
+aplay $VROOMIAQ
+[ -e $tJSON_DATA ] && rm $tJSON_DATA
+[ -e $VROOMIAQ ] && rm $VROOMIAQ
