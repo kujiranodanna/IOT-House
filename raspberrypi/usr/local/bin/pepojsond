@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2023.8.5
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2023.8.7
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -10,6 +10,7 @@ PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
 ALIAS_DI=$DIR/.alias_di
 SLICE_AI=$DIR/.slice_ai
+tSLICE_AI=$DIR/.slice_ai.tmp
 ALIAS_DO=$DIR/.alias_do
 ALIAS_VDO=$DIR/.alias_vdo
 DIORD=$DIR/.di_read_data
@@ -430,7 +431,7 @@ END
   else
     old[24]="-1"
   fi
-  cat>$SLICE_AI<<END
+  cat>$tSLICE_AI<<END
 old[24]=${old[24]}
 old[25]=${old[25]}
 old[26]=${old[26]}
@@ -440,6 +441,7 @@ old[33]=${old[33]}
 old[34]=${old[34]}
 old[35]=${old[35]}
 END
+  mv $tSLICE_AI $SLICE_AI
   voice_req="none"
   if [ ! -e "${tVOICEREQ}" ];then
     if [ -e ${VOICEREQ} ];then
