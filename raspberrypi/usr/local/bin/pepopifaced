@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.20 update 2021.7.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.20 update 2023.8.18
 # Scan piface & CPU Temp ,GPIO , I2C Hum&Temp daemon for rasberry pi.
 # pepopifaced
 PIFACE_CTL="/usr/local/bin/pepopiface_local 8"
@@ -14,7 +14,7 @@ IPDIOWD=$DIR/.do_write_data_ip
 IPDIORD=$DIR/.di_read_data_ip
 TCOSWD=$DIR/.tocos_write_data
 TCOSRD=$DIR/.tocos_read_data
-GPIOGPIORD=$DIR/.gpiodi_read_data
+GPIORD=$DIR/.gpiodi_read_data
 GPIOGPIOWD=$DIR/.gpiodo_write_data
 ALIAS_DI=$DIR/.alias_di
 SLICE_AI=$DIR/.slice_ai
@@ -93,8 +93,8 @@ while true; do
       old[$j]=$tRD
     done
   fi
-  if [ -e $GPIOGPIORD ];then
-    . $GPIOGPIORD
+  if [ -e $GPIORD ];then
+    . $GPIORD
     for n in 0 1 2 3; do
       [ ! -z ${di[$n]} ]  && old[$n]=${di[$n]}
     done
@@ -119,7 +119,6 @@ while true; do
        [ ! -z ${do[$n]} ]  && old[$j]=${do[$n]}
      done
   fi
-#i2c Temperature,Humidity & CPU Temperature & GPIO Temperature convert to digital set
 #Tocos di set
   if [ -e ${TCOSRD} ];then
     unset TI1 TI2 TI3 TI4 AI1 AI2  AI3  AI4

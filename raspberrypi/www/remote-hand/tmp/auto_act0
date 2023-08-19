@@ -1,0 +1,48 @@
+#!/bin/bash
+if [ ENABLE = "DISABLE" ];then
+  exit
+elif [ "1" != -1 ];then
+  [ -e /www/remote-hand/tmp/.di_read_data ] && . /www/remote-hand/tmp/.di_read_data
+  [ -z "${di[17]}" ] && exit
+  [ "${di[17]}" = "-1" ] && exit
+  [ "${di[17]}" != "1" ] && exit
+fi
+if [ 19 -gt 7 -a 19 -lt 14 ];then
+  /usr/local/bin/pepoirkitpost  
+elif [ 19 -gt 13 -a 19 -lt 17 ];then
+  /usr/local/bin/pepotocoshelp  2 
+elif [ 19 -gt 16 -a 19 -lt 27 ];then
+  DIR=/www/remote-hand/tmp
+  OPENJTALK=/usr/bin/open_jtalk
+  TAKMIVOICE="/var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/takumi/takumi_normal.htsvoice"
+  USEVOICE=${TAKMIVOICE}
+  VOICE_PITCH=0.7
+  prog=iot002_auto_act0
+  VROOMTEMP=$DIR/${prog}_vtemp.wav
+  [ -e $VROOMTEMP ] && exit
+  ROOMNAME="部屋"
+  tTEMPROOM=$(cat /www/remote-hand/.di_read_data.json| jq -r .gpio_i2c)
+  [ -z "$tTEMPROOM" -o "$tTEMPROOM" = "1" -o "$tTEMPROOM" = "null" ] && exit
+  tTEMPROOM=$(cat /www/remote-hand/.di_read_data.json| jq -r .gpio_i2c.temp)
+  TEMPROOM=$(echo $tTEMPROOM| awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+  svc -d /www/pepolinux/iaqvoice/
+  TALK=${ROOMNAME}"の温度が"${TEMPROOM}"度で設定値を超えました、直ちに対処して下さい"
+   WGETMAIL=/usr/local/bin/pepolinemsgsend
+   SUBJECT=$prog
+   $WGETMAIL $SUBJECT++$TALK
+  echo -en $TALK |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMTEMP
+  /usr/local/bin/pepocurlupload iot001.local $VROOMTEMP
+  msleep 10000
+  /usr/local/bin/pepocurlupload iot02f.local $VROOMTEMP
+  msleep 10000
+  /usr/local/bin/pepocurlupload iot001.local $VROOMTEMP
+  msleep 10000
+  /usr/local/bin/pepocurlupload iot02f.local $VROOMTEMP
+#  /usr/bin/aplay $VROOMTEMP
+  msleep 10000
+  rm $VROOMTEMP
+  svc -u /www/pepolinux/iaqvoice/
+#  /usr/local/bin/peposound 2 
+elif [ 19 -lt 8 ];then
+  /usr/local/bin/pepodioctl 19 2 
+fi

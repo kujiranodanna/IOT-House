@@ -1,0 +1,48 @@
+#!/bin/bash
+if [ ENABLE = "DISABLE" ];then
+  exit
+elif [ "1" != -1 ];then
+  [ -e /www/remote-hand/tmp/.di_read_data ] && . /www/remote-hand/tmp/.di_read_data
+  [ -z "${di[18]}" ] && exit
+  [ "${di[18]}" = "-1" ] && exit
+  [ "${di[18]}" != "1" ] && exit
+fi
+if [ 20 -gt 7 -a 20 -lt 14 ];then
+  /usr/local/bin/pepoirkitpost  
+elif [ 20 -gt 13 -a 20 -lt 17 ];then
+  /usr/local/bin/pepotocoshelp  3 
+elif [ 20 -gt 16 -a 20 -lt 27 ];then
+  DIR=/www/remote-hand/tmp
+  OPENJTALK=/usr/bin/open_jtalk
+  TAKMIVOICE="/var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/takumi/takumi_normal.htsvoice"
+  USEVOICE=${TAKMIVOICE}
+  VOICE_PITCH=0.7
+  prog=iot002_auto_act1
+  VROOMHUM=$DIR/${prog}_vhum.wav
+  [ -e $VROOMHUM ] && exit
+  ROOMNAME="部屋"
+  tHUMROOM=$(cat /www/remote-hand/.di_read_data.json| jq -r .gpio_i2c)
+  [ -z "$tHUMROOM" -o "$tHUMROOM" = "1" -o "$tHUMROOM" = "null" ] && exit
+  tHUMROOM=$(cat /www/remote-hand/.di_read_data.json| jq -r .gpio_i2c.hum)
+  HUMROOM=$(echo $tHUMROOM| awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+  svc -d /www/pepolinux/iaqvoice/
+  TALK=${ROOMNAME}"の湿度が"${HUMROOM}"%で設定値を超えました、直ちに対処して下さい"
+  WGETMAIL=/usr/local/bin/pepolinemsgsend
+  SUBJECT=$prog
+  $WGETMAIL $SUBJECT++$TALK
+  echo -en $TALK |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMHUM
+  /usr/local/bin/pepocurlupload iot001.local $VROOMHUM
+#  /usr/bin/aplay $VROOMHUM
+  msleep 10000
+  /usr/local/bin/pepocurlupload iot02f.local $VROOMHUM
+  msleep 10000
+  /usr/local/bin/pepocurlupload iot001.local $VROOMHUM
+  msleep 10000
+  /usr/local/bin/pepocurlupload iot02f.local $VROOMHUM
+  msleep 10000
+  rm $VROOMHUM
+  svc -u /www/pepolinux/iaqvoice/
+#  /usr/local/bin/peposound 3 
+elif [ 20 -lt 8 ];then
+  /usr/local/bin/pepodioctl 20 3 
+fi
