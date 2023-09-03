@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.3.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.9.3
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2023.3.8"
+DATE="2023.9.3"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -307,6 +307,9 @@ END
 <BR>
 <span id="s_phone_gpio_csv"></span>
 <span id="s_phone_tocos_temp_hum"></span>
+<BR>
+<BR>
+<img border="0" src="./google-microphone.png" width="300" height="300" alt="microphone" onclick="startWebVoiceRecognition();"/>
 <BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
