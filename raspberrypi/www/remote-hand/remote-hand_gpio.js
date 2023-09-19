@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.5.31
-* remote-hand_pi_gpio.js  ver0.21 2022.5.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.9.17
+* remote-hand_pi_gpio.js  ver0.21 2022.9.17
 */
 function blink(){
   if (!document.all){ return; }
@@ -1364,48 +1364,76 @@ function voice_do(do_sel,results_voice){
         }
       }
       if (i == 55){
-        tdo_ch = array_voice_alias[55];
-        tdo_id = di2json.di0;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio0";
+        } else {
+          tdo_ch = array_voice_alias[55];
+          tdo_id = di2json.di0;  
+        }
       }
       if (i == 56){
-        tdo_ch = array_voice_alias[56];
-        tdo_id = di2json.di1;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio1";
+        } else {
+          tdo_ch = array_voice_alias[56];
+          tdo_id = di2json.di1;
+        }
       }
       if (i == 57){
-        tdo_ch = array_voice_alias[57];
-        tdo_id = di2json.di2;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio2";
+        } else {
+          tdo_ch = array_voice_alias[57];
+          tdo_id = di2json.di2;
+        }
       }
       if (i == 58){
-        tdo_ch = array_voice_alias[58];
-        tdo_id = di2json.di3;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio3";
+        } else {
+          tdo_ch = array_voice_alias[58];
+          tdo_id = di2json.di3;
+        }
       }
       if (i == 59){
         tdo_ch = array_voice_alias[59];
         tdo_id = di2json.di4;
       }
       if (i == 60){
-        tdo_ch = array_voice_alias[60];
-        tdo_id = di2json.di5;
+          tdo_ch = array_voice_alias[60];
+          tdo_id = di2json.di5;
       }
       if (i == 61){
-        tdo_ch = array_voice_alias[61];
-        tdo_id = di2json.di6;
+          tdo_ch = array_voice_alias[61];
+          tdo_id = di2json.di6;
       }
       if (i == 62){
         tdo_ch = array_voice_alias[62];
         tdo_id = di2json.di7;
       }
       if (i == 63){
-        tdo_ch = array_voice_alias[63];
-        tdo_id = di2json.ti1;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio8";
+        } else {
+          tdo_ch = array_voice_alias[63];
+          tdo_id = di2json.ti1;
+        }
       }
       if (i == 64){
-        tdo_ch = array_voice_alias[64];
-        tdo_id = di2json.ti2;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio9";
+        } else {
+          tdo_ch = array_voice_alias[64];
+          tdo_id = di2json.ti2;
+        }
       }
       if (i == 65){
-        tdo_ch = array_voice_alias[65];
-        tdo_id = di2json.ti3;
+        if (tdo_val != "input_disp"){
+          tdo_ch = "dio10";
+        } else {
+          tdo_ch = array_voice_alias[65];
+          tdo_id = di2json.ti3;
+        }
       }
       if (i == 66){
         tdo_ch = array_voice_alias[66];
