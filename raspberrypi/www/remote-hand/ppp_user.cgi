@@ -7,10 +7,10 @@ echo -en '
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
-<META NAME="copyright" content="pepolinux.osdn.jp">
+<META NAME="copyright" content="pepolinux.jpn.org">
 <META NAME="build" content="2023.11.10">
 <META http-equiv="Refresh" content="1;URL=/remote-hand/wait_for.cgi">
-<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>PPP set in</TITLE>
 <script type="text/javascript">
 function blink() {
@@ -34,7 +34,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>PPP set in</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2018-2022 pepolinux.osdn.jp</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2018-2022 pepolinux.jpn.org</TD><TR></TABLE>
 </BODY>
 </HTML>
 '

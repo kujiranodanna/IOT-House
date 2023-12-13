@@ -69,9 +69,9 @@ echo -en '
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
-<META NAME="Copyright" content="pepolinux.osdn.jp">
+<META NAME="Copyright" content="pepolinux.jpn.org">
 <META NAME="Build" content="2012.3.1">
-<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>di2json</TITLE>
 '
 cat $JSONRD

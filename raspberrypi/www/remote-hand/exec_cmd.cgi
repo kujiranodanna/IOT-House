@@ -7,10 +7,10 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <HEAD>
 <META NAME="auther" content="yamauchi.isamu">
-<META NAME="copyright" content="pepolinux.osdn.jp">
+<META NAME="copyright" content="pepolinux.jpn.org">
 <META http-equiv="Refresh" content="60;URL=/remote-hand/wait_for.cgi">
 <META NAME="build" content="2023.11.10">
-<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>command of execution</TITLE>
 <script type="text/javascript">
 <!--
@@ -36,7 +36,7 @@ function blink() {
 </TABLE>
 <BR>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.osdn.jp</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.jpn.org</TD><TR></TABLE>
 </BODY>
 </HTML>'
 CMD=/www/remote-hand/tmp/exec_cmd.pepocmd

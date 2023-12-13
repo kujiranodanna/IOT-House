@@ -11,9 +11,9 @@ echo -en '
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
-<META NAME="Copyright" content="pepolinux.osdn.jp">
+<META NAME="Copyright" content="pepolinux.jpn.org">
 <META NAME="Build" content="2023.11.10">
-<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <META http-equiv="Refresh" content="15;URL=/remote-hand/tmp/gpio_rrdfetch.txt">
 <TITLE>GPIO Last hour CSV data Create</TITLE>
 <script type="text/javascript">
@@ -39,7 +39,7 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>GPIO rrdtool fetch create</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.osdn.jp</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.jpn.org</TD><TR></TABLE>
 </BODY>
 </HTML>'
 if [ -e ${DSFILE} ];then
