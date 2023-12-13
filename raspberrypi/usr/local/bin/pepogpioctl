@@ -1,55 +1,54 @@
 #! /bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.6.30 update 2019.6.20
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2023.10.2 update 2023.11.17
 # pepogpioctl for contorl gpio signal, input and output.
 # pepogpioctl $1:ch[0-9:b] [$2:0-f] [$3: timer->1 to 300000ms]
+# GPIO PIN Dout:0-3{17,18,27,22} Dinput:0-3{23,24,25,7} 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 usage(){
   echo "usage $0 read->chno:0-9|b | write->chno:0-3 [DO:0|1|0-f] [timer->1 to 300000ms]" >/dev/stderr
   exit
 }
-GPIOCMD=/usr/bin/gpio
-GPIOCMDWB="/usr/bin/gpio wb"
+GPIOCMD=/usr/bin/raspi-gpio
+GPIODO="$GPIOCMD set"
+GPIODI="$GPIOCMD get"
+DO[0]=17 ;DO[1]=18 ;DO[2]=27 ;DO[3]=22 ;DI[0]=23 ;DI[1]=24 ;DI[2]=25 ;DI[3]=7 ;high=dh ;low=dl
 if [ $# -eq 0 ];then
   usage
 else
   CH=$1
 fi
 if [ "$CH" = "b" ];then
-  $GPIOCMDWB $2
+  tDO=$2
+  for i in 1 2 4 8 ; do
+    case "$i" in
+      1) tWD="$(($((0x$tDO & 1)) / 1))" ;j=0 ;;
+      2) tWD="$(($((0x$tDO & 2)) / 2))" ;j=1 ;;
+      4) tWD="$(($((0x$tDO & 4)) / 4))" ;j=2 ;;
+      8) tWD="$(($((0x$tDO & 8)) / 8))" ;j=3 ;;
+    esac
+    [ $tWD = 1 ] && WD=$high || WD=$low
+    $GPIODO ${DO[$j]} $WD
+  done
   echo -en $2
   exit
 fi
 if [ "$CH" -eq 9 ];then
-  $GPIOCMD mode 0 output
-  $GPIOCMD write 0 0
-  $GPIOCMD mode 1 output
-  $GPIOCMD write 1 0
-  $GPIOCMD mode 2 output
-  $GPIOCMD write 2 0
-  $GPIOCMD mode 3 output
-  $GPIOCMD write 3 0
-  $GPIOCMD mode 4 input
-  $GPIOCMD mode 4 up
-  $GPIOCMD mode 5 input
-  $GPIOCMD mode 5 up
-  $GPIOCMD mode 6 input
-  $GPIOCMD mode 6 up
-  $GPIOCMD mode 7 input
-  $GPIOCMD mode 7 up
+  $GPIOCMD set 17,18,27,22 op dl
+  $GPIOCMD set 23,24,25,7 ip pu
   exit
 elif [ "$CH" -eq 8 ];then
   RD=0;tRD=0
-  for i in 0 1 2 3 4 5 6 7;do
-    tRD=`$GPIOCMD read $i`
+  for i in 17 18 27 22 23 24 25 7 ;do
+    tRD=$($GPIODI $i |mawk '{gsub("level=","",$3);printf("%s",$3)}')
     case "$i" in
-      0) RD=$tRD ;;
-      1) RD=$(($RD+ $(($tRD * 2)))) ;;
-      2) RD=$(($RD+ $(($tRD * 4)))) ;;
-      3) RD=$(($RD+ $(($tRD * 8)))) ;;
-      4) RD=$(($RD+ $(($tRD * 16)))) ;;
-      5) RD=$(($RD+ $(($tRD * 32)))) ;;
-      6) RD=$(($RD+ $(($tRD * 64)))) ;;
+      17) RD=$(($RD + $tRD)) ;;
+      18) RD=$(($RD+ $(($tRD * 2)))) ;;
+      27) RD=$(($RD+ $(($tRD * 4)))) ;;
+      22) RD=$(($RD+ $(($tRD * 8)))) ;;
+      23) RD=$(($RD+ $(($tRD * 16)))) ;;
+      24) RD=$(($RD+ $(($tRD * 32)))) ;;
+      25) RD=$(($RD+ $(($tRD * 64)))) ;;
       7) RD=$(($RD+ $(($tRD * 128)))) ;;
     esac
   done
@@ -60,9 +59,8 @@ elif [ "$CH" -gt 3 ];then
 elif [ $# -eq 1 ];then
   if [ $CH -gt 3 ];then
     usage
-  fi
-  RCH=$(($CH + 3))
-  RD=`$GPIOCMD read $RCH`
+  fi  
+  RD=$($GPIODI ${DI[$CH]} |mawk '{gsub("level=","",$3);printf("%s",$3)}')
   echo -en $RD
   exit
 elif [ $# -eq 2 -a "$2" -gt 1 ];then
@@ -73,41 +71,120 @@ elif [ $# -eq 3 ];then
   if [ "$2" -lt 0 -o "$2" -gt 1 -o "$3" -gt 300000 -o "$3" -lt 1 ];then
     usage
   else
-   DO=$2
-   $GPIOCMD write $CH $DO
-   msleep $3
-   [ $DO = "1" ] && DO=0 || DO=1
+    tWD=$2
+    [ $tWD = 0 ] &&WD=$low || WD=$high
+    $GPIODO ${DO[$CH]} $WD
+    msleep $3
+    [ $tWD = "0" ] && WD=$low || WD=$high
   fi
 else
-  DO=$2  
+  tWD=$2
+  [ $tWD = "0" ] && WD=$low || WD=$high
 fi
-TMP=`$GPIOCMD write $CH $DO`
-echo -en $DO
+$GPIODO ${DO[$CH]} $WD
+echo -en $tWD
 
-#gpio readall
-# +-----+-----+---------+------+---+-Pi ZeroW-+---+------+---------+-----+-----+
-# | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
-# +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
-# |     |     |    3.3v |      |   |  1 || 2  |   |      | 5v      |     |     |
-# |   2 |   8 |   SDA.1 | ALT0 | 1 |  3 || 4  |   |      | 5v      |     |     |
-# |   3 |   9 |   SCL.1 | ALT0 | 1 |  5 || 6  |   |      | 0v      |     |     |
-# |   4 |   7 | GPIO. 7 |   IN | 1 |  7 || 8  | 0 | IN   | TxD     | 15  | 14  |
-# |     |     |      0v |      |   |  9 || 10 | 1 | IN   | RxD     | 16  | 15  |
-# |  17 |   0 | GPIO. 0 |   IN | 0 | 11 || 12 | 0 | IN   | GPIO. 1 | 1   | 18  |
-# |  27 |   2 | GPIO. 2 |   IN | 0 | 13 || 14 |   |      | 0v      |     |     |
-# |  22 |   3 | GPIO. 3 |   IN | 0 | 15 || 16 | 0 | IN   | GPIO. 4 | 4   | 23  |
-# |     |     |    3.3v |      |   | 17 || 18 | 0 | IN   | GPIO. 5 | 5   | 24  |
-# |  10 |  12 |    MOSI | ALT0 | 0 | 19 || 20 |   |      | 0v      |     |     |
-# |   9 |  13 |    MISO | ALT0 | 0 | 21 || 22 | 0 | IN   | GPIO. 6 | 6   | 25  |
-# |  11 |  14 |    SCLK | ALT0 | 0 | 23 || 24 | 1 | OUT  | CE0     | 10  | 8   |
-# |     |     |      0v |      |   | 25 || 26 | 1 | OUT  | CE1     | 11  | 7   |
-# |   0 |  30 |   SDA.0 |  OUT | 0 | 27 || 28 | 1 | IN   | SCL.0   | 31  | 1   |
-# |   5 |  21 | GPIO.21 |   IN | 1 | 29 || 30 |   |      | 0v      |     |     |
-# |   6 |  22 | GPIO.22 |   IN | 1 | 31 || 32 | 0 | IN   | GPIO.26 | 26  | 12  |
-# |  13 |  23 | GPIO.23 |   IN | 0 | 33 || 34 |   |      | 0v      |     |     |
-# |  19 |  24 | GPIO.24 |   IN | 0 | 35 || 36 | 0 | IN   | GPIO.27 | 27  | 16  |
-# |  26 |  25 | GPIO.25 |   IN | 0 | 37 || 38 | 0 | IN   | GPIO.28 | 28  | 20  |
-# |     |     |      0v |      |   | 39 || 40 | 0 | IN   | GPIO.29 | 29  | 21  |
-# +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
-# | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
-# +-----+-----+---------+------+---+-Pi ZeroW-+---+------+---------+-----+-----+
+# pinout
+# Description        : Raspberry Pi Zero2W rev 1.0
+# Revision           : 902120
+# SoC                : BCM2837
+# RAM                : 512MB
+# Storage            : MicroSD
+# USB ports          : 1 (of which 0 USB3)
+# Ethernet ports     : 0 (0Mbps max. speed)
+# Wi-fi              : True
+# Bluetooth          : True
+# Camera ports (CSI) : 1
+# Display ports (DSI): 0
+#
+# ,--oooooooooooooooooooo---.
+# |  1ooooooooooooooooooo J8|
+# ---+     +---+  PiZero2W  c|
+#  sd|     |SoC|   Wi V1.0  s|
+# ---+     +---+   Fi       i|
+# | hdmi            usb pwr |
+# `-|  |------------| |-| |-'
+#
+#
+# J8:
+#    3V3  (1) (2)  5V
+#  GPIO2  (3) (4)  5V
+#  GPIO3  (5) (6)  GND
+#  GPIO4  (7) (8)  GPIO14
+#    GND  (9) (10) GPIO15
+# GPIO17 (11) (12) GPIO18
+# GPIO27 (13) (14) GND
+# GPIO22 (15) (16) GPIO23
+#    3V3 (17) (18) GPIO24
+# GPIO10 (19) (20) GND
+#  GPIO9 (21) (22) GPIO25
+# GPIO11 (23) (24) GPIO8
+#    GND (25) (26) GPIO7
+#  GPIO0 (27) (28) GPIO1
+#  GPIO5 (29) (30) GND
+#  GPIO6 (31) (32) GPIO12
+# GPIO13 (33) (34) GND
+# GPIO19 (35) (36) GPIO16
+# GPIO26 (37) (38) GPIO20
+#    GND (39) (40) GPIO21
+#
+# For further information, please refer to https://pinout.xyz/
+
+# raspi-gpio get
+# BANK0 (GPIO 0 to 27):
+# GPIO 0: level=1 fsel=0 func=INPUT
+# GPIO 1: level=1 fsel=0 func=INPUT
+# GPIO 2: level=1 fsel=4 alt=0 func=SDA1
+# GPIO 3: level=1 fsel=4 alt=0 func=SCL1
+# GPIO 4: level=1 fsel=0 func=INPUT
+# GPIO 5: level=1 fsel=0 func=INPUT
+# GPIO 6: level=1 fsel=0 func=INPUT
+# GPIO 7: level=1 fsel=0 func=INPUT
+# GPIO 8: level=1 fsel=0 func=INPUT
+# GPIO 9: level=0 fsel=0 func=INPUT
+# GPIO 10: level=0 fsel=0 func=INPUT
+# GPIO 11: level=0 fsel=0 func=INPUT
+# GPIO 12: level=0 fsel=0 func=INPUT
+# GPIO 13: level=0 fsel=0 func=INPUT
+# GPIO 14: level=0 fsel=0 func=INPUT
+# GPIO 15: level=1 fsel=0 func=INPUT
+# GPIO 16: level=0 fsel=0 func=INPUT
+# GPIO 17: level=0 fsel=0 func=INPUT
+# GPIO 18: level=0 fsel=0 func=INPUT
+# GPIO 19: level=0 fsel=0 func=INPUT
+# GPIO 20: level=0 fsel=0 func=INPUT
+# GPIO 21: level=0 fsel=0 func=INPUT
+# GPIO 22: level=0 fsel=0 func=INPUT
+# GPIO 23: level=0 fsel=0 func=INPUT
+# GPIO 24: level=0 fsel=0 func=INPUT
+# GPIO 25: level=0 fsel=0 func=INPUT
+# GPIO 26: level=0 fsel=0 func=INPUT
+# GPIO 27: level=0 fsel=0 func=INPUT
+# BANK1 (GPIO 28 to 45):
+# GPIO 28: level=1 fsel=0 func=INPUT
+# GPIO 29: level=0 fsel=1 func=OUTPUT
+# GPIO 30: level=0 fsel=7 alt=3 func=CTS0
+# GPIO 31: level=0 fsel=7 alt=3 func=RTS0
+# GPIO 32: level=1 fsel=7 alt=3 func=TXD0
+# GPIO 33: level=1 fsel=7 alt=3 func=RXD0
+# GPIO 34: level=0 fsel=7 alt=3 func=SD1_CLK
+# GPIO 35: level=1 fsel=7 alt=3 func=SD1_CMD
+# GPIO 36: level=1 fsel=7 alt=3 func=SD1_DAT0
+# GPIO 37: level=1 fsel=7 alt=3 func=SD1_DAT1
+# GPIO 38: level=1 fsel=7 alt=3 func=SD1_DAT2
+# GPIO 39: level=1 fsel=7 alt=3 func=SD1_DAT3
+# GPIO 40: level=0 fsel=1 func=OUTPUT
+# GPIO 41: level=1 fsel=1 func=OUTPUT
+# GPIO 42: level=1 fsel=1 func=OUTPUT
+# GPIO 43: level=0 fsel=4 alt=0 func=GPCLK2
+# GPIO 44: level=1 fsel=0 func=INPUT
+# GPIO 45: level=1 fsel=0 func=INPUT
+# BANK2 (GPIO 46 to 53):
+# GPIO 46: level=1 fsel=0 func=INPUT
+# GPIO 47: level=1 fsel=1 func=OUTPUT
+# GPIO 48: level=0 fsel=4 alt=0 func=SD0_CLK
+# GPIO 49: level=1 fsel=4 alt=0 func=SD0_CMD
+# GPIO 50: level=1 fsel=4 alt=0 func=SD0_DAT0
+# GPIO 51: level=1 fsel=4 alt=0 func=SD0_DAT1
+# GPIO 52: level=1 fsel=4 alt=0 func=SD0_DAT2
+# GPIO 53: level=1 fsel=4 alt=0 func=SD0_DAT3

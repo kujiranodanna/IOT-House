@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.8.22 update 2022.8.29
+# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.8.22 update 2023.11.10
 # pepoiaqvoice ;For raspberry pi & i386,IAQ request to Open jtalk.
 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -15,9 +15,9 @@ USER=remote
 PASSWORD=hand
 CH="voice_req"
 CPU_TEMP=`cat $JSON_DATA |jq -r .cpu_temp`
-TEMP=`cat $JSON_DATA |jq -r .gpio_i2c.temp |awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}'`
+TEMP=`cat $JSON_DATA |jq -r .gpio_i2c.temp |mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}'`
 HUM=`cat $JSON_DATA |jq -r .gpio_i2c.hum`
-PRES=`cat $JSON_DATA |jq -r .gpio_i2c.pres |awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}'`
+PRES=`cat $JSON_DATA |jq -r .gpio_i2c.pres |mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}'`
 IAQ=`cat $JSON_DATA |jq -r .gpio_i2c.iaq`
 IAQ_STATUS="good"
 if [ $IAQ -lt 51 ];then

@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.8.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 # pi_int.cgi ;piface main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2022.8.10"
+DATE="2023.11.10"
 VERSION="ver:0.21&nbsp;$DATE"
 ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
 [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
@@ -87,7 +87,7 @@ disp_int() {
   local INT
   INT="$1"
   echo_f "$INT:"
-  echo_f `ip addr show $INT |awk '/inet/{printf $2}'`
+  echo_f `ip addr show $INT |mawk '/inet/{printf $2}'`
 }
 DIRD=$DIR/.di_read_data
 DOWD=$DIR/.do_write_data
@@ -131,7 +131,7 @@ while [ $n -lt 34 ];do
   n=$(($n + 1))
 done
 
-SMART_PHONE=`echo "$HTTP_USER_AGENT" |awk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
+SMART_PHONE=`echo "$HTTP_USER_AGENT" |mawk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
 if [ $SMART_PHONE = "YES" ];then
   cat >$PAGE1<<END
 
@@ -1313,7 +1313,7 @@ font-size:15px;
 <TD WIDTH="100">INTERVAL</TD>
 </TR>
 END
-cat $PING_DON | awk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"<TD WIDTH=\"100\">"$4"</TD><TD WIDTH=\"100\">"$5"</TD></TR>"}' >>$PING_DON_HTML
+cat $PING_DON | mawk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"<TD WIDTH=\"100\">"$4"</TD><TD WIDTH=\"100\">"$5"</TD></TR>"}' >>$PING_DON_HTML
 echo '</TABLE></BODY></HTML>' >>$PING_DON_HTML
 cat >>$PAGE1<<END
 <IFRAME SRC="$PING_DON_HTML" WIDTH="600" HEIGHT="200" SCROLLING="yes"
@@ -1388,7 +1388,7 @@ font-size:15px;
 <TD WIDTH="100">INTERVAL</TD>
 </TR>
 END
-cat $PING_MAIL | awk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"160\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_MAIL_HTML
+cat $PING_MAIL | mawk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"160\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_MAIL_HTML
 echo '</TABLE></BODY></HTML>' >>$PING_MAIL_HTML
 cat >>$PAGE1<<END
 <IFRAME SRC="$PING_MAIL_HTML" WIDTH="600" HEIGHT="200" SCROLLING="yes"
@@ -1464,7 +1464,7 @@ font-size:15px;
 <TD WIDTH="100">INTERVAL</TD>
 </TR>
 END
-cat $PING_PHONE | awk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_PHONE_HTML
+cat $PING_PHONE | mawk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_PHONE_HTML
 echo '</TABLE></BODY></HTML>' >>$PING_PHONE_HTML
 cat >>$PAGE1<<END
 <IFRAME SRC="$PING_PHONE_HTML" WIDTH="600" HEIGHT="200" SCROLLING="yes"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.6.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,7 +9,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.osdn.jp">
-<META NAME="build" content="2023.6.3">
+<META NAME="build" content="2023.11.10">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Upload Sound File settings</TITLE>
@@ -55,7 +55,7 @@ error(){
 trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
 cat >$tSOUND_FILE
 if [ -e $tSOUND_FILE ];then
-  dd if=$tSOUND_FILE bs=256 count=1 |awk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE_NAME
+  dd if=$tSOUND_FILE bs=256 count=1 |mawk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE_NAME
   . $tFILE_NAME  
   if [ $size -gt $MAXFILESIZE ];then
     [ -e $tFILE_NAME ] && rm $tFILE_NAME
@@ -64,17 +64,17 @@ if [ -e $tSOUND_FILE ];then
     echo -en '</HTML>'
     exit
   fi
-  cat $tSOUND_FILE | sed -n 6,6p|awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
+  cat $tSOUND_FILE | sed -n 6,6p|mawk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
   . $tFILE_NAME
-  SIZE=`cat $tSOUND_FILE | awk 'NR == 4{gsub("\r","",$0);printf $1}'`
+  SIZE=`cat $tSOUND_FILE | mawk 'NR == 4{gsub("\r","",$0);printf $1}'`
 else
   exit
 fi
-tSIZE=$(wc -c $tSOUND_FILE | awk '{print $1}')
+tSIZE=$(wc -c $tSOUND_FILE | mawk '{print $1}')
 while [ $tSIZE -lt $SIZE ];do
   msleep 1000
   cat >> $tSOUND_FILE
-  tSIZE=$(wc -c $tSOUND_FILE | awk '{print $1}')
+  tSIZE=$(wc -c $tSOUND_FILE | mawk '{print $1}')
 done
 case $name in
   "sound_file_0")
@@ -118,10 +118,10 @@ case $name in
      n=9
   ;;
 esac
-MP3_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
-WAV_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
+MP3_YES_NO=$(echo $filename |mawk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
+WAV_YES_NO=$(echo $filename |mawk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
 if [ $MP3_YES_NO = "NO" -a $WAV_YES_NO = "NO" ];then
-  tmpFILENAME=`echo $filename |awk -F "." '{printf("%s",$1".mp3")}'`
+  tmpFILENAME=`echo $filename |mawk -F "." '{printf("%s",$1".mp3")}'`
   CONVERT_YES_NO="YES"
 else
   tmpFILENAME=$filename

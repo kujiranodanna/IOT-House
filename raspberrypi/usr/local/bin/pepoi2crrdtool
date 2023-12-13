@@ -12,13 +12,13 @@ DSFILE=${WORKDIR}/tmp/.i2c_temp_hum.rrd
 RRDSTART=${WORKDIR}/tmp/.i2c_start_time
 DIREADJSON=${WORKDIR}/.di_read_data.json
 [ ! -e $DIREADJSON ] && exit
-TEMP=`cat ${DIREADJSON} | jq  -r .i2ctemp.temp | awk '{gsub(/℃/,"",$0);printf $0}'`
-HUM=`cat ${DIREADJSON} | jq  -r .i2ctemp.hum | awk '{gsub(/％/,"",$0);printf $0}'`
-VAI1=`cat ${DIREADJSON} |awk '/vai1/{gsub(/"|vai1|,|:/,"",$0);printf $0}'`
-VAI2=`cat ${DIREADJSON} |awk '/vai2/{gsub(/"|vai2|,|:/,"",$0);printf $0}'`
-VAI3=`cat ${DIREADJSON} |awk '/vai3/{gsub(/"|vai3|,|:/,"",$0);printf $0}'`
-VAI4=`cat ${DIREADJSON} |awk '/vai4/{gsub(/"|vai4|,|:/,"",$0);printf $0}'`
-I2_YESNO=`echo ${HUM} ${TEMP} ${VAI1} ${VAI2} ${VAI3} ${VAI4} | awk 'BEGIN{YESNO="NO"};/none/{YESNO="YES"};END{printf("%s",YESNO)}'`
+TEMP=`cat ${DIREADJSON} | jq  -r .i2ctemp.temp | mawk '{gsub(/℃/,"",$0);printf $0}'`
+HUM=`cat ${DIREADJSON} | jq  -r .i2ctemp.hum | mawk '{gsub(/％/,"",$0);printf $0}'`
+VAI1=`cat ${DIREADJSON} |mawk '/vai1/{gsub(/"|vai1|,|:/,"",$0);printf $0}'`
+VAI2=`cat ${DIREADJSON} |mawk '/vai2/{gsub(/"|vai2|,|:/,"",$0);printf $0}'`
+VAI3=`cat ${DIREADJSON} |mawk '/vai3/{gsub(/"|vai3|,|:/,"",$0);printf $0}'`
+VAI4=`cat ${DIREADJSON} |mawk '/vai4/{gsub(/"|vai4|,|:/,"",$0);printf $0}'`
+I2_YESNO=`echo ${HUM} ${TEMP} ${VAI1} ${VAI2} ${VAI3} ${VAI4} | mawk 'BEGIN{YESNO="NO"};/none/{YESNO="YES"};END{printf("%s",YESNO)}'`
 [ "${I2_YESNO}" = "YES" ] && exit
 [ -z "${HUM}" -o -z "${TEMP}" -o -z "${VAI1}" -o  -z "${VAI2}" -o -z "${VAI3}" -o -z "${VAI4}" ] && exit
 if [ ! -e ${DSFILE} ];then

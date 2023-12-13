@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 echo -en '
 <HTML>
@@ -9,7 +9,7 @@ echo -en '
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.osdn.jp">
 <META http-equiv="Refresh" content="0;URL=/remote-hand/wait_for.cgi">
-<META NAME="Build" content="2018.2.24">
+<META NAME="Build" content="2023.11.10">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Setting in the system e-mail</TITLE>
 <script type="text/javascript">
@@ -61,9 +61,9 @@ if [ "$MAIL_SELECT" = "sendmail" ];then
   SENDMAIL_CF=/etc/mail/sendmail.cf
   tSENDMAIL_CF=/www/remote-hand/tmp/.sendmail.cf.tmp
   if [ "$MAIL_SERVER" != "not.foward" ];then
-    cat \$SENDMAIL_CF | awk '/^DS/{sub(/DS.+/,"DS${MAIL_SERVER}\n",\$0)};{print \$0}' > \$tSENDMAIL_CF
+    cat \$SENDMAIL_CF | mawk '/^DS/{sub(/DS.+/,"DS${MAIL_SERVER}\n",\$0)};{print \$0}' > \$tSENDMAIL_CF
   else
-    cat \$SENDMAIL_CF | awk '/^DS/{sub(/DS.+/,"DS",$0)}};{print \$0}' > \$tSENDMAIL_CF
+    cat \$SENDMAIL_CF | mawk '/^DS/{sub(/DS.+/,"DS",$0)}};{print \$0}' > \$tSENDMAIL_CF
   fi
   mv \$tSENDMAIL_CF \$SENDMAIL_CF
   (cd /pepolinux/mail ;rm ping_watch_mail; ln -s  ping_watch_mail.sendmail ping_watch_mail)

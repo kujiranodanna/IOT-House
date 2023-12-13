@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.23
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -8,10 +8,9 @@ echo -en '
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
-<META NAME="copyright" content="pepolinux.osdn.jp">
-<META NAME="build" content="2022.4.15">
-<META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
-<META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
+<META NAME="copyright" content="pepolinux.com">
+<META NAME="build" content="2023.11.23">
+<META NAME="reply-to" content="izamu@pepolinux.com">
 <TITLE>DIO settings</TITLE>
 <script type="text/javascript">
 function blink() {
@@ -35,7 +34,7 @@ function blink() {
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
 <TR ALIGN=CENTER class="blink"><TD>Processing DIO settings</TD></TR></TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2022-2025 pepolinux.osdn.jp</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.com</TD><TR></TABLE>
 </BODY>'
 
 CONV=./conv_get.cgi
@@ -54,6 +53,16 @@ MODEM_DEV=$DIR/.modem
 TCOSRD=$DIR/.tocos_read_data
 TEMPERFILE=$DIR/temperature
 DIORD=$DIR/.di_read_data
+CMD=$DIR/dio_set_start_daemon.pepocmd
+TIME_STOP_DAEMON=1000
+cat >$CMD<<END
+#!/bin/bash
+svc -d /www/pepolinux/gpiod
+svc -d /www/pepolinux/pifaced
+msleep $TIME_STOP_DAEMON
+svstat /www/pepolinux/pifaced
+END
+msleep $TIME_STOP_DAEMON
 SCANTIME=300
 rm -f $tALIAS_DI $tALIAS_DO $tDOWD $sDOWD
 if [ -e "$ALIAS_DI" ];then
@@ -104,8 +113,8 @@ else
     echo "piface_ip"="" >>${tALIAS_DI}
   fi
 fi
-
 for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16; do
+  [ -z "${alias_do_reg[$n]}" ] && continue
   if [ "${do[$n]}" != "none" ];then
     if [ -e "$DOWD" ];then
       cat "$DOWD" | grep -F -v [$n] > "$tDOWD"
@@ -123,7 +132,7 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16; do
     fi
     echo "alias_do[$n]=""${alias_do[$n]}" >>"$ALIAS_DO"
   fi
-  if [ "${alias_do_reg[$n]}" == "del" ];then
+  if [ "${alias_do_reg[$n]}" = "del" ];then
     if [ -e "$ALIAS_DO" ];then
       cat "$ALIAS_DO" | grep -F -v [$n] > "$tALIAS_DO"
       mv "$tALIAS_DO" "$ALIAS_DO"
@@ -131,7 +140,9 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16; do
   fi
   unset do[$n]
 done
+[ -e "$tALIAS_DO" ] && mv "$tALIAS_DO" "$ALIAS_DO"
 for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25; do
+   [ -z "${alias_di_reg[$n]}" ] && continue
   if [ "${alias_di_reg[$n]}" != "none" ];then
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI" | grep -F -v [$n] > "$tALIAS_DI"
@@ -140,14 +151,14 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25; do
     echo "alias_di[$n]=""${alias_di[$n]}" >> "$ALIAS_DI"
     echo "slice_ai[$n]=""${slice_ai[$n]}" >> "$ALIAS_DI"
   fi
-  if [ "${alias_di_reg[$n]}" == "del" ];then
+  if [ "${alias_di_reg[$n]}" = "del" ];then
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI" | grep -F -v [$n] > "$tALIAS_DI"
       mv "$tALIAS_DI" "$ALIAS_DI"
     fi
   fi
 done
-mv "$tALIAS_DI" "$ALIAS_DI"
+[ -e "$tALIAS_DI" ] && mv "$tALIAS_DI" "$ALIAS_DI"
 n=0
 while [ $n -lt 34 ];do
   case $n in
@@ -171,14 +182,14 @@ while [ $n -lt 34 ];do
   esac
   if [ "${alias_do_reg[$m]}" != "none" ];then
     if [ -e "$ALIAS_VDO" ];then
-      cat cat "$ALIAS_VDO" | grep -F -v [$n] > "$tALIAS_VDO"
+      cat "$ALIAS_VDO" | grep -F -v [$n] > "$tALIAS_VDO"
       mv "$tALIAS_VDO" "$ALIAS_VDO"
     fi
     echo "alias_vdo[$n]=""${alias_vdo[$n]}" >> "$ALIAS_VDO"
   fi
-  if [ "${alias_do_reg[$m]}" == "del" ];then
+  if [ "${alias_do_reg[$m]}" = "del" ];then
     if [ -e "$ALIAS_VDO" ];then
-      cat cat "$ALIAS_VDO" | grep -F -v [$n] > "$tALIAS_VDO"
+      cat "$ALIAS_VDO" | grep -F -v [$n] > "$tALIAS_VDO"
       mv "$tALIAS_VDO" "$ALIAS_VDO"
     fi
   fi
@@ -245,10 +256,12 @@ EOF
 END
 echo -en '
 </HTML>'
-if [ $DI_TTY = "gpio" ];then
-  ./pi_int_gpio.cgi
-elif [ $DI_TTY = "piface" ];then
-  ./pi_int.cgi
-elif [ $DI_TTY = "cp2112" ];then
-  ./pi_int_cp2112.cgi
-fi
+CMD=$DIR/dio_set_start_daemon.pepocmd
+cat >$CMD<<END
+#!/bin/bash
+svc -u /www/pepolinux/gpiod
+svc -u /www/pepolinux/pifaced
+END
+TIME_STOP_DAEMON=4000
+msleep $TIME_STOP_DAEMON
+./wait_for.cgi

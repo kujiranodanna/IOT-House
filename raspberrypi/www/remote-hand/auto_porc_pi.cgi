@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.osdn.jp">
-<META NAME="build" content="2022.4.26">
+<META NAME="build" content="2023.11.10">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Automatic process settings</TITLE>
@@ -349,7 +349,7 @@ END
     WORK[4]="${WORK[4]}/${WORK[5]}"
   fi
   if [ -e $PING_CRON ];then
-    cat $PING_CRON | awk "! /($CRON_NAME)/{print}" > $tPING_CRON
+    cat $PING_CRON | mawk "! /($CRON_NAME)/{print}" > $tPING_CRON
     mv $tPING_CRON $PING_CRON
     echo "${WORK[2]}" "${WORK[4]}" "${WORK[6]}" "${WORK[7]}" "${WORK[8]}" "cp -f $DO_EXEC $CMD" >>"$PING_CRON"
   elif [ ! -e $PING_CRON ];then
@@ -357,24 +357,24 @@ END
    fi
   crontab $PING_CRON
   if [ -e $AUTO_ACT_LIST ];then
-    cat $AUTO_ACT_LIST | awk "! /($CRON_COND_NAME|$CRON_NAME)/{print}" > $tAUTO_ACT_LIST
-    cat $QUERY | awk "/($CRON_COND_NAME|$CRON_NAME)/{print}" >> $tAUTO_ACT_LIST
+    cat $AUTO_ACT_LIST | mawk "! /($CRON_COND_NAME|$CRON_NAME)/{print}" > $tAUTO_ACT_LIST
+    cat $QUERY | mawk "/($CRON_COND_NAME|$CRON_NAME)/{print}" >> $tAUTO_ACT_LIST
     mv $tAUTO_ACT_LIST $AUTO_ACT_LIST
   elif [ ! -e $AUTO_ACT_LIST ];then
-    cat $QUERY | awk "/($CRON_COND_NAME|$CRON_NAME)/{print}" > $AUTO_ACT_LIST
+    cat $QUERY | mawk "/($CRON_COND_NAME|$CRON_NAME)/{print}" > $AUTO_ACT_LIST
   fi
 }
 
 auto_cron_del() {
   DO_EXEC=$DIR/$CRON_NAME
   if [ -e $AUTO_ACT_LIST ];then
-    cat $AUTO_ACT_LIST | awk "! /($CRON_COND_NAME|$CRON_NAME)/{print}" > $tAUTO_ACT_LIST
+    cat $AUTO_ACT_LIST | mawk "! /($CRON_COND_NAME|$CRON_NAME)/{print}" > $tAUTO_ACT_LIST
     mv $tAUTO_ACT_LIST $AUTO_ACT_LIST
     WLEN=`cat $AUTO_ACT_LIST | wc -l`
     [ $WLEN = 0 ] && rm -f $AUTO_ACT_LIST
   fi
   if [ -e $PING_CRON ];then
-    cat $PING_CRON | awk "! /($CRON_NAME)/{print}" > $tPING_CRON
+    cat $PING_CRON | mawk "! /($CRON_NAME)/{print}" > $tPING_CRON
     mv $tPING_CRON $PING_CRON
     LEN=`cat $PING_CRON | wc -l`
     if [ $LEN != 0 ];then
@@ -649,10 +649,3 @@ elif [ "${auto_act19_val[9]}" = "del" ];then
 fi
 echo -en '
 </HTML>'
-if [ $DI_TTY = "gpio" ];then
-  ./pi_int_gpio.cgi
-elif [ $DI_TTY = "piface" ];then
-  ./pi_int.cgi
-elif [ $DI_TTY = "cp2112" ];then
-  ./pi_int_cp2112.cgi
-fi

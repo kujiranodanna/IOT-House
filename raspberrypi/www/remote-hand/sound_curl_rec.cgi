@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.6.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.osdn.jp">
-<META NAME="build" content="2023.6.8>
+<META NAME="build" content="2023.11.10>
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Upload Sound File for curl</TITLE>
@@ -56,20 +56,20 @@ trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
 CMD=$DIR/sound_curl_file_$$.pepocmd
 cat >$tSOUND_FILE
 if [ -e $tSOUND_FILE ];then
-  dd if=$tSOUND_FILE bs=1 count=128 |awk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE
+  dd if=$tSOUND_FILE bs=1 count=128 |mawk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE
   . $tFILE  
   if [ $filesize -gt $MAXFILESIZE ];then
     rm $tSOUND_FILE
     exit
   fi
-  cat  $tSOUND_FILE |sed -n 6,6p |awk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE
+  cat  $tSOUND_FILE |sed -n 6,6p |mawk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE
   . $tFILE
 else
   exit
 fi
 PLAYFILE=$DIR/$filename
-MP3_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
-WAV_YES_NO=$(echo $filename |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
+MP3_YES_NO=$(echo $filename |mawk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
+WAV_YES_NO=$(echo $filename |mawk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
 cat >$CMD<<END
 #!/bin/bash
 if [ ! -e $LOCK ];then

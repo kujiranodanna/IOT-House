@@ -1,10 +1,10 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.2.24 update 2018.10.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.2.24 update 2023.11.10
 # utilities for QUERY_STRING
 QUERY_CMD=/www/remote-hand/tmp/.QUERY_STRING.cmd
 #echo "$QUERY_STRING" >/www/remote-hand/tmp/QUERY_STRING
-echo "$QUERY_STRING" | awk '
+echo "$QUERY_STRING" | mawk '
   BEGIN{FS="&"}
   {
     for ( ct =1 ; ct <= NF ; ct++ ) {

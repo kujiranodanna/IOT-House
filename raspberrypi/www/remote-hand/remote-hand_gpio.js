@@ -1,12 +1,12 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.9.17
-* remote-hand_pi_gpio.js  ver0.21 2022.9.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.19
+* remote-hand_pi_gpio.js  ver0.21 2022.11.19
 */
 function blink(){
-  if (!document.all){ return; }
-  for (var i = 0; i < document.all.length; i++){
-    obj = document.all(i);
+  if (!document){ return; }
+  for (var i = 0; i < document.length; i++){
+    obj = document(i);
     if (obj.className == "blink"){
       if (obj.style.visibility == "visible"){
         obj.style.visibility = "hidden";
@@ -21,8 +21,11 @@ function blink(){
 var smapho_reload_tm = 10000;
 var unsmapho_reload_tm = 60000;
 var recognition = new webkitSpeechRecognition();
-var recognition_state = "Stop"
 var recognizing = false;
+var recognition_state = "Stop"
+var recognition_continuous = false;
+var tmp_continuous = "No";
+var regex = "ジャービス"; // Wake Up Word
 // It will initiate the voice recognition
 function startWebVoiceRecognition(){
   if (!('webkitSpeechRecognition' in window)){
@@ -38,100 +41,163 @@ function startWebVoiceRecognition(){
         recognition.lang = "ja";
       }
     }
-   recognition.continuous = true;
-//   recognition.continuous = false;
-
-// Do not process intermediate results
-   recognition.interimResults = false;
-// recognition.interimResults = true;
-    recognition.start();
-    recognizing = true;
-    recognition_state = "Please talk";
-    initWebVoice(recognition_state);
+    var tmp_continuous = $("#voice_continuous").val();
+    if (tmp_continuous == "Yes"){
+      recognition_continuous = true;
     }
+    else {
+      recognition_continuous = false;
+    }
+// Do not continuous true
+    recognition.continuous = false;
+// Do not process intermediate results
+    recognition.interimResults = false;
+    if (recognizing === false){
+      recognition.start();
+      recognizing = true;
+      recognition_state = "Please talk";
+      initWebVoice(recognition_state);
+    }
+  }
 }
-
 // In recognition of speech
 recognition.onsoundstart = function(){
   if (recognizing === false){
     recognition.stop();
-    recognition_state = "During stop processing";
+    recognition_state = "onsoundstart, During stop processing";
   }
   else {
-    recognition_state = "Recognition in";
+    recognition_state = "onsoundstart, Recognition in";
   }
   $("#recognition_state").text(recognition_state);
 }
 // It does not recognize match
 recognition.onnomatch = function(){
-  recognition_state = "Please try again";
-  $("#recognition_state").text(recognition_state);
+  recognition.stop();
+  if (recognition_continuous === false){
+    recognition.stop();
+    recognizing = false;
+    recognition_state = "onnomatch, Audio was not recognized";
+    $("#recognition_state").text(recognition_state);
+  }
+  else {
+    recognition_state = "onnomatch, Audio was not recognized, restart ";
+    $("#recognition_state").text(recognition_state);
+    recognizing = false;
+    stopWebVoiceRecognition();
+    setTimeout(function(){
+      startWebVoiceRecognition();
+    },5000);
+  }
 }
 // Any error
-recognition.onerror= function(event){
-  recognition.stop();
-  recognizing = false;
-  recognition_state = "Under suspension";
-  $("#recognition_state").text(recognition_state);
+recognition.onerror = function(event){
+  if (recognition_continuous === false){
+    recognition.stop();
+    recognizing = false;
+    recognition_state = "onerror " + event.error + ":" + event.message;
+    $("#recognition_state").text(recognition_state);
+  }
+  else {
+    recognition_state = "oneror "  + event.error + ":" + event.message + " " + " but processing";
+    $("#recognition_state").text(recognition_state);
+    recognizing = false;
+    stopWebVoiceRecognition();
+    setTimeout(function(){
+      startWebVoiceRecognition();
+    },5000);
+  }
 }
 // Recognition stop
 recognition.onsoundend = function(){
-  recognition.stop;
-  recognizing = false;
-  recognition_state = "Under suspension";
-  $("#recognition_state").text(recognition_state);
+  if (recognition_continuous === false){
+    recognition.stop();
+    recognizing = false;
+    recognition_state = "onsoundend, no longer receive sound";
+    $("#recognition_state").text(recognition_state);
+  }
+  else {
+    recognition_state = "onsoundend, no longer receive sound but processing";
+    $("#recognition_state").text(recognition_state);
+    recognizing = false;
+    stopWebVoiceRecognition();
+    setTimeout(function(){
+      startWebVoiceRecognition();
+    },5000);
+  }
 }
 recognition.onresult = function(event){
 // Recognition end event
   var results = event.results;
   var results_voice = "";
-  recognition_state = "It is processed";
+  recognition_state = "onresult, some sound detected processing";
   $("#recognition_state").text(recognition_state);
   if (event.results.length > 0){
     results_voice = results_voice + (results[0][0].transcript);
-  }
-  else return;
+  } else return;
+  recognizing = false;
+  stopWebVoiceRecognition();
   var voice_lang_val = $("#voice_lang").val();
-  if (recognizing === false){
-    recognition_state = "It is processed";
-    initWebVoice(recognition_state);
+  if (voice_lang_val != "en"){
+    $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="' + results_voice + '" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="ja" SELECTED>Japanese<OPTION VALUE="en">English</SELECT>');
   }
   else {
-    if (voice_lang_val != "en"){
-      $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="' + results_voice + '" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="ja" SELECTED>Japanese<OPTION VALUE="en">English</SELECT>');
+    $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="' + results_voice + '" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="en" SELECTED>English<OPTION VALUE="ja">Japanese</SELECT>');
+  }
+  var tmp_computer_name = $("#computer_name").val();
+  if (tmp_computer_name != ""){
+    regex = tmp_computer_name;
+  }
+  else {
+    tmp_computer_name = regex;
+  }
+  setTimeout(function(){
+    recognition_state = "onresult, processing the sound";
+    $("#recognition_state").text(recognition_state);
+  },2000);
+  $("#computer_name").text(regex);
+  recognition_state = results_voice;
+  $("#recognition_state").text(recognition_state);
+  if (recognition_continuous === true){
+    if (results_voice.match((regex))){
+      var send_voice = results_voice.replace(regex,'');
+      update_do("voice_sel",send_voice);
     }
-    else {
-      $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="' + results_voice + '" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="en" SELECTED>English<OPTION VALUE="ja">Japanese</SELECT>');
-    }
-    update_do("voice_sel",results_voice);
-    stopWebVoiceRecognition();
-/*    setTimeout(function(){
-      recognition_state = "Please talk";
-      $("#recognition_state").text(recognition_state);
-    },5000);
-*/
-　 }
-}
-// End the speech recognition
-function stopWebVoiceRecognition(){
-  if (recognizing === true){
-    recognition_state = "Stop";
-    recognition.stop;
-    recognizing = false;
-　　　initWebVoice(recognition_state);
+    setTimeout(function(){
+      startWebVoiceRecognition();
+    },15000);
   }
   else {
     recognition_state = "Stop";
     $("#recognition_state").text(recognition_state);
+    update_do("voice_sel",results_voice);
+    return;
   }
 }
-function initWebVoice(state){
-  var voice_lang_val = $("#voice_lang").val();
-  if (voice_lang_val != "en"){
-    $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="ja" SELECTED>Japanese<OPTION VALUE="en">English</SELECT>');
-    } else {
-    $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="en" SELECTED>English<OPTION VALUE="ja">Japanese</SELECT>');
+// End the speech recognition
+function stopWebVoiceRecognition(){
+  if (recognizing === false){
+    recognition_state = "Stop";
+    recognition.stop;
+    recognizing = false;
+    initWebVoice(recognition_state);
   }
+  else {
+    recognition_state = "Stop";
+  }
+  setTimeout(function(){
+    $("#recognition_state").text(recognition_state);
+  },5000);
+}
+function initWebVoice(state){
+  setTimeout(function(){
+    var voice_lang_val = $("#voice_lang").val();
+    if (voice_lang_val != "en"){
+      $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="ja" SELECTED>Japanese<OPTION VALUE="en">English</SELECT>');
+      } else {
+      $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="en" SELECTED>English<OPTION VALUE="ja">Japanese</SELECT>');
+    }
+    },5000);
   $("#recognition_state").text(state);
 }
 function CheckBrowser(){
@@ -161,26 +227,39 @@ function speak_exec(voice,lang){
 }
 function speak_main(voice,lang){
   speak_exec(voice,lang);
-  $(function(){
+//  $(function(){
     setTimeout(function(){
       if (lang != "en"){
         $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="ja" SELECTED>Japanese<OPTION VALUE="en">English</SELECT>');
         } else {
         $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="en" SELECTED>English<OPTION VALUE="ja">Japanese</SELECT>');
       }
-    },5000);
+//    },5000);
   });
 }
 function google_speak(voice_t,voice_l){
   if (voice_l == "en"){
-    voice_t = "OK to run the" + voice_t;
+    if (recognition_continuous === true){
+      voice_t = "OK";
+    }
+    else {
+      voice_t = "OK to run the" + voice_t;
+    }
   }
   else {
-    voice_t = "" + voice_t + "を実行します。";
+/*    if (recognition_continuous === true){
+      voice_t = "　は　い";
+    }
+    else {
+      voice_t = "" + voice_t + "を実行します。";
+    }
+*/
+voice_t = "" + voice_t + "を実行します。";
   }
   speak_main(voice_t,voice_l);
 }
 function google_speak_none(voice_t,voice_l){
+  if (recognition_continuous === true) return;
   if (voice_l == "en"){
 //    voice_t = voice_t + " do not understand";
       voice_t = "Because" + voice_t + "can not understand, I searched it with google";
@@ -189,12 +268,12 @@ function google_speak_none(voice_t,voice_l){
     var search_val = voice_t;
     voice_t = voice_t + "、をウェブで検索しました";
   }
-    var child_url = "https://www.google.com/search?q=" + search_val;
-      var google_search = window.open(child_url,"width=640,height=480,resizable=yes,scrollbars=no");
-      setTimeout(function () {
-        google_search .close();
-      },15000);
-    speak_main(voice_t,voice_l);
+  var child_url = "https://www.google.com/search?q=" + search_val;
+  var google_search = window.open(child_url,"width=640,height=480,resizable=yes,scrollbars=no");
+  setTimeout(function () {
+    google_search .close();
+  },15000);
+  speak_main(voice_t,voice_l);
 }
 
 // IR data registration processing of IRKit
@@ -733,7 +812,7 @@ function voice_do(do_sel,results_voice){
       if (voice_str == "写真"　|| voice_str == "写真を撮って"　|| voice_str == "写真とって"　|| voice_str == "写真見せて"　||
       　　voice_str == "写真を見せて"　|| voice_str == "写真みせて"){
         tdo_val = "start_picture";
-      }            　
+      }
       if (voice_str == "動画" || voice_str == "動画を撮って" || voice_str == "動画撮って" ||  voice_str == "動画見せて" ||
         voice_str == "動画を見せて"　|| voice_str == "動画をみせて"){
         tdo_val = "start_video";
@@ -886,6 +965,9 @@ function voice_do(do_sel,results_voice){
         if (str == "none") continue;
         if (voice_lang == "en"){
           str = str.toLowerCase();
+        } else {
+          voice_str = voice_str.replace('の','');
+          if (str != undefined) str = str.replace('の','');
         }
         tvoice_ck = str　+ "オン";
         if (tvoice_ck == voice_str){
@@ -1527,6 +1609,7 @@ function voice_do(do_sel,results_voice){
       }
       if (tdo_val == "none"){
         google_speak_none(voice_tmp,voice_lang);
+
         return;
       }
       if (tdo_val == "input_disp"){

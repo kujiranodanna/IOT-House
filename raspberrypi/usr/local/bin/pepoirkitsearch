@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.9.14 update 2020.12.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.9.14 update 2023.11.10
 # pepoirkitsearch is a tool to find the IRKit in rasberry_pi
 WORK=/www/remote-hand/tmp/irkit_out_document
 prog=pepoirkitsearch
@@ -21,7 +21,7 @@ do
   rm ${pidfile}
 done
 echo -en $$ > ${pidfile}
-IP=`/sbin/ip addr |awk  '/192.168./{gsub("addr:","");split($2,I,".");printf("%s.%s.%s",I[1],I[2],I[3])}'`
+IP=`/sbin/ip addr |mawk  '/192.168./{gsub("addr:","");split($2,I,".");printf("%s.%s.%s",I[1],I[2],I[3])}'`
 if [ -z $IP ];then
   echo -n 0
   exit

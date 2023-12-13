@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2022.4.15 for i386 & raspberry pi.
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2023.11.10 for i386 & raspberry pi.
 # pepotocsctl for contorl TWE-Lite DIP:Ver1.6 or later(monowireless engine) digital-IN/digital-OUT signal.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 usage(){
@@ -185,39 +185,39 @@ read_temp_hum(){
     echo -en "-1" >/dev/stderr
     return
   fi
-  CHECK_DATA=`echo -en ${RD}|awk '{printf (substr($1,2,length($1)-2))}'`
-  RDCHECKPG_SUM=`echo -en ${RD} |awk '{printf(substr($1,length($1)-2,2))}'`
+  CHECK_DATA=`echo -en ${RD}|mawk '{printf (substr($1,2,length($1)-2))}'`
+  RDCHECKPG_SUM=`echo -en ${RD} |mawk '{printf(substr($1,length($1)-2,2))}'`
   SUM=`${CHECKPG_SUM} ${CHECK_DATA}`
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
     return
   fi
-  HUMTMP=`echo -en ${RD} |awk '{printf(substr($1,18,4))}'`
+  HUMTMP=`echo -en ${RD} |mawk '{printf(substr($1,18,4))}'`
   if [ $HUMTMP = $ZEROHUM ];then
     echo -en "-1" >/dev/stderr
   return
   fi
-  COMMAND=`echo -en ${RD} |awk '{printf(substr($1,8,2))}'`
+  COMMAND=`echo -en ${RD} |mawk '{printf(substr($1,8,2))}'`
   if [ $COMMAND != $I2CREAD ];then
     echo -en "-1" >/dev/stderr
     return
   fi
-  RESULT=`echo -en ${RD} |awk '{printf(substr($1,10,2))}'`
+  RESULT=`echo -en ${RD} |mawk '{printf(substr($1,10,2))}'`
   if [ $RESULT != $I2COK ];then
     echo -en "-1" >/dev/stderr
   return
   fi
-  NOWDATE=`date '+%Y/%m/%d,%H:%M:%S'|awk '{printf("%s",$1)}'`
-  HUMH=`echo -en ${RD} |awk '{printf(substr($1,18,2))}'`
-  HUMLH=`echo -en ${RD} |awk '{printf(substr($1,20,1))}'`
-  HUMLL=`echo -en ${RD} |awk '{printf(substr($1,21,1))}'`
+  NOWDATE=`date '+%Y/%m/%d,%H:%M:%S'|mawk '{printf("%s",$1)}'`
+  HUMH=`echo -en ${RD} |mawk '{printf(substr($1,18,2))}'`
+  HUMLH=`echo -en ${RD} |mawk '{printf(substr($1,20,1))}'`
+  HUMLL=`echo -en ${RD} |mawk '{printf(substr($1,21,1))}'`
   DHUMH=$((0x$HUMH * 256))
   DHHML=$((0x$HUMLH * 16))
   HUM=$(($(($(($DHUMH + $DHHML)) + 0x$HUMLL)) / 10))
   HUMMOD=$(($(($(($DHUMH + $DHHML)) + 0x$HUMLL)) % 10))
-  TEMPH=`echo -en ${RD} |awk '{printf(substr($1,22,2))}'`
-  TEMPLH=`echo -en ${RD} |awk '{printf(substr($1,24,1))}'`
-  TEMPLL=`echo -en ${RD} |awk '{printf(substr($1,25,1))}'`
+  TEMPH=`echo -en ${RD} |mawk '{printf(substr($1,22,2))}'`
+  TEMPLH=`echo -en ${RD} |mawk '{printf(substr($1,24,1))}'`
+  TEMPLL=`echo -en ${RD} |mawk '{printf(substr($1,25,1))}'`
   if [ $((0x$TEMPH & 0x80)) != 0 ];then
     TEMPH=$((0x$TEMPH & 0x7F))
     TMP="minus"
@@ -232,7 +232,7 @@ read_temp_hum(){
     echo -en "-1"  >/dev/stderr
     return
   fi
-  echo -en ${NOWDATE} ${TMP} ${TEMP} ${TEMPMOD} ${HUM} ${HUMMOD}|awk '{
+  echo -en ${NOWDATE} ${TMP} ${TEMP} ${TEMPMOD} ${HUM} ${HUMMOD}|mawk '{
   I=""
   if ($2 != "plus") I="-"
   printf("%s,%s%s.%s℃,%s.%s％",$1,I,$3,$4,$5,$6)}'>/dev/stderr
@@ -312,14 +312,14 @@ read_dio(){
     echo -en "-1" >/dev/stderr
     return
   fi
-  CHECK_DATA=`echo -en ${RD}|awk '{printf (substr($1,2,length($1)-2))}'`
-  RDCHECKPG_SUM=`echo -en ${RD} |awk '{printf(substr($1,length($1)-1,2))}'`
+  CHECK_DATA=`echo -en ${RD}|mawk '{printf (substr($1,2,length($1)-2))}'`
+  RDCHECKPG_SUM=`echo -en ${RD} |mawk '{printf(substr($1,length($1)-1,2))}'`
   SUM=`${CHECKPG_SUM} ${CHECK_DATA}`
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
   return
   fi
-  TMP=`echo -en ${RD} | awk '{i=substr(\$0,34,2);printf i}'`
+  TMP=`echo -en ${RD} | mawk '{i=substr(\$0,34,2);printf i}'`
   if [ $1 -eq 0 ];then
     DATA=$((0x${TMP} & 0x${CH}))
     DATA=$(($DATA ^ 0x0f))
@@ -339,27 +339,27 @@ read_ai(){
     echo -en "-1" >/dev/stderr
     return
   fi
-  CHECK_DATA=`echo -en ${RD}|awk '{printf (substr($1,2,length($1)-2))}'`
-  RDCHECKPG_SUM=`echo -en ${RD} |awk '{printf(substr($1,length($1)-1,2))}'`
+  CHECK_DATA=`echo -en ${RD}|mawk '{printf (substr($1,2,length($1)-2))}'`
+  RDCHECKPG_SUM=`echo -en ${RD} |mawk '{printf(substr($1,length($1)-1,2))}'`
   SUM=`${CHECKPG_SUM} ${CHECK_DATA}`
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
   return
   fi
-  TMP=`echo -en ${RD} | awk '{i=substr(\$0,46,2);printf i}'`
-  A1=`echo -en ${RD} | awk '{i=substr(\$0,38,2);printf i}'`
+  TMP=`echo -en ${RD} | mawk '{i=substr(\$0,46,2);printf i}'`
+  A1=`echo -en ${RD} | mawk '{i=substr(\$0,38,2);printf i}'`
   VOLT=$((0x$A1 * 4))
   AISUB=$(($TMP & 0x03))
   A1VOLT=$(($(($VOLT + $AISUB)) * 4))
-  A2=`echo -en ${RD} | awk '{i=substr(\$0,40,2);printf i}'`
+  A2=`echo -en ${RD} | mawk '{i=substr(\$0,40,2);printf i}'`
   AISUB=$(($(($TMP >> 2 )) & 0x03))
   VOLT=$((0x$A2 * 4))
   A2VOLT=$(($(($VOLT + $AISUB)) * 4))
-  A3=`echo -en ${RD} | awk '{i=substr(\$0,42,2);printf i}'`
+  A3=`echo -en ${RD} | mawk '{i=substr(\$0,42,2);printf i}'`
   AISUB=$(($(($TMP >> 4 )) & 0x03))
   VOLT=$((0x$A3 * 4))
   A3VOLT=$(($(($VOLT + $AISUB)) * 4))
-  A4=`echo -en ${RD} | awk '{i=substr(\$0,44,2);printf i}'`
+  A4=`echo -en ${RD} | mawk '{i=substr(\$0,44,2);printf i}'`
   AISUB=$(($(($TMP >> 6 )) & 0x03))
   VOLT=$((0x$A4 * 4))
   A4VOLT=$(($(($VOLT + $AISUB)) * 4))
@@ -390,7 +390,7 @@ EOF
 cmd_di(){
   local RD TMP DATA
   RD=$1
-  TMP=`echo -en ${RD} | awk '{i=substr(\$0,34,2);printf i}'`
+  TMP=`echo -en ${RD} | mawk '{i=substr(\$0,34,2);printf i}'`
   DATA=$((0x${TMP} & 0x0F))
   DATA=$(($DATA ^ 0x0F))
   printf "%1x" ${DATA} >/dev/stderr
@@ -398,20 +398,20 @@ cmd_di(){
 cmd_ai(){
   local DATA RD TMP VOLT A1VOLT A2VOLT A3VOLT A4VOLT A1 A2 A3 A4 AISUB
   RD=$1
-  TMP=`echo -en ${RD} | awk '{i=substr(\$0,46,2);printf i}'`
-  A1=`echo -en ${RD} | awk '{i=substr(\$0,38,2);printf i}'`
+  TMP=`echo -en ${RD} | mawk '{i=substr(\$0,46,2);printf i}'`
+  A1=`echo -en ${RD} | mawk '{i=substr(\$0,38,2);printf i}'`
   VOLT=$((0x$A1 * 4))
   AISUB=$(($TMP & 0x03))
   A1VOLT=$(($(($VOLT + $AISUB)) * 4))
-  A2=`echo -en ${RD} | awk '{i=substr(\$0,40,2);printf i}'`
+  A2=`echo -en ${RD} | mawk '{i=substr(\$0,40,2);printf i}'`
   AISUB=$(($(($TMP >> 2 )) & 0x03))
   VOLT=$((0x$A2 * 4))
   A2VOLT=$(($(($VOLT + $AISUB)) * 4))
-  A3=`echo -en ${RD} | awk '{i=substr(\$0,42,2);printf i}'`
+  A3=`echo -en ${RD} | mawk '{i=substr(\$0,42,2);printf i}'`
   AISUB=$(($(($TMP >> 4 )) & 0x03))
   VOLT=$((0x$A3 * 4))
   A3VOLT=$(($(($VOLT + $AISUB)) * 4))
-  A4=`echo -en ${RD} | awk '{i=substr(\$0,44,2);printf i}'`
+  A4=`echo -en ${RD} | mawk '{i=substr(\$0,44,2);printf i}'`
   AISUB=$(($(($TMP >> 6 )) & 0x03))
   VOLT=$((0x$A4 * 4))
   A4VOLT=$(($(($VOLT + $AISUB)) * 4))
@@ -426,8 +426,8 @@ read_di_ai(){
     echo -en "-1" >/dev/stderr
     return
   fi
-  CHECK_DATA=`echo -en ${RD}|awk '{printf (substr($1,2,length($1)-2))}'`
-  RDCHECKPG_SUM=`echo -en ${RD} |awk '{printf(substr($1,length($1)-1,2))}'`
+  CHECK_DATA=`echo -en ${RD}|mawk '{printf (substr($1,2,length($1)-2))}'`
+  RDCHECKPG_SUM=`echo -en ${RD} |mawk '{printf(substr($1,length($1)-1,2))}'`
   SUM=`${CHECKPG_SUM} ${CHECK_DATA}`
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr
@@ -447,8 +447,8 @@ read_di_ai_wait(){
     return
   fi
   TMP=`echo -en ${RD} | wc -c`
-  CHECK_DATA=`echo -en ${RD}|awk '{printf (substr($1,2,length($1)-2))}'`
-  RDCHECKPG_SUM=`echo -en ${RD} |awk '{printf(substr($1,length($1)-1,2))}'`
+  CHECK_DATA=`echo -en ${RD}|mawk '{printf (substr($1,2,length($1)-2))}'`
+  RDCHECKPG_SUM=`echo -en ${RD} |mawk '{printf(substr($1,length($1)-1,2))}'`
   SUM=`${CHECKPG_SUM} ${CHECK_DATA}`
   if [ ${RDCHECKPG_SUM} != ${SUM} ];then
     echo -en "-1" >/dev/stderr

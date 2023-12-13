@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.2.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.18
 PATH=$PATH:/usr/local/bin
 # get ppp_user name & ppp mode
 DIR=/www/remote-hand/tmp
@@ -13,7 +13,15 @@ LOCKFILE="$DIR/LCK..wait_for.cgi"
 LOCKPID="$DIR/LCK..wait_for.cgi.pid"
 LOCKCGI="$DIR/LCK..pi_int.cgi"
 LOCKCGIPID="$DIR/LCK..pi_int.cgi.pid"
-HOMEPAGE=./pi_int.html
+RASPI=$(cat /proc/cpuinfo| grep " Raspberry Pi"| wc -l)
+if [ $RASPI = 1 ];then
+  HOMEPAGE="pi_int.html"
+  HOMEPAGE_CGI="pi_int_gpio.cgi"
+  HOMEPAGE_CGI_PI="pi_int.cgi"
+else
+  HOMEPAGE="pi_int_cp2112.html"
+  HOMEPAGE_CGI="pi_int_cp2112.cgi"
+fi
 RMHOMEPAGE="NO"
 NOWTIME=`date +%s`
 JITTER=5
@@ -58,15 +66,16 @@ if [ -e $GMAIL ];then
   [ $(($NOWTIME - $timeSTAMP)) -lt $JITTER ] && RMHOMEPAGE="YES"
 fi
 [ -e $ALIAS_DI ] && . $ALIAS_DI
+[ -z "$DI_TTY" ] && DI_TTY="gpio"
 if [ $DI_TTY != "gpio" ];then
-   PI_INT=pi_int.cgi
+   PI_INT=$HOMEPAGE_CGI_PI
    cat>$CMD<<END
 #!/bin/bash
 rm -f /www/remote-hand/pepopiface
 ln -s /usr/local/bin/pepopiface_local /www/remote-hand/pepopiface
 END
 else
-   PI_INT=pi_int_gpio.cgi
+  PI_INT=$HOMEPAGE_CGI
    cat>$CMD<<END
 #!/bin/bash
 rm -f /www/remote-hand/pepopiface
@@ -162,10 +171,10 @@ fi
 if [ -e $PPP_SEC ]; then
 cat>$CMD<<EOF
 #!/bin/bash
-ppp_user=\`cat $PPP_SEC |grep -F -v "#"|awk 'BEGIN{FS="\""};{print \$2}'\`
+ppp_user=\`cat $PPP_SEC |grep -F -v "#"|mawk 'BEGIN{FS="\""};{print \$2}'\`
 echo \$ppp_user > $PPP_USR
-chown www-data.www-data $PPP_USR
-ppp_mode=\`cat $PPP_DIAL_MODE |grep -E "64k=" |awk '{
+chown www-data:www-data $PPP_USR
+ppp_mode=\`cat $PPP_DIAL_MODE |grep -E "64k=" |mawk '{
 split(\$1,I,"=")
 if (I[2] == "yes")
   printf("yes 64kDigital communications")
@@ -176,7 +185,7 @@ else if (I[2] == "NONE")
 }'\`
 
 echo \$ppp_mode >$PPP_MODE
-chown www-data.www-data $PPP_MODE
+chown www-data:www-data $PPP_MODE
 EOF
 fi
 
@@ -185,9 +194,9 @@ WEBPASS=/etc/rc.pepo/password
 TMPWEB=$DIR/.htpasswd
 if [ -e $WEBPASS ]; then
 cat>>$CMD<<EOF
-WEB_USER=\`cat $WEBPASS |grep -F -v "#"|awk 'BEGIN{FS=":"};{print \$1}'\`
+WEB_USER=\`cat $WEBPASS |grep -F -v "#"|mawk 'BEGIN{FS=":"};{print \$1}'\`
 echo "\$WEB_USER" > $TMPWEB
-chown www-data.www-data $TMPWEB
+chown www-data:www-data $TMPWEB
 EOF
 fi
 
@@ -197,12 +206,12 @@ STARTUP=/usr/src/pepolinux/startup.s
 tSTARTUP=$DIR/.startup.s.tmp
 rm -f \$tSTARTUP
 if [ -e \$STARTUP ];then
-  cat \$STARTUP |awk '/^SET_/{print \$0}' >\$tSTARTUP
+  cat \$STARTUP |mawk '/^SET_/{print \$0}' >\$tSTARTUP
   . \$tSTARTUP
   echo "vWEBUSER=\$SET_WEBUSER" >> \$tSTARTUP
   echo "vWEBPASSWORD=\$SET_WEBPASSWORD" >> \$tSTARTUP
   echo "vLINENOTIFY=\$SET_LINENOTIFY" >> \$tSTARTUP
-  chown www-data.www-data \$tSTARTUP
+  chown www-data:www-data \$tSTARTUP
 fi
 EOF
 
@@ -243,7 +252,6 @@ function jump_href() {
 </HTML>'
   msleep 1000
   ./${PI_INT} >/dev/null 2>&1
-  chown www-data.www-data ./pi_int.html
 else
   if [ $DI_TTY = "gpio" ];then
     echo -en '
@@ -276,5 +284,8 @@ function jump_href() {
 </HTML>'
 fi
 if [ -e ${LOCKFILE} ];then
-  [ $$ = `cat ${LOCKPID}` ] && rm ${LOCKFILE} && rm ${LOCKPID}
+  if [ $$ = $(cat ${LOCKPID}) ];then
+    rm ${LOCKFILE}
+    rm ${LOCKPID}
+  fi
 fi

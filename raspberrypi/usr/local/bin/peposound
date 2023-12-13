@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2022.5.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2023.11.10
 # peposound ; Play a sound file
 # usage peposound sound file_Num timer
 if [ $# -lt 1 -o $# -gt 2 ];then
@@ -41,8 +41,8 @@ if [ $? = 0 ];then
 else
   exit
 fi
-MP3_YES_NO=$(echo ${SOUND_FILE} |awk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
-WAV_YES_NO=$(echo ${SOUND_FILE} |awk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
+MP3_YES_NO=$(echo ${SOUND_FILE} |mawk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
+WAV_YES_NO=$(echo ${SOUND_FILE} |mawk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
 if [ $MP3_YES_NO = "YES" ];then
   SOUND_PLAYER=$SOUND_PLAYER_MP3
 elif [ $WAV_YES_NO = "YES" ];then

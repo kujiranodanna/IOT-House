@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.11.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.11.10
 # pepogmail4dio_linenotify ; For raspberry pi zero, and scripts to run the GPIO and other instructions in the G-mail.
 # Change reply destination to linenotify until exim4 gmail sending error is resolved.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -74,7 +74,7 @@ exec_dio() {
     if expr "$CH" : "[0-9 ]*$" >&/dev/null;then
       CH=$(($CH - 1))
     else
-      DIO_YESNO=`echo $CH|awk 'BEGIN{T="NO"};/dio/{T="YES"};END{print T}'`
+      DIO_YESNO=`echo $CH|mawk 'BEGIN{T="NO"};/dio/{T="YES"};END{print T}'`
       if [ $DIO_YESNO = "YES" ];then
         CMDDIO=${DIOCMD_DIO}_${pid}.pepocmd
         cat>$CMDDIO<<END
@@ -203,17 +203,17 @@ END
 # read command list only ?
   if [ $CH = $MAXCH ];then
     echo -n "{gsub(/ /,\"+\",\$0);printf \$0}" >$tAWK
-    MSG=`cat $tWORK | awk -f $tAWK`
+    MSG=`cat $tWORK | mawk -f $tAWK`
     ${MUA} ${MAILTOLINE} ${SUBJECT} ${MSG}
     return
   elif [ "$CH" = 20  ];then
 # Cpu Temperature
-    CPU_TEMP=`cat /sys/class/thermal/thermal_zone0/temp|awk '{printf(substr($1,1,2)"."substr($1,3,1)"℃")}'`
+    CPU_TEMP=`cat /sys/class/thermal/thermal_zone0/temp|mawk '{printf(substr($1,1,2)"."substr($1,3,1)"℃")}'`
     MSG="Cpu+Temperature:"$CPU_TEMP
     ${MUA} ${MAILTOLINE} ${SUBJECT} ${MSG}
     return
   elif [ "$CH" = 21  ];then
-    MSG=`cat ${DIREADJSON} |awk '/gpio_i2c/{gsub(/"|{|}/,"",$0);gsub(/,/," ",$0);gsub(/ /,"+",$0);gsub(/gpio_i2c:/,"",$0);printf $0}'`
+    MSG=`cat ${DIREADJSON} |mawk '/gpio_i2c/{gsub(/"|{|}/,"",$0);gsub(/,/," ",$0);gsub(/ /,"+",$0);gsub(/gpio_i2c:/,"",$0);printf $0}'`
     MSG="GPIO+Temperature+Humidity+Report+$MSG"
     cat >${CMDMAIL}<<END
 #!/bin/bash
@@ -277,7 +277,7 @@ ${GMAILIMAGE8} ${MAILTOLINE} ${SUBJECT} ${MSG}
 END
     return
   elif [ "$CH" = 30 ];then
-  MSG=`cat ${DIREADJSON} | awk '/i2ctemp/{gsub(/"|{|}/,"",$0);gsub(/,/," ",$0);gsub(/ /,"+",$0);gsub(/i2ctemp:/,"",$0);printf $0}'`
+  MSG=`cat ${DIREADJSON} | mawk '/i2ctemp/{gsub(/"|{|}/,"",$0);gsub(/,/," ",$0);gsub(/ /,"+",$0);gsub(/i2ctemp:/,"",$0);printf $0}'`
   MSG="Twlite+Temperature+Humidity+Report+${MSG}"
     cat >${CMDMAIL}<<END
 #!/bin/bash
@@ -364,8 +364,8 @@ END
     if [ `echo $CT | wc -w` != 0 ];then
       for DIO in $CT ; do
         DIOCONT=$WORKDIR/$DIO
-        echo $DIO| awk '{gsub("\\.","");sub("count","");printf("%s\r\n",$0)}' >>$tWORK
-        cat $DIOCONT | awk '
+        echo $DIO| mawk '{gsub("\\.","");sub("count","");printf("%s\r\n",$0)}' >>$tWORK
+        cat $DIOCONT | mawk '
           /^Reset/{printf("%s\r\n",$0)}
           /^Update/{printf("%s\r\n",$0)}
           /^#/{sub("#","Count ");printf("%s\r\n\r\n",$0)}
@@ -374,7 +374,7 @@ END
     fi
   fi
   echo -n "{gsub(/ /,\"+\",\$0);printf \$0}" >$tAWK
-  MSG=`cat $tWORK | awk -f $tAWK`
+  MSG=`cat $tWORK | mawk -f $tAWK`
   ${MUA} ${MAILTOLINE} ${SUBJECT} ${MSG}
 }
 
@@ -422,8 +422,8 @@ curl -s --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --us
 #    wget -Q $GETSIZE -T $RETRYTIME -t $RETRY -q --secure-protocol=TLSv1 --no-check-certificate --user-agent=${USERAGENT} https://mail.google.com:$PORT/mail/feed/atom/unread --http-user=${USER} --http-password=${PASSWORD} --output-document=${WORK}
     [ -z ${WORK} ] && break
     cat ${WORK} | cut -c 100-1000 >${tWORK}
-    TMP=`cat ${tWORK}| awk 'match($0,/New messages(.*)<\/email>/,a){print a[1]}' 2>/dev/null`
-    ISSUED=`echo $TMP | awk 'match($0,/<issued>(.*)<\/issued>/,a){print a[1]}'`
+    TMP=`cat ${tWORK}| mawk 'match($0,/New messages(.*)<\/email>/,a){print a[1]}' 2>/dev/null`
+    ISSUED=`echo $TMP | mawk 'match($0,/<issued>(.*)<\/issued>/,a){print a[1]}'`
     [ `echo -en $ISSUED| wc -c` -lt 20 ] && break
     epochJITTER=`date -ud "${tJITTER} second ago" +%s`
     epochNOWdelay=`date -ud "300 second ago" +%s`
@@ -442,13 +442,13 @@ curl -s --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --us
       NEW_YESNO="NO"
       break
     fi
-    MAILTO=`echo $TMP |awk 'match($0,/<email>.*/){print substr($0, RSTART+7, RLENGTH)}'`
+    MAILTO=`echo $TMP |mawk 'match($0,/<email>.*/){print substr($0, RSTART+7, RLENGTH)}'`
     [ `echo $MAILTOLINE|grep $MATCHMAIL|wc -c` -ne 0 ] && FROM_YESNO="YES" || FROM_YESNO="NO"
 # all from address permit
     [ ${PERMITMAIL} = ${ALLOW_FROM} ] && FROM_YESNO="YES"
     [ ${FROM_YESNO} != "YES" ] && break
     if [ "${NEW_YESNO}" = "YES" ];then
-      newMESSAGEID=`echo $TMP |awk 'match($0,/message_id=.*/){print substr($0, RSTART+11,16)}'`
+      newMESSAGEID=`echo $TMP |mawk 'match($0,/message_id=.*/){print substr($0, RSTART+11,16)}'`
       [ -z "$newMESSAGEID" ] && break
       [ -z "$oldMESSAGEID" ] && oldMESSAGEID=${newMESSAGEID}
       if [ "${oldMESSAGEID}" = "${newMESSAGEID}" ];then
@@ -456,11 +456,11 @@ curl -s --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --us
       else
         oldMESSAGEID=${newMESSAGEID}
       fi
-      CMD=`echo $TMP |awk 'match($0,/<title>(.*)<\/title>/,a){print a[1]}'`
+      CMD=`echo $TMP |mawk 'match($0,/<title>(.*)<\/title>/,a){print a[1]}'`
       CMDCNT=`echo -en $CMD | grep ${MATCHDIO} | wc -c`
       [ "${CMDCNT}" = 0 ] && break
-      CMD_ARG1_LEN=`echo ${CMD}|awk -F " " '{printf length($1)}'`
-      MATCHDIO_LEN=`echo ${MATCHDIO}|awk -F " " '{printf length($1)}'`
+      CMD_ARG1_LEN=`echo ${CMD}|mawk -F " " '{printf length($1)}'`
+      MATCHDIO_LEN=`echo ${MATCHDIO}|mawk -F " " '{printf length($1)}'`
       [ "${CMD_ARG1_LEN}" != "${MATCHDIO_LEN}" ] && break
       exec_dio $newMESSAGEID ${CMD}
     fi

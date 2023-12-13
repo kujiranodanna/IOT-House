@@ -1,11 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.11.5
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2023.12.6
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
-/etc/init.d/networking stop
-/etc/init.d/apache2 stop
-/etc/init.d/exim4 stop
-/etc/init.d/rsyslog stop
+systemctl stop dphys-swapfile
+dphys-swapfile swapoff
+systemctl disable dphys-swapfile
+systemctl daemon-reload
+hdparm -S 60 /dev/sda
+systemctl stop rsyslog
+systemctl stop networking
+systemctl stop apache2
+systemctl stop exim4
 WORKDIR=/www/remote-hand
 WORKDIR_TMP=/www/remote-hand/tmp
 MAIL_CONF_ORG="/etc/exim4/passwd.client.org"
@@ -24,16 +29,16 @@ if [ ! -e ${WORKDIR} ];then
   chmod 777 /www/tmp ;chmod +t /www/tmp/
   if [ -e /usr/src/pepolinux/log.tar.gz ];then
     cd /var ; rm -rf log ; tar xfz /usr/src/pepolinux/log.tar.gz
-    chown root.root /var/log
+    chown root:root /var/log
   fi
   if [ -e /usr/src/pepolinux/spool.tar.gz ];then
     cd /www/ ; tar xfz /usr/src/pepolinux/spool.tar.gz
     cd /var ; rm -rf spool ; ln -s /www/spool spool
   fi
   cd /usr/bin/ ; rm -f dio*
-  mkdir -p /www/pepolinux ; cd /www/pepolinux ; tar xfz /usr/src/pepolinux/pepolinux.tar.gz ; chown root.root /www/pepolinux
+  mkdir -p /www/pepolinux ; cd /www/pepolinux ; tar xfz /usr/src/pepolinux/pepolinux.tar.gz ; chown root:root /www/pepolinux
   /etc/init.d/svscan start
-  cd /var ; rm -rf mail ; mkdir /www/mail ; chown mail.mail /www/mail ; ln -s /www/mail mail
+  cd /var ; rm -rf mail ; mkdir /www/mail ; chown mail:mail /www/mail ; ln -s /www/mail mail
   cd /etc/exim4 ; cp -f passwd.client.org passwd.client
   if [ -e /usr/src/pepolinux/back_up.tar.gz ];then
     cd ${WORKDIR} ; tar xfz /usr/src/pepolinux/back_up.tar.gz
@@ -66,7 +71,7 @@ END
     mv ${tMAIL_CONF} ${MAIL_CONF_ORG} ; cp ${MAIL_CONF_ORG} ${MAIL_CONF}
     update-exim4.conf
   fi
-  chown www-data.www-data ${WORKDIR} ${WORKDIR_TMP}
+  chown www-data:www-data ${WORKDIR} ${WORKDIR_TMP}
   if [ -e ${WORKDIR_TMP}/.ping_watch.cron ];then
     crontab -u www-data ${WORKDIR_TMP}/.ping_watch.cron
   fi
@@ -79,18 +84,28 @@ smtp.gmail.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
 END
     update-exim4.conf
   fi
+  ZEROW=`cat /proc/cpuinfo| grep "Pi Zero"| wc -l`
+  ZERO2W=`cat /proc/cpuinfo| grep "Pi Zero 2 W"| wc -l`
+  HOST_NAME=iot011
+  ZEROW_YES_NO="NO"
+  ZERO2W_YES_NO="NO"
+  if [ $ZEROW != 0 ];then
+    ZEROW_YES_NO="YES"
+    HOST_NAME=iot000   
+  fi
+  if [ $ZERO2W != 0 ];then
+    ZERO2W_YES_NO="YES"
+    HOST_NAME=iot0000
+  fi
   WLAN0=`ip link |grep wlan0|wc -c`
   ETH0=`ip link |grep eth0|wc -c`
-  ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
   [ $WLAN0 != 0 ] && WLAN_YES_NO="YES" || WLAN_YES_NO="NO"
   [ $ETH0 != 0 ] && ETH_YES_NO="YES" || ETH_YES_NO="NO"
-  [ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
-  [ $ZEROW_YES_NO = "NO" ] && HOST_NAME=iot011 || HOST_NAME=iot000
   if [ $ZEROW_YES_NO = "YES" -a $WLAN_YES_NO = "YES" ];then
-    WIFIADDR=`ifconfig wlan0|awk '/ether/{printf $2}'`
+    WIFIADDR=`ifconfig wlan0|mawk '/ether/{printf $2}'`
   fi
   if [ $ZEROW_YES_NO = "NO" -a $WLAN_YES_NO = "YES" ];then
-    WIFIADDR=`ifconfig wlan0|awk '/ether/{printf $2}'`
+    WIFIADDR=`ifconfig wlan0|mawk '/ether/{printf $2}'`
   fi
   if [ ! -e $IOTHOSECONF ];then
     cat >$IOTHOSECONF_TMP<<EOF
@@ -211,7 +226,7 @@ network={
         pairwise=CCMP
         group=CCMP
 EOF
-        wpa_passphrase $SSID $KEY  |awk '/#psk=/{next};/(ssid|psk=)/{printf("%s\n"),$0}' >>${tWPA_CONF}
+        wpa_passphrase $SSID $KEY  |mawk '/#psk=/{next};/(ssid|psk=)/{printf("%s\n"),$0}' >>${tWPA_CONF}
         echo "}" >>${tWPA_CONF}
         iwconfig wlan0 power off
         if [ "${IP_ADDRESS}" = "dhcp" -o "${IP_ADDRESS}" = "DHCP" -o -z "${IP_ADDRESS}" ];then
@@ -247,7 +262,11 @@ EOF
   [ -e ${tWPA_CONF} ] && mv ${tWPA_CONF} ${WPA_CONF}
   if [ ! -z "${HOST_NAME}" ];then
     if [ $ZEROW_YES_NO = "YES" ];then
-      hostnamectl set-hostname ${HOST_NAME}
+      if [ $ZERO2W_YES_NO = "YES" ];then
+        hostnamectl hostname ${HOST_NAME}
+      else
+        hostnamectl set-hostname ${HOST_NAME}
+      fi
     fi
     if [ $ZEROW_YES_NO = "NO" ];then
       hostname -b ${HOST_NAME}
@@ -279,10 +298,9 @@ ln -s /www/tmp/.bash_history_root /root/.bash_history
 rm -rf /var/lib/logrotate
 mkdir /www/tmp/logrotate
 ln -s /www/tmp/logrotate /var/lib/logrotate
-/etc/init.d/rsyslog restart
-/etc/init.d/networking restart
-/etc/init.d/ntp restart
-/etc/init.d/apache2 restart
-#/etc/init.d/exim4 restart
-/etc/init.d/cron restart
-/etc/init.d/avahi-daemon restart
+systemctl restart rsyslog
+systemctl restart networking
+systemctl restart apache2
+#systemctl restart exim4
+systemctl restart cron
+systemctl restart avahi-daemon

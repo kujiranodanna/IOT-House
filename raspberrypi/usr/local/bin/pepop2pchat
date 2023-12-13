@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2007.3.18 ; update 2017.7.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2007.3.18 ; update 2023.11.10
 # This scripts sample for ppp chat 
 # usage /usr/local/bin/epicon -l /dev/ttyACM0 -c /usr/local/bin/pepop2pchat
 CLR="\x1b[2J"
@@ -37,7 +37,7 @@ do
 	echo -en "AT&F\r\n" || exit 0
 #	sleep 5
 	read -s -n 3 -t 2 I || exit 0
-	J=`echo $I|awk '/OK/{print "OK"}'`
+	J=`echo $I|mawk '/OK/{print "OK"}'`
 	if [ "X$J" = "XOK" ]; then
 		{
 		echo -en "$CLR$HOME$BULE" >/dev/tty1
@@ -51,7 +51,7 @@ while [ "X$G" != "XRING" ]
 do
         sleep 5
 	read -s -n 5 -t 604800 I || exit 0
-	J=`echo $I|awk '/RING/{print "RING"}'`
+	J=`echo $I|mawk '/RING/{print "RING"}'`
 	if [ "X$J" = "XRING" ]; then
 		{
 		echo -en "$CRLF$RED" >/dev/tty1

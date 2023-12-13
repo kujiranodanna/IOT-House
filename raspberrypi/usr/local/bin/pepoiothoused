@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2022.5.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.11.10
 # pepoiothoused ; For raspberry pi , and scripts to run the Remote DIO and Twelite .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 ALEXSADO=/usr/local/bin/pepoalexado
@@ -63,20 +63,20 @@ do
   if [ -e $tALEXSADO ];then
     LEN=`cat $tALEXSADO | wc -c`
     if [ $LEN -gt 2 ];then
-      cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMPROOM
+      cat $tALEXSADO | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMPROOM
       mv $tTEMPROOM $TEMPROOM
-      cat $tALEXSADO | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tHUMROOM
+      cat $tALEXSADO | jq -r .hum | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tHUMROOM
       mv $tHUMROOM $HUMROOM
-      cat $tALEXSADO | jq -r .pres | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tPRESROOM
+      cat $tALEXSADO | jq -r .pres | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tPRESROOM
       mv $tPRESROOM $PRESROOM
-      cat $tALEXSADO | jq -r .gas | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tGASROOM
+      cat $tALEXSADO | jq -r .gas | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tGASROOM
       mv $tGASROOM $GASROOM
-      cat $tALEXSADO | jq -r .iaq | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tAIRROOM
+      cat $tALEXSADO | jq -r .iaq | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tAIRROOM
       mv $tAIRROOM $AIRROOM
       $ALEXSADO $RHOST $USER $PASSWD i2ctemp > $tALEXSADO
-      cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMPOUT
+      cat $tALEXSADO | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMPOUT
       mv $tTEMPOUT $TEMPOUT
-      cat $tALEXSADO | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tHUMOUT
+      cat $tALEXSADO | jq -r .hum | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tHUMOUT
       mv $tHUMOUT $HUMOUT
     fi
   fi
@@ -84,21 +84,21 @@ do
   $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
   LEN=`cat $tALEXSADO | wc -c`
   if [ $LEN -gt 2 ];then
-    cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP1FWASHITU
+    cat $tALEXSADO | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP1FWASHITU
     mv $tTEMP1FWASHITU $TEMP1FWASHITU
   fi
   RHOST=iot02f.local
   $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
   LEN=`cat $tALEXSADO | wc -c`
   if [ $LEN -gt 2 ];then
-    cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP2FYOUSHITU
+    cat $tALEXSADO | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP2FYOUSHITU
     mv $tTEMP2FYOUSHITU $TEMP2FYOUSHITU
   fi
   RHOST=iot04f.local
   $ALEXSADO $RHOST $USER $PASSWD gpio_i2c > $tALEXSADO
   LEN=`cat $tALEXSADO | wc -c`
   if [ $LEN -gt 2 ];then
-    cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP2FWASHITU
+    cat $tALEXSADO | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}' >$tTEMP2FWASHITU
     mv $tTEMP2FWASHITU $TEMP2FWASHITU
   fi
   msleep $LOOPTIME

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.11.5 update 2019.9.19
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.11.5 update 2023.11.23
 # pepousbttyck for detect ANDDIO,TOCOS,MODEM,CP2112
 prog=pepousbttyck
 DIR=/www/remote-hand/tmp
@@ -49,7 +49,7 @@ do
     exit
   fi
 #  echo \${IN}>/dev/stderr
-  RESULT=\`echo \$IN | awk '/OK/{print "OK"}'\`
+  RESULT=\`echo \$IN | mawk '/OK/{print "OK"}'\`
   if [ \${RETRY} = 0 ];then
     break
   else
@@ -61,7 +61,7 @@ END
   chmod +x $CMD
   RD=`${CMD_MODEM} 2>&1`
   rm -f ${CMD}
-  RESULT=`echo $RD | awk '/OK/{print "OK"}'`
+  RESULT=`echo $RD | mawk '/OK/{print "OK"}'`
   if [ "${RESULT}" = "OK" ];then
     tmodem=${tDEV}
     echo -en "modem_dev=${tmodem}" >$MODEM_DEV
@@ -105,7 +105,7 @@ while [ \${RETRY} -ne 0 ];do
     msleep \$retry_time
     continue
   fi
-  RESULT=\`echo \$IN | awk 'BEGIN{ANS="NG"};/(AAH|AAL)/{ANS="OK"};END{print ANS}'\`
+  RESULT=\`echo \$IN | mawk 'BEGIN{ANS="NG"};/(AAH|AAL)/{ANS="OK"};END{print ANS}'\`
   if [ \$RESULT = "NG" ];then
     RETRY=\$((\${RETRY} - 1))
     msleep \$retry_time
@@ -124,17 +124,21 @@ END
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI"|grep -v "DI_TTY" >${tALIAS_DI}
       echo "DI_TTY="${dev} >>${tALIAS_DI}
-      mv "$tALIAS_DI" "$ALIAS_DI" 
+      mv "$tALIAS_DI" "$ALIAS_DI"
+      chown www-data:www-data ${ALIAS_DI}
     else
       echo "DI_TTY="${dev} >${ALIAS_DI}
+      chown www-data:www-data ${ALIAS_DI}      
     fi
   else
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI"|grep -v "DI_TTY" >${tALIAS_DI}
       echo "DI_TTY=none" >>${tALIAS_DI}
-      mv "$tALIAS_DI" "$ALIAS_DI" 
+      mv "$tALIAS_DI" "$ALIAS_DI"
+      chown www-data:www-data ${ALIAS_DI}
     else
       echo "DI_TTY=none" >${ALIAS_DI}
+      chown www-data:www-data ${ALIAS_DI}
     fi   
   fi
 }
@@ -189,17 +193,21 @@ END
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI"|grep -v "TOCOS_TTY" >${tALIAS_DI}
       echo "TOCOS_TTY="${dev} >>${tALIAS_DI}
-      mv "$tALIAS_DI" "$ALIAS_DI" 
+      mv "$tALIAS_DI" "$ALIAS_DI"
+      chown www-data:www-data ${ALIAS_DI}
     else
       echo "TOCOS_TTY="${dev} >${ALIAS_DI}
+      chown www-data:www-data ${ALIAS_DI}
     fi
   else
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI"|grep -v "TOCOS_TTY" >${tALIAS_DI}
       echo "TOCOS_TTY=none" >>${tALIAS_DI}
-      mv "$tALIAS_DI" "$ALIAS_DI" 
+      mv "$tALIAS_DI" "$ALIAS_DI"
+      chown www-data:www-data ${ALIAS_DI}
     else
       echo "TOCOS_TTY=none" >${ALIAS_DI}
+      chown www-data:www-data ${ALIAS_DI}
     fi   
   fi
 }
@@ -232,7 +240,9 @@ if [ "$tDI_TTY" = "none" -a -z "$piface_ip" -a $dev = "ttyUSB3" ];then
     cat "$ALIAS_DI"|grep -v "DI_TTY" >${tALIAS_DI}
     echo "DI_TTY="${dev} >>${tALIAS_DI}
     mv "$tALIAS_DI" "$ALIAS_DI"
+    chown www-data:www-data ${ALIAS_DI}
   else
     echo "DI_TTY="${dev} >${ALIAS_DI}
+    chown www-data:www-data ${ALIAS_DI}
   fi
 fi

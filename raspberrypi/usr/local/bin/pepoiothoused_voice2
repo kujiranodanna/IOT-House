@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.7.23
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.11.10
 # pepoiothouse_voice2 is a script that instantly converts the Raspberry Pi's BME680 environmental value sensor into voice.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
@@ -27,10 +27,10 @@ trap error SIGQUIT SIGINT SIGTERM SIGHUP
 [ -e $tJSON_DATA ] && exit
 [ ! -e $JSON_DATA ] && exit
 cat $JSON_DATA | jq -r .gpio_i2c >$tJSON_DATA
-TEMPROOM=$(cat $tJSON_DATA | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
-HUMROOM=$(cat $tJSON_DATA | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
-PRESROOM=$(cat $tJSON_DATA | jq -r .pres | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
-IAQ=$(cat $tJSON_DATA | jq -r .iaq | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+TEMPROOM=$(cat $tJSON_DATA | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+HUMROOM=$(cat $tJSON_DATA | jq -r .hum | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+PRESROOM=$(cat $tJSON_DATA | jq -r .pres | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+IAQ=$(cat $tJSON_DATA | jq -r .iaq | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
 IAQ_STATUS="good"
 if [ $IAQ -lt 51 ];then
   IAQ_STATUS="よい"

@@ -1,9 +1,10 @@
 #!/bin/bash
 PATH=$PATH:/usr/local/bin
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.10.17 update 2021.10.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2014.10.17 update 2023.12.3
 # pepoirkitpost ir_num timer
 # pepoirkitpost,Post of IR data for IRKit
+# 2023.12.3 Added dummy reading processing as it sometimes slows down
 DIR=/www/remote-hand/tmp
 IRKIT_IP=$DIR/.IRKit_IP
 DOCFILE=$DIR/irkit_out_document
@@ -44,7 +45,9 @@ else
   echo IRKit Device not found!
   exit
 fi
-USERAGENT="X-Requested-With: Chrome/94.0.4606.81"
+USERAGENT="X-Requested-With: Chrome/119.0.6045.199"
+curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} http://${IP}/messages --header "X-Requested-With: PepoLinux" >${DOCFILE}
+msleep 1000
 curl -s -m $RETRYTIME --retry $RETRY --header "${USERAGENT}" -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
 if [ ${TIMER}X != "X" ];then
   msleep ${TIMER}

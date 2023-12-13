@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.15 update 2020.6.29
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.15 update 2023.11.5
 # pepogpioi2crrdtool ; For lubuntu , and scripts to run the USB I2C Temperature&Humidity Data Base Create and Update.
 # That to run a cron of 60 seconds interval.
 # add following 2 lines --> /etc/cron.d/pepogpioi2crrdtool
@@ -12,12 +12,12 @@ DIREADJSON=${WORKDIR}/.di_read_data.json
 DSFILE=${WORKDIR}/tmp/.gpio_temp_hum.rrd
 RRDSTART=${WORKDIR}/tmp/.gpio_temp_hum_start_time
 [ ! -e $DIREADJSON ] && exit
-TEMP=`cat ${DIREADJSON} | jq -r .gpio_i2c.temp | awk '{gsub(/℃/,"",$0);printf $0}'`
-HUM=`cat ${DIREADJSON} | jq -r .gpio_i2c.hum | awk '{gsub(/％/,"",$0);printf $0}'`
-PRES=`cat ${DIREADJSON} | jq -r .gpio_i2c.pres | awk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
-GAS=`cat ${DIREADJSON} | jq -r .gpio_i2c.gas | awk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
-IAQ=`cat ${DIREADJSON} | jq -r .gpio_i2c.iaq | awk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
-I2_YESNO=`echo ${HUM} ${TEMP} | awk 'BEGIN{YESNO="NO"};/none/{YESNO="YES"};END{printf("%s",YESNO)}'`
+TEMP=`cat ${DIREADJSON} | jq -r .gpio_i2c.temp | mawk '{gsub(/℃/,"",$0);printf $0}'`
+HUM=`cat ${DIREADJSON} | jq -r .gpio_i2c.hum | mawk '{gsub(/％/,"",$0);printf $0}'`
+PRES=`cat ${DIREADJSON} | jq -r .gpio_i2c.pres | mawk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
+GAS=`cat ${DIREADJSON} | jq -r .gpio_i2c.gas | mawk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
+IAQ=`cat ${DIREADJSON} | jq -r .gpio_i2c.iaq | mawk '{gsub(/[^0-9]+/,"",$0);printf $0}'`
+I2_YESNO=`echo ${HUM} ${TEMP} | mawk 'BEGIN{YESNO="NO"};/none/{YESNO="YES"};END{printf("%s",YESNO)}'`
 [ "${I2_YESNO}" = "YES" ] && exit
 [ -z "${HUM}" -o -z "${TEMP}" ] && exit
 START=`date "+%Y%m%d %H:%M:00"`

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2010.12.12 update 2018.2.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2010.12.12 update 2023.11.10
 # get pepopodcastget mp3
 # XMLにpodcastのURLを登録
 #XML=http://podcast.1242.com/ps/index.xml
@@ -24,7 +24,7 @@ RAND=`echo -e $RANDOM`
 TMP=$DIR/${RAND}.xml
 [ ! -e $DIR ] && mkdir -p $DIR
 wget $XML -O $TMP
-URL=`cat $TMP |awk '/enclosure/{split($0,I,"\"")
+URL=`cat $TMP |mawk '/enclosure/{split($0,I,"\"")
   for ( J in I ) {
     if (I[J] ~ /\.mp3$/) {
       printf I[J]" "
@@ -33,7 +33,7 @@ URL=`cat $TMP |awk '/enclosure/{split($0,I,"\"")
 }'`
 for FIL in $URL
 do
-  MP3=`echo $FIL |awk '{s=split($0,I,"/"); printf I[s]}'`
+  MP3=`echo $FIL |mawk '{s=split($0,I,"/"); printf I[s]}'`
   [ -f $DIR/$MP3 ] && continue
   wget $FIL -O $DIR/$MP3
   [ ! -s $DIR/$MP3 ] && rm -f $DIR/$MP3

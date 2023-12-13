@@ -1,6 +1,6 @@
 #!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2021.12.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2023.11.10
 # pepoffmpegtimelapse ; RaspberryPi module A script that uses a camera to perform a security camera timelapse jpg to mp4 conversion.
 # That to run a of 3600 seconds interval.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -34,7 +34,7 @@ fi
 if [ ! -e $MP_DIR ];then
   mkdir -p $MP_DIR
 fi
-MOUNT_YES_NO=`mountpoint $MP_DIR| awk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`
+MOUNT_YES_NO=`mountpoint $MP_DIR| mawk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`
 if [ $MOUNT_YES_NO = "NO" ];then
   mount -o ro $DISK $MP_DIR
 fi
@@ -43,7 +43,7 @@ error(){
   [ -e $IMAGE_DIR ] && rm -rf $IMAGE_DIR
   [ -e $IMAGE_DIR_TMP ] && rm -rf $IMAGE_DIR_TMP
   [ -e $LOCALFILE ] && rm $LOCALFILE
-  MOUNT_YES_NO=`mountpoint $MP_DIR| awk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`
+  MOUNT_YES_NO=`mountpoint $MP_DIR| mawk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`
   if [ $MOUNT_YES_NO = "YES" ];then
     umount $MP_DIR
   fi
@@ -63,7 +63,7 @@ while true;do
     msleep 10000
     continue
   fi
-  MOUNT_YES_NO=`mountpoint  $MP_DIR| awk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`
+  MOUNT_YES_NO=`mountpoint  $MP_DIR| mawk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`
   if [ $MOUNT_YES_NO = "NO" ];then
     if [ ! -e $DISK ];then
       echo error no $DISK !
@@ -94,8 +94,8 @@ while true;do
     continue
   fi
   if [ $NOWHOUR = "00:" ];then
-    ls -l $IMAGE_DIR/*| grep $DAYAGO| awk '{printf("file %s\n",$9)}' >$FFMPEGINPUT
-    RMIMAGE=`ls -l $IMAGE_DIR/*| grep $DAYAGO| awk '{printf(" %s",$9)}'`
+    ls -l $IMAGE_DIR/*| grep $DAYAGO| mawk '{printf("file %s\n",$9)}' >$FFMPEGINPUT
+    RMIMAGE=`ls -l $IMAGE_DIR/*| grep $DAYAGO| mawk '{printf(" %s",$9)}'`
     if [ `echo $RMIMAGE| wc -w` -eq 0 ];then
       continue
     fi
@@ -108,8 +108,8 @@ while true;do
       [ -e $i ] && rm $i
     done
     rm $FFMPEGINPUT
-    SOMEDAYSAGO_IMAGE=`ls -l $IMAGE_DIR/*| grep $SOMEDAYSAGO| awk '{printf("%s ",$9)}'`
-    MP_SOMEDAYSAGO_IMAGE=`ls -l $MP_DIR/*| grep $SOMEDAYSAGO| awk '{printf("%s",$9)}'`
+    SOMEDAYSAGO_IMAGE=`ls -l $IMAGE_DIR/*| grep $SOMEDAYSAGO| mawk '{printf("%s ",$9)}'`
+    MP_SOMEDAYSAGO_IMAGE=`ls -l $MP_DIR/*| grep $SOMEDAYSAGO| mawk '{printf("%s",$9)}'`
     if [ `echo $SOMEDAYSAGO_IMAGE| wc -w` -eq 0 ];then
       umount $MP_DIR
       mount -o ro $DISK $MP_DIR

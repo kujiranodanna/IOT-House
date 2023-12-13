@@ -1,21 +1,21 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.9.18
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.19
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2023.9.18"
+DATE="2023.11.19"
 VERSION="ver:0.21&nbsp;$DATE"
-ZEROW=`gpio readall|grep "Pi ZeroW"|wc -w`
-[ $ZEROW != 0 ] && ZEROW_YES_NO="YES" || ZEROW_YES_NO="NO"
-if [ $ZEROW_YES_NO = "YES" ];then
-  DIST_NAME="IOT-House_zero_w"
-else
-  DIST_NAME="IOT-House_pi"
-fi
+# Voice ontorl wake up word 
+Wake_Up_Word="ジャービス"
+ZEROW=`cat /proc/cpuinfo| grep "Pi Zero"| wc -l`
+ZERO2W=`cat /proc/cpuinfo| grep "Pi Zero 2 W"| wc -l`
+DIST_NAME="IOT-House_pi"
+[ $ZEROW = 1 ] && DIST_NAME="IOT-House_pi_zero"
+[ $ZERO2W = 1 ] && DIST_NAME="IOT-House_pi_zero2"
 echo -en '
 <!DOCTYPE HTML>
 <HTML LANG="ja">
@@ -89,7 +89,7 @@ disp_int() {
   local INT
   INT="$1"
   echo_f "$INT:"
-  echo_f `ip addr show $INT |awk '/inet/{printf $2}'`
+  echo_f `ip addr show $INT |mawk '/inet/{printf $2}'`
 }
 DIRD=$DIR/.di_read_data
 DOWD=$DIR/.do_write_data
@@ -133,10 +133,9 @@ while [ $n -lt 34 ];do
   n=$(($n + 1))
 done
 
-SMART_PHONE=`echo "$HTTP_USER_AGENT" |awk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
+SMART_PHONE=`echo "$HTTP_USER_AGENT" |mawk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
 if [ $SMART_PHONE = "YES" ];then
   cat >$PAGE1<<END
-
 <!DOCTYPE HTML>
 <HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -276,8 +275,10 @@ END
   mv ${PAGE1} ${PAGE2}
   PAGE1=$PAGE3
   PAGE2=$PAGE4
-  cat >$PAGE5<<END
+fi
 
+# Smart Phone Voice Control, Temperature & Humidity 
+cat >$PAGE5<<END
 <!DOCTYPE HTML>
 <HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -306,14 +307,32 @@ END
 <span id="gpio_iaq_val"></span>
 <BR>
 <span id="s_phone_gpio_csv"></span>
-<span id="s_phone_tocos_temp_hum"></span>
 <BR>
 <BR>
 <img border="0" src="./google-microphone.png" width="300" height="300" alt="microphone" onclick="startWebVoiceRecognition();"/>
 <BR>
+<span id="voice_sel">
+Voice control
+<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do('voice_sel')" placeholder="Command" autofocus />
+<SELECT NAME="voice_lang" id="voice_lang">
+<OPTION VALUE="ja" SELECTED>Japanese
+<OPTION VALUE="en">English
+</SELECT>
+</span>
+<BR>
+Computer name:
+<input id="computer_name" type="text" style="width:240px;" NAME="computer_name" VALUE="" placeholder="$Wake_Up_Word" autofocus />
+Continuous
+<SELECT NAME="Continuous" id="voice_continuous">
+<OPTION VALUE="Yes" SELECTED>Yes
+<OPTION VALUE="Yes">Yes
+<OPTION VALUE="No">No
+</SELECT>
+<BR>
+State:<span id="recognition_state" >Stop</span>
+<BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
-<BR>
 <BR>
 &copy;2023-2026 pepolinux.osdn.jp&nbsp;
 <span id="server_time" style="text-align:left"></span>
@@ -321,11 +340,9 @@ END
 </BODY>
 </HTML>
 END
-fi
 
 # Not Smart Phone
 cat >$PAGE1<<END
-
 <!DOCTYPE HTML>
 <HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -1195,7 +1212,7 @@ font-size:15px;
 <TD WIDTH="100">INTERVAL</TD>
 </TR>
 END
-cat $PING_DON | awk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"<TD WIDTH=\"100\">"$4"</TD><TD WIDTH=\"100\">"$5"</TD></TR>"}' >>$PING_DON_HTML
+cat $PING_DON | mawk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"<TD WIDTH=\"100\">"$4"</TD><TD WIDTH=\"100\">"$5"</TD></TR>"}' >>$PING_DON_HTML
 echo '</TABLE></BODY></HTML>' >>$PING_DON_HTML
 cat >>$PAGE1<<END
 <IFRAME SRC="$PING_DON_HTML" WIDTH="600" HEIGHT="200" SCROLLING="yes"
@@ -1270,7 +1287,7 @@ font-size:15px;
 <TD WIDTH="100">INTERVAL</TD>
 </TR>
 END
-cat $PING_MAIL | awk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"160\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_MAIL_HTML
+cat $PING_MAIL | mawk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"160\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_MAIL_HTML
 echo '</TABLE></BODY></HTML>' >>$PING_MAIL_HTML
 cat >>$PAGE1<<END
 <IFRAME SRC="$PING_MAIL_HTML" WIDTH="600" HEIGHT="200" SCROLLING="yes"
@@ -1346,7 +1363,7 @@ font-size:15px;
 <TD WIDTH="100">INTERVAL</TD>
 </TR>
 END
-cat $PING_PHONE | awk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_PHONE_HTML
+cat $PING_PHONE | mawk 'BEGIN{FS=" "};{print "<TR><TD WIDTH=\"100\">"$2"</TD><TD WIDTH=\"100\">"$3"</TD><TD WIDTH=\"100\">"$4"</TD></TR>"}' >>$PING_PHONE_HTML
 echo '</TABLE></BODY></HTML>' >>$PING_PHONE_HTML
 cat >>$PAGE1<<END
 <IFRAME SRC="$PING_PHONE_HTML" WIDTH="600" HEIGHT="200" SCROLLING="yes"

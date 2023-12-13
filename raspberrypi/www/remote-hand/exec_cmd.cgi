@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.22
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 echo -en '
 <HTML>
@@ -9,7 +9,7 @@ echo -en '
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.osdn.jp">
 <META http-equiv="Refresh" content="60;URL=/remote-hand/wait_for.cgi">
-<META NAME="build" content="2022.9.22">
+<META NAME="build" content="2023.11.10">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>command of execution</TITLE>
 <script type="text/javascript">
@@ -40,7 +40,7 @@ function blink() {
 </BODY>
 </HTML>'
 CMD=/www/remote-hand/tmp/exec_cmd.pepocmd
-ACT=`echo $QUERY_STRING |awk 'BEGIN{FS="&"};/poweroff/{print "poweroff"};/reboot/{print "reboot"};/init/{print "init"}'`
+ACT=`echo $QUERY_STRING |mawk 'BEGIN{FS="&"};/poweroff/{print "poweroff"};/reboot/{print "reboot"};/init/{print "init"}'`
 if [ $ACT = "init" ];then
 cat>$CMD<<EOF
 #!/bin/bash

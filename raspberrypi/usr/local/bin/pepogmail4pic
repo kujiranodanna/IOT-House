@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2021.6.11
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2023.11.10
 # pepogmail4pic ; get video send mail
 # pepogmail4pic mail_to subject message
 # /usr/local/bin/pepogmail4pic $1:mail_to, $2:subject, $3:message ,$4:image.mp4
@@ -29,7 +29,7 @@ $FFMPEGCTL $VIDEO $IMAGE $$
 if [ ! -e $WORKIMAGE ];then
   exit -1
 else
-  OK_NG=`$FFMPEG -v error -i $IMAGE 2>&1 | awk 'BEGIN{I="OK"}/Invalid/{I="NG"};END{printf I}'`
+  OK_NG=`$FFMPEG -v error -i $IMAGE 2>&1 | mawk 'BEGIN{I="OK"}/Invalid/{I="NG"};END{printf I}'`
   if [ $OK_NG = "NG" ];then
     rm $WORKIMAGE
   else

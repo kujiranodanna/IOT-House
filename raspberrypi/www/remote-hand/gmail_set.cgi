@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.10.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 # gamil_set.cgi
 echo -en '
@@ -10,7 +10,7 @@ echo -en '
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.osdn.jp">
 <META http-equiv="Refresh" content="0;URL=/remote-hand/wait_for.cgi">
-<META NAME="Build" content="2018.10.14">
+<META NAME="Build" content="2023.11.10">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Setting in DIO operation in Gmail</TITLE>
 <script type="text/javascript">
@@ -87,7 +87,7 @@ gmail-smtp.l.google.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
 smtp.gmail.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
 EOF
 fi
-cat $MAIL_CONF_ORG | awk '
+cat $MAIL_CONF_ORG | mawk '
 /^gmail-smtp.l.google.com:/{print "gmail-smtp.l.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}";next}
 /^*.google.com:/{print "*.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}";next}
 /^smtp.gmail.com:/{print "smtp.gmail.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}";next}

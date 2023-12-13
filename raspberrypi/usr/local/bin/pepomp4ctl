@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2022.3.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2023.11.10
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 
@@ -15,7 +15,7 @@ if [ $# != 3 ];then
 fi
 WORKDIR=/www/remote-hand/tmp
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
-MP4=`echo $2 | awk 'BEGIN{FS="."};{if($2=="mp4"){printf "YES"} else {printf "NO"}}'`
+MP4=`echo $2 | mawk 'BEGIN{FS="."};{if($2=="mp4"){printf "YES"} else {printf "NO"}}'`
 DEV=$1
 IMAGE=$2
 ppid=$3
@@ -36,7 +36,7 @@ while [ -e ${pidfile} ];do
   DIFNOW2PID=$(($NOWTIME - $PIDTIME))
   if [ $DIFNOW2PID -gt ${MAXRUNTIME} ];then
     pid=`cat ${pidfile}`
-    CHILD=`ps --ppid=${pid}|awk '/[0-9]./{print $1}'`
+    CHILD=`ps --ppid=${pid}|mawk '/[0-9]./{print $1}'`
     kill -HUP ${CHILD}
     msleep 100
     exit

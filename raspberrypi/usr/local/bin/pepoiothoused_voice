@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.7.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.12.6
 # pepoiothoused_voice is a script that converts BME680 environmental sensor values into voice even on low power raspberry pi.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
@@ -44,10 +44,10 @@ error(){
 }
 trap error SIGQUIT SIGINT SIGTERM SIGHUP
 while true;do
-  WC=$(date +%M| awk '/0$/{printf $0}'|wc -c)
+  WC=$(date +%M| mawk '/0$/{printf $0}'|wc -c)
   while [ $WC -eq 0 ];do
  # Runs every 10 minutes and 30 seconds
-     WC=$(date +%M| awk '/0$/{printf $0}'|wc -c)
+     WC=$(date +%M| mawk '/0$/{printf $0}'|wc -c)
      msleep $WAIT1
   done
   msleep $WAIT2
@@ -58,10 +58,10 @@ while true;do
   if [ -e $tALEXSADO ];then
     LEN=`cat $tALEXSADO | wc -c`
     if [ $LEN -gt 2 ];then
-      TEMPROOM=$(cat $tALEXSADO | jq -r .temp | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
-      HUMROOM=$(cat $tALEXSADO | jq -r .hum | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
-      PRESROOM=$(cat $tALEXSADO | jq -r .pres | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
-      IAQ=$(cat $tALEXSADO | jq -r .iaq | awk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+      TEMPROOM=$(cat $tALEXSADO | jq -r .temp | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+      HUMROOM=$(cat $tALEXSADO | jq -r .hum | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+      PRESROOM=$(cat $tALEXSADO | jq -r .pres | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
+      IAQ=$(cat $tALEXSADO | jq -r .iaq | mawk '{gsub(/[^0-9\.]+/,"",$0);printf $0}')
       IAQ_STATUS="good"
       if [ $IAQ -lt 51 ];then
         IAQ_STATUS="よい"
@@ -97,5 +97,6 @@ END
       [ -e $tTALK ] && rm $tTALK
     fi
   fi
+  [ -e $tALEXSADO ] && rm $tALEXSADO
   msleep $WAIT3
 done

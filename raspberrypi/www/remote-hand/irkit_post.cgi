@@ -1,16 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.28
-
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.3
 PATH=$PATH:/usr/local/bin
 # irkit_post.cgi,Post of IR data for IRKit
+# 2023.12.3 Added dummy reading processing as it sometimes slows down
 echo -en '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.osdn.jp">
-<META NAME="Build" content="2020.12.28">
+<META NAME="Build" content="2023.12.3">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Post of IR data IRKit</TITLE>
 <script type="text/javascript">
@@ -47,7 +47,7 @@ CONV=./conv_get.cgi
 IRNUM=$ir_num
 TIMER=$ir_timer
 IRFILE=$DIR/.irdata_${IRNUM}
-USERAGENT="Chrome/87.0.4280.88"
+USERAGENT="Chrome/119.0.6045.199"
 RETRYTIME=10
 RETRY=1
 if [ -e ${IRKIT_IP} ];then
@@ -67,10 +67,15 @@ CMD=$DIR/irkit_data.pepocmd
 # post IRkit IR data
 cat>${CMD}<<END
 #!/bin/bash
+curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} http://${IP}/messages --header "X-Requested-With: PepoLinux" >${DOCFILE}
+msleep 1000
 curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
 if [ ${TIMER}X != "X" ];then
   msleep ${TIMER}
   curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
 fi
-[ -e ${DOCFILE} ] && rm ${DOCFILE}
+if [ -e ${DOCFILE} ];then
+  msleep 1000
+  rm ${DOCFILE}
+fi
 END

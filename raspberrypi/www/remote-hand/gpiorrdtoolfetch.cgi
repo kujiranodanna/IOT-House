@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2019.10.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 WORKDIR=/www/remote-hand/tmp
 DSFILE=${WORKDIR}/.gpio_temp_hum.rrd
@@ -12,7 +12,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.osdn.jp">
-<META NAME="Build" content="2019.10.14">
+<META NAME="Build" content="2023.11.10">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <META http-equiv="Refresh" content="15;URL=/remote-hand/tmp/gpio_rrdfetch.txt">
 <TITLE>GPIO Last hour CSV data Create</TITLE>
@@ -46,6 +46,6 @@ if [ -e ${DSFILE} ];then
 cat >${CMD}<<EOF
 #!/bin/bash
 [ -e $FETCHDATA ] && rm -f $FETCHDATA
-rrdtool fetch ${DSFILE} MAX -r 60 -s -1h | awk 'BEGIN{print "Date,Temp,Hum,Pres,Gas,IAQ"};!/nan|gpio/{if(length(\$0)==0){next};gsub(/:/,"",\$0);printf("%s,%2.1f,%2.1f,%d,%d,%d\\n",strftime("%Y/%m/%d %H:%M:%S",\$1),\$2,\$3,\$4,\$5,\$6)}' > ${FETCHDATA}
+rrdtool fetch ${DSFILE} MAX -r 60 -s -1h | mawk 'BEGIN{print "Date,Temp,Hum,Pres,Gas,IAQ"};!/nan|gpio/{if(length(\$0)==0){next};gsub(/:/,"",\$0);printf("%s,%2.1f,%2.1f,%d,%d,%d\\n",strftime("%Y/%m/%d %H:%M:%S",\$1),\$2,\$3,\$4,\$5,\$6)}' > ${FETCHDATA}
 EOF
 fi

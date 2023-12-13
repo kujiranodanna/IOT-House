@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2023.8.18
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2023.11.17
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
@@ -29,6 +29,7 @@ GPIO_INIT_FLAG=YES
 BME680_RD=$DIR/.pepobme680
 # BME680 keep alive seconds
 BME680_ALIVE=30
+# Check to alive dio_set.cgi
 error(){
   [ -e $tGPIORD ] && rm -f $tGPIORD
   [ -e $GPIORD ] && rm -f $GPIORD
@@ -89,7 +90,7 @@ while true;do
         esac
       fi
       done
-      RD=`$GPIOCTL_DO b $BDO 2>&1`
+      RD=`$GPIOCTL_DO b $(printf %x $BDO) 2>&1`
     else
       LOOPDO=$(($LOOPDO - 1))
     fi
@@ -107,13 +108,13 @@ while true;do
     fi
     if [ -e $BME680_RD ];then
       LOOPI2C=$LOOPI2CT_BME680
-      gpio_i2c=`cat $BME680_RD | awk 'BEGIN{FS=","};{split($1,I,"/");split($4,J,".");printf("%s,%s,%s,%s,%s",I[4],$2,$3,J[1],$5)}'`
-      BME680TEMP=`cat $BME680_RD | awk 'BEGIN{FS=","};{printf("%s",$2)}'`
-      BME680TEMP=`echo -en $BME680TEMP | awk 'BEGIN{FS="."};{printf("%s",$1)}'`
-      BME680HUM=`cat $BME680_RD | awk 'BEGIN{FS=","};{printf("%s",$3)}'`
-      BME680HUM=`echo -en $BME680HUM | awk 'BEGIN{FS="."};{printf("%s",$1)}'`
-      BME680GAS=`cat $BME680_RD | awk 'BEGIN{FS=","};{printf("%s",$5)}'`
-      BME680GAS=`echo -en $BME680GAS | awk 'BEGIN{FS="."};{printf("%s",$1)}'`
+      gpio_i2c=`cat $BME680_RD | mawk 'BEGIN{FS=","};{split($1,I,"/");split($4,J,".");printf("%s,%s,%s,%s,%s",I[4],$2,$3,J[1],$5)}'`
+      BME680TEMP=`cat $BME680_RD | mawk 'BEGIN{FS=","};{printf("%s",$2)}'`
+      BME680TEMP=`echo -en $BME680TEMP | mawk 'BEGIN{FS="."};{printf("%s",$1)}'`
+      BME680HUM=`cat $BME680_RD | mawk 'BEGIN{FS=","};{printf("%s",$3)}'`
+      BME680HUM=`echo -en $BME680HUM | mawk 'BEGIN{FS="."};{printf("%s",$1)}'`
+      BME680GAS=`cat $BME680_RD | mawk 'BEGIN{FS=","};{printf("%s",$5)}'`
+      BME680GAS=`echo -en $BME680GAS | mawk 'BEGIN{FS="."};{printf("%s",$1)}'`
       HUM_BASELOW=40
       HUM_BASEHIGH=70
       HUM_SCORE=0
@@ -166,6 +167,7 @@ while true;do
           if [ -e $ALIAS_DI ];then
             cat $ALIAS_DI | grep -v "slice_ai\[24\]" >$tALIAS_DI
             echo "slice_ai[24]=$GAS_BASE" >> $tALIAS_DI
+            chown www-data:www-data $tALIAS_DI
             mv $tALIAS_DI $ALIAS_DI
           fi
         fi
@@ -204,10 +206,10 @@ while true;do
         RD="-1" ;gpio_i2c="-1"         
         RD=`$GPIOCTL_I2C 2>&1`
         if [ $RD != "-1" ];then
-          NUM=`echo -en $RD | awk 'BEGIN{I="YES"};{if(/[a-z|A-Z]+/){I="NO"};printf I}'`
+          NUM=`echo -en $RD | mawk 'BEGIN{I="YES"};{if(/[a-z|A-Z]+/){I="NO"};printf I}'`
           if [ $NUM = "YES" ];then
-            NOWDATE=`date '+%H:%M'|awk '{printf("%s",$1)}'`
-            gpio_i2c=`echo -en ${NOWDATE} ${RD}|awk '{printf("%s,%s,%s",$1,$2,$3)}'`
+            NOWDATE=`date '+%H:%M'|mawk '{printf("%s",$1)}'`
+            gpio_i2c=`echo -en ${NOWDATE} ${RD}|mawk '{printf("%s,%s,%s",$1,$2,$3)}'`
           fi
         fi
       fi
@@ -217,7 +219,7 @@ while true;do
   fi
   RD="-1"
   RD=`$GPIOCTL 2>&1`
-  LEN=`echo $RD|awk '{print(length($0))}'`
+  LEN=`echo $RD|mawk '{print(length($0))}'`
   if [ "$RD" != "-1" -o "LEN" = 2 ];then
     GPIO_INIT_FLAG=NO
     for i in 1 2 4 8 16 32 64 128; do
@@ -250,7 +252,7 @@ do[1]=${old[1]}
 do[2]=${old[2]}
 do[3]=${old[3]}
 END
-  chown www-data.www-data $tGPIORD $tGPIOWD
+  chown www-data:www-data $tGPIORD $tGPIOWD
   mv $tGPIORD $GPIORD ; mv $tGPIOWD $GPIOWD
   msleep $LOOPTIME
 done

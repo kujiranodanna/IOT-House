@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
 echo -en '
 <HTML>
@@ -8,7 +8,7 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.osdn.jp">
-<META NAME="build" content="2018.2.24">
+<META NAME="build" content="2023.11.10">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.osdn.jp">
 <TITLE>Date being set</TITLE>
@@ -42,9 +42,9 @@ function blink() {
 CONV=./conv_get.cgi
 . $CONV
 CMD=/www/remote-hand/tmp/server_date.pepocmd
-YY=`echo $server_date|awk 'BEGIN{FS="/"};{print $1}'`
-DD=`echo $server_date|awk 'BEGIN{FS="/"};{print $2"/"$3}'`
-HH=`echo $server_time|awk 'BEGIN{FS=":"};{print $1":"$2}'`
+YY=`echo $server_date|mawk 'BEGIN{FS="/"};{print $1}'`
+DD=`echo $server_date|mawk 'BEGIN{FS="/"};{print $2"/"$3}'`
+HH=`echo $server_time|mawk 'BEGIN{FS=":"};{print $1":"$2}'`
 cat>$CMD<<EOF
 #!/bin/bash
 date -s "$DD $HH $YY"

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.11.18 update 2022.11.18
+# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.11.18 update 2023.11.10
 # install open-jtalk ,dic ,hts-voice
 # sudo apt install open-jtalk open-jtalk-mecab-naist-jdic hts-voice-nitech-jp-atr503-m001
 # wget https://sourceforge.net/projects/mmdagent/files/MMDAgent_Example/MMDAgent_Example-1.8/MMDAgent_Example-1.8.zip
@@ -22,7 +22,7 @@ if [ $tVOICEREQ != "none" ];then
   NOWSECOND=`date +%s`
   VOICEREQ_STAMP=`date +%s -r $VOICEREQ`
   if [ $(($NOWSECOND - $VOICEREQ_STAMP)) -lt $INTERVAL ];then
-    VOICE=`echo -en $tVOICEREQ |awk '{gsub("@","",$0);print}'`
+    VOICE=`echo -en $tVOICEREQ |mawk '{gsub("@","",$0);print}'`
     cat >$CMD<<END
 #!/bin/bash
 echo -en $VOICE |$OPENJTALK -r $VOICE_PITCH -x /var/lib/mecab/dic/open-jtalk/naist-jdic -m /usr/share/hts-voice/mei/mei_normal.htsvoice -ow $VOICETMP

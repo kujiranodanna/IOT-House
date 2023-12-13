@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2021.4.25
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2023.11.10
 # monowireless TWELITE & ToCoStick wireless dio, ai, i2c, for rasberry pi.
 DIR=/www/remote-hand/tmp
 CMDWIREDIO="/usr/local/bin/pepotocosctl 0"
@@ -77,8 +77,8 @@ while true;do
     fi
     if [ "${RD}" != "-1" ];then
       WRD="-1"
-      DI=`echo -en $RD |awk '{split($0,I,";");printf I[1]}'`
-      AI=`echo -en $RD |awk '{split($0,I,";");printf I[2]}'`
+      DI=`echo -en $RD |mawk '{split($0,I,";");printf I[1]}'`
+      AI=`echo -en $RD |mawk '{split($0,I,";");printf I[2]}'`
       for i in 1 2 4 8;do
         case "$i" in
           1) tDI="$(($((0x$DI & 1)) / 1))" ; TI1=${tDI} ;;
@@ -91,19 +91,19 @@ while true;do
       continue
     fi
     if [ "${AI}" != "-1" ];then
-      VAI1=`echo ${AI}|awk '{split($0,I,",");printf I[1]}'`
+      VAI1=`echo ${AI}|mawk '{split($0,I,",");printf I[1]}'`
       if [ -n "${slice_ai[12]}" ];then
         [ "${VAI1}" -lt "${slice_ai[12]}" ] && AI1="0" || AI1="1"
       fi        
-      VAI2=`echo ${AI}|awk '{split($0,I,",");printf I[2]}'`
+      VAI2=`echo ${AI}|mawk '{split($0,I,",");printf I[2]}'`
       if [ -n "${slice_ai[13]}" ];then
         [ "${VAI2}" -lt "${slice_ai[13]}" ] && AI2="0" || AI2="1"
       fi        
-      VAI3=`echo ${AI}|awk '{split($0,I,",");printf I[3]}'`
+      VAI3=`echo ${AI}|mawk '{split($0,I,",");printf I[3]}'`
       if [ -n "${slice_ai[14]}" ];then
         [ "${VAI3}" -lt "${slice_ai[14]}" ] && AI3="0" || AI3="1"
       fi        
-      VAI4=`echo ${AI}|awk '{split($0,I,",");printf I[4]}'`
+      VAI4=`echo ${AI}|mawk '{split($0,I,",");printf I[4]}'`
       if [ -n "${slice_ai[15]}" ];then
         [ "${VAI4}" -lt "${slice_ai[15]}" ] && AI4="0" || AI4="1"
       fi
@@ -142,7 +142,7 @@ AI4=$AI4
 VAI4=$VAI4
 END
     fi
-    chown www-data.www-data $tTCOSRD
+    chown www-data:www-data $tTCOSRD
     mv $tTCOSRD $TCOSRD
     LOOP=$(($LOOP - 1))
     msleep 500
@@ -165,9 +165,9 @@ END
   if [ "${RD}" != "-1" ];then
     if [ -e ${TCOSRD} ];then
       cat ${TCOSRD} |grep -v "i2c" >${tTCOSRD}
-      echo -en i2c=\"`echo -en $RD | awk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" >> ${tTCOSRD}
+      echo -en i2c=\"`echo -en $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" >> ${tTCOSRD}
     else
-      echo -en i2c=\"`echo -en $RD | awk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" > ${tTCOSRD}
+      echo -en i2c=\"`echo -en $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" > ${tTCOSRD}
     fi
     mv  ${tTCOSRD} ${TCOSRD}
   fi
