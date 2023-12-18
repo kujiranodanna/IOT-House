@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.19
-* remote-hand_pi_gpio.js  ver0.21 2022.11.19
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.17
+* remote-hand_pi_gpio.js  ver0.21 2022.12.17
 */
 function blink(){
   if (!document){ return; }
@@ -161,6 +161,17 @@ recognition.onresult = function(event){
   if (recognition_continuous === true){
     if (results_voice.match((regex))){
       var send_voice = results_voice.replace(regex,'');
+      send_voice = send_voice.replace(' ','');
+      if (send_voice == "やめて" || send_voice == "とめて" || send_voice == "ストップ"
+        || send_voice == "おわり" || send_voice == "止めて" || send_voice == "stop"
+      )
+      {
+        recognition_continuous = false;
+        recognizing = true;
+        recognition_state = "Stop";
+        $("#recognition_state").text(recognition_state);
+        return;
+      }
       update_do("voice_sel",send_voice);
     }
     setTimeout(function(){
