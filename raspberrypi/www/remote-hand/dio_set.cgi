@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.23
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.20
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -9,8 +9,9 @@ echo -en '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.com">
-<META NAME="build" content="2023.11.23">
-<META NAME="reply-to" content="izamu@pepolinux.com">
+<META NAME="build" content="2023.12.20">
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DIO settings</TITLE>
 <script type="text/javascript">
 function blink() {
@@ -254,8 +255,6 @@ cat >$MODEM_DEV<<EOF
 modem_dev=$modem
 EOF
 END
-echo -en '
-</HTML>'
 CMD=$DIR/dio_set_start_daemon.pepocmd
 cat >$CMD<<END
 #!/bin/bash
@@ -264,4 +263,5 @@ svc -u /www/pepolinux/pifaced
 END
 TIME_STOP_DAEMON=4000
 msleep $TIME_STOP_DAEMON
-./wait_for.cgi
+echo -en '
+</HTML>'
