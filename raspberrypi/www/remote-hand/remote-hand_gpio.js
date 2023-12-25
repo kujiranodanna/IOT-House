@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.17
-* remote-hand_pi_gpio.js  ver0.21 2022.12.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.25
+* remote-hand_pi_gpio.js ver0.21 2023.12.25
 */
 function blink(){
   if (!document){ return; }
@@ -26,6 +26,10 @@ var recognition_state = "Stop"
 var recognition_continuous = false;
 var tmp_continuous = "No";
 var regex = "ジャービス"; // Wake Up Word
+var voice_funny = "アーニャ"; // funny response
+var voice_funny_response = false; // funny_response flag
+var funny_response_ng = "、わ　か　ら　ん"; // interesting reply content
+var funny_response_ok = "、え　ら　い？"; // interesting reply content
 // It will initiate the voice recognition
 function startWebVoiceRecognition(){
   if (!('webkitSpeechRecognition' in window)){
@@ -172,6 +176,12 @@ recognition.onresult = function(event){
         $("#recognition_state").text(recognition_state);
         return;
       }
+      if (voice_funny == regex){
+        voice_funny_response = true;
+      }
+      else {
+        voice_funny_response = false;
+      }
       update_do("voice_sel",send_voice);
     }
     setTimeout(function(){
@@ -258,19 +268,24 @@ function google_speak(voice_t,voice_l){
     }
   }
   else {
-/*    if (recognition_continuous === true){
-      voice_t = "　は　い";
+    if (recognition_continuous === true){
+      if (voice_funny_response === true){
+        voice_t = voice_funny + voice_t + "をする" + funny_response_ok;
+      }    
     }
     else {
       voice_t = "" + voice_t + "を実行します。";
     }
-*/
-voice_t = "" + voice_t + "を実行します。";
   }
   speak_main(voice_t,voice_l);
 }
 function google_speak_none(voice_t,voice_l){
-  if (recognition_continuous === true) return;
+  if (recognition_continuous === true){
+    if (voice_funny_response === true){
+      voice_t = "" + voice_funny + funny_response_ng;
+      speak_main(voice_t,voice_l);
+    }
+  } return;
   if (voice_l == "en"){
 //    voice_t = voice_t + " do not understand";
       voice_t = "Because" + voice_t + "can not understand, I searched it with google";
@@ -1604,18 +1619,18 @@ function voice_do(do_sel,results_voice){
           }
           tdo_id = tdo_iaq + "で" + iaq_color + "です";
         }
-         voice_tmp = tdo_ch + ",温度," + tdo_temp + ",湿度," + tdo_hum + ",気圧," +　tdo_pres + ",空気質," + tdo_id;
-　　      speak_main(voice_tmp,voice_lang);
+         voice_tmp = tdo_ch + ",温度," + tdo_temp + ",湿度," + tdo_hum + ",気圧," + tdo_pres + ",空気質," + tdo_id;
+        speak_main(voice_tmp,voice_lang);
         return;
       }
       if (i == 79 || i == 80){
          voice_tmp = "どう致しまして";
-　　      speak_main(voice_tmp,voice_lang);
+        speak_main(voice_tmp,voice_lang);
         return;
       }
       if (i == 81 || i == 82|| i == 83){
          voice_tmp = "お役に立てて光栄です";
-　　      speak_main(voice_tmp,voice_lang);
+        speak_main(voice_tmp,voice_lang);
         return;
       }
       if (tdo_val == "none"){
@@ -1628,10 +1643,10 @@ function voice_do(do_sel,results_voice){
           if (tdo_id == "none"){tdo_ch = "unknown"}
           voice_tmp = "Ok" + tdo_ch + "is" + tdo_id;
         } else {
-          if (tdo_id == "none"){tdo_id = "不明"}
-          voice_tmp = tdo_ch + "は" + tdo_id + "です";
-　　　　　　　}
-　　      speak_main(voice_tmp,voice_lang);
+            if (tdo_id == "none"){tdo_id = "不明"}
+            voice_tmp = tdo_ch + "は" + tdo_id + "です";
+          }
+        speak_main(voice_tmp,voice_lang);
         return;
       }
       if (tdo_val != "none" && tdo_val != "half"){
@@ -1704,7 +1719,7 @@ function voice_do(do_sel,results_voice){
         voice_tmp = "Sory,Server time-out do not acept the" + voice_src;
       }
       else {
-        voice_tmp = "サーバータイムアウトの為、" + voice_src　+ "、が実行できませんでした。";
+        voice_tmp = "サーバータイムアウトの為、" + voice_src + "、が実行できませんでした。";
       }
       speak_main(voice_tmp,voice_lang);
       return;
@@ -1945,7 +1960,7 @@ function update_di(item){
   $(function(){
     var val = "";
     var val_alias = "";
-    var do_item　= "";
+    var do_item = "";
     var do_alias = "";
     var reset = "";
     var count = "";
