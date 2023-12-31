@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.25
-* remote-hand_pi_gpio.js ver0.21 2023.12.25
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.31
+* remote-hand_pi_gpio.js ver0.21 2023.12.31
 */
 function blink(){
   if (!document){ return; }
@@ -270,8 +270,11 @@ function google_speak(voice_t,voice_l){
   else {
     if (recognition_continuous === true){
       if (voice_funny_response === true){
-        voice_t = voice_funny + voice_t + "をする" + funny_response_ok;
-      }    
+        voice_t = voice_t + "をする、" + voice_funny + "、" + funny_response_ok;
+      }
+      else {
+        voice_t = "" + voice_t + "を実行します。";
+      }
     }
     else {
       voice_t = "" + voice_t + "を実行します。";
