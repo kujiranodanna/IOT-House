@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.31
-* remote-hand_pi_gpio.js ver0.21 2023.12.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.1.2
+* remote-hand_pi_gpio.js ver0.21 2024.1.2
 */
 function blink(){
   if (!document){ return; }
@@ -28,8 +28,8 @@ var tmp_continuous = "No";
 var regex = "ジャービス"; // Wake Up Word
 var voice_funny = "アーニャ"; // funny response
 var voice_funny_response = false; // funny_response flag
-var funny_response_ng = "、わ　か　ら　ん"; // interesting reply content
-var funny_response_ok = "、え　ら　い？"; // interesting reply content
+var funny_response_ng = "、" + voice_funny + "、わ　か　ら　ん"; // interesting reply NG content
+var funny_response_ok = "、" + voice_funny + "、え　ら　い？"; // interesting reply OK content
 // It will initiate the voice recognition
 function startWebVoiceRecognition(){
   if (!('webkitSpeechRecognition' in window)){
@@ -270,10 +270,10 @@ function google_speak(voice_t,voice_l){
   else {
     if (recognition_continuous === true){
       if (voice_funny_response === true){
-        voice_t = voice_t + "をする、" + voice_funny + "、" + funny_response_ok;
+        voice_t = voice_t + "をする。" + funny_response_ok;
       }
       else {
-        voice_t = "" + voice_t + "を実行します。";
+        voice_t = voice_t + "を実行します。";
       }
     }
     else {
@@ -285,7 +285,7 @@ function google_speak(voice_t,voice_l){
 function google_speak_none(voice_t,voice_l){
   if (recognition_continuous === true){
     if (voice_funny_response === true){
-      voice_t = "" + voice_funny + funny_response_ng;
+      voice_t = voice_t + funny_response_ng;
       speak_main(voice_t,voice_l);
     }
   } return;
