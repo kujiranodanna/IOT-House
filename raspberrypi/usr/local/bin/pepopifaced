@@ -41,7 +41,7 @@ exec_cmd() {
     $EXEC_CMD ${USR_BIN}${1}${2} >/dev/null 2>&1
   fi
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 [ -e $tDIORD ] && rm -f $tDIORD
 [ -e $DIORD ] && rm -f $DIORD
 [ -e $DIOWD ] && rm -f $DIOWD

@@ -50,7 +50,7 @@ error(){
   [ -e $pidfile ] && rm -f $pidfile
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 while [ -e ${pidfile} ]
 do
   msleep 1000

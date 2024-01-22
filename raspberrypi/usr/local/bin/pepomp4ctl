@@ -51,7 +51,7 @@ error(){
   [ -e ${ppidfile} ] && rm -f ${ppidfile}
   exit 0
 }
-trap error SIGINT SIGTERM SIGHUP
+trap error INT TERM HUP
 
 while [ ! -z `pgrep ${VIDEOPG}` ];do
   pkill -f ${VIDEOPG}

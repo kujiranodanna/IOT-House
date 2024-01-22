@@ -20,7 +20,7 @@ error(){
   [ -e $tTCOSRD ] && rm -f $tTCOSRD
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 [ -e $TCOSWD ] && rm -f $TCOSWD
 [ -e $TCOSRD ] && rm -f $TCOSRD
 [ -e $TCOSRDCMD ] && rm -f $TCOSRDCMD

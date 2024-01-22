@@ -1,5 +1,5 @@
 #!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.11.6 update 2013.7.24
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.11.6 update 2024.1.14
 # foma Cellular phone detect  for rasberry pi
 PPPMODE=/etc/ppp/ppp-dialer-mode
 OPTACM=/etc/ppp/options.ttyACM0
@@ -16,7 +16,7 @@ DEMAND=/etc/ppp/options.demand
 LOCKFILE="/www/remote-hand/tmp/LCK..pppchat"
 
 error(){
-# Maybe SIGHUP received trap, svc -d|u send SIGHUP
+# Maybe HUP received trap, svc -d|u send HUP
   if [ -e $LOCKFILE ];then
     PID=`cat $LOCKFILE`
     if [ `ps ax|grep -c $PID` -gt 1 ];then
@@ -26,7 +26,7 @@ error(){
   fi
   exit 0
 }
-trap error SIGHUP SIGINT SIGQUIT SIGTERM
+trap error HUP INT QUIT TERM
 
 check_foma () {
   FOMA_CK=`ls /dev/|awk 'BEGIN{I="NO"};/ttyACM0/{I="YES"};END{print I}'`

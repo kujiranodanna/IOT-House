@@ -1,6 +1,6 @@
 #!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2023.12.25
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.7 update 2024.1.14
 # pepoffmpegtimelapse ; RaspberryPi module A script that uses a camera to perform a security camera timelapse jpg to mp4 conversion.
 prog=pepoffmpegtimelapse1
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -57,7 +57,7 @@ error(){
   fi
   exit 0
 }
-trap error SIGQUIT SIGINT SIGTERM SIGHUP
+trap error QUIT INT TERM HUP
 mount_smbfs(){
 # Windows Workgroup Share Directory　settings
   MOUNT_YES_NO=`mountpoint $Win_MP| awk 'BEGIN{FS=" "};{if($0=/not/){printf "NO"} else {printf "YES"}}'`

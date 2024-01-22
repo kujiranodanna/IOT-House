@@ -43,7 +43,7 @@ error(){
   [ -e $pidfile ] && rm -f $pidfile
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 [ -e "$JSONRD" ] && rm -f $JSONRD
 [ -e "$tJSONRD" ] && rm -f $tJSONRD
 [ -e $pidfile ] && rm -f $pidfile

@@ -30,7 +30,7 @@ error(){
   fi
   exit
 }
-trap error SIGINT SIGTERM SIGHUP
+trap error INT TERM HUP
 while [ -e $pidfile ];do
   tpid=`cat $pidfile`
   kill -HUP $tpid

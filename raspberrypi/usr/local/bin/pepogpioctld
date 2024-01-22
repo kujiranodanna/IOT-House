@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2023.11.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2024.1.14
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
@@ -37,7 +37,7 @@ error(){
   pkill -f $GPIOCTL_I2CBME680
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
+trap error TERM HUP KILL INT QUIT
 [ -e $tGPIORD ] && rm -f $tGPIORD
 [ -e $GPIORD ] && rm -f $GPIORD
 [ -e $GPIOWD ] && rm -f $GPIOWD

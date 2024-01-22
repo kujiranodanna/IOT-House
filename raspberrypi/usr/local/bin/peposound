@@ -34,7 +34,7 @@ error(){
   [ -e ${LOCKFILE} ] && rm -f ${LOCKFILE}
   exit 0
 }
-trap error SIGINT SIGTERM SIGHUP
+trap error INT TERM HUP
 lockfile -15 -r 1 ${LOCKFILE} >/dev/null 2>&1
 if [ $? = 0 ];then
   echo -en $$ >${LOCKFILE}

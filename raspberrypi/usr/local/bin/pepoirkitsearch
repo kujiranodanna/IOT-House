@@ -13,7 +13,7 @@ error(){
   [ -e ${WORK} ] && rm ${WORK}  
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 while [ -e ${pidfile} ]
 do
   kill -HUP `cat ${pidfile}`

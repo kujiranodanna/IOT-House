@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.1.14
 # pepoiothouse_voice2 is a script that instantly converts the Raspberry Pi's BME680 environmental value sensor into voice.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
@@ -23,7 +23,7 @@ error(){
   [ -e $VROOMIAQ ] && rm $VROOMIAQ
   exit
 }
-trap error SIGQUIT SIGINT SIGTERM SIGHUP
+trap error QUIT INT TERM HUP
 [ -e $tJSON_DATA ] && exit
 [ ! -e $JSON_DATA ] && exit
 cat $JSON_DATA | jq -r .gpio_i2c >$tJSON_DATA

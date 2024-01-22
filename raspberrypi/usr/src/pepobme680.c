@@ -175,9 +175,9 @@ void move_file(const char* src_name, const char* dest_name)
 
 int main(int argc, char *argv[])
 {
-  signal(SIGTERM,close_fd);
-  signal(SIGQUIT,close_fd);
-  signal(SIGINT,close_fd);
+  signal(TERM,close_fd);
+  signal(QUIT,close_fd);
+  signal(INT,close_fd);
   int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
   time_t t = time(NULL);
   struct tm tm = *localtime(&t);

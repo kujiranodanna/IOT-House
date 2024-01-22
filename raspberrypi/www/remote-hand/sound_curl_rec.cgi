@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update  2024.1.14
 PATH=$PATH:/usr/local/bin
 echo -en '
 <HTML>
@@ -52,7 +52,7 @@ error(){
   [ -e ${PLAYFILE} ] && rm ${PLAYFILE}
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
+trap error TERM HUP KILL INT QUIT
 CMD=$DIR/sound_curl_file_$$.pepocmd
 cat >$tSOUND_FILE
 if [ -e $tSOUND_FILE ];then

@@ -40,7 +40,7 @@ error(){
   [ -e $tLO_TOCOS_WD_DATA ] && rm -f $tLO_TOCOS_WD_DATA
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 
 while true;do
   while [ -e $ALIAS_DI -a -e $SERVERCONF ];do

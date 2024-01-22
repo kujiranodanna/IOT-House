@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2022.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.3.20 update 2024.1.14
 # pepoalexado ; For raspberry pi , and scripts to run the Remote DIO and TOCOS .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 PROG=pepoalexado
@@ -46,7 +46,7 @@ error(){
   [ -e ${LOCK} ] && rm ${LOCK}
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
+trap error TERM HUP KILL INT QUIT
 RM_HOST=$1
 USER=$2
 PASSWORD=$3

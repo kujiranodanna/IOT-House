@@ -1,9 +1,7 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2015.3.15
-
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.3.16 update 2024.1.14
 # pepomail_send.cgi ; Attach the image file and send mail, use the mutt
-# licence GPLv3 ; this scripts designed by Yamauchi Isamu 2015.3.16 update 2018.2.24
 echo -en '
 <HTML>
 <HEAD>
@@ -55,7 +53,7 @@ cat>$MAIL_CMD<<END
 error(){
   exit 0
 }
-trap error SIGINT SIGTERM SIGHUP SIGKILL
+trap error INT TERM HUP KILL
 $WGETMAIL $MAIL_TO $SUBJECT $MESSAGE $IMAGE
 rm -f $MAIL_CMD
 END

@@ -10,7 +10,7 @@ error() {
   [ -e $PING_LOG ] && rm -f $PING_LOG
   exit
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 unset GATEWAY
 while true
 do

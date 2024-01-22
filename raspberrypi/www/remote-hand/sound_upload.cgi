@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update 2024.1.14
 
 PATH=$PATH:/usr/local/bin
 echo -en '
@@ -52,7 +52,7 @@ error(){
   [ -e ${tSOUND_FILE} ] && rm ${tSOUND_FILE}
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT SIGQUIT
+trap error TERM HUP KILL INT QUIT
 cat >$tSOUND_FILE
 if [ -e $tSOUND_FILE ];then
   dd if=$tSOUND_FILE bs=256 count=1 |mawk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE_NAME

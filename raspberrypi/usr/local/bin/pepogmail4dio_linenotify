@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2022.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.1.14
 # pepogmail4dio_linenotify ; For raspberry pi zero, and scripts to run the GPIO and other instructions in the G-mail.
 # Change reply destination to linenotify until exim4 gmail sending error is resolved.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -58,7 +58,7 @@ error(){
   [ -e ${pidfile} ] && rm -f ${pidfile}
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 
 exec_dio() {
 # dio write & exec command

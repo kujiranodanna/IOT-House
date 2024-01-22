@@ -76,7 +76,7 @@ error(){
   [ -e ${CMD} ] && rm -f ${CMD}
   exit 0
 }
-trap error SIGHUP SIGTERM SIGQUIT SIGKILL SIGINT
+trap error HUP TERM QUIT KILL INT
 
 CMD_DIO="/usr/local/bin/epicon -s 115200 -ql ${DIO_DEV} -c ${CMD}"
 

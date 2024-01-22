@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.1.14
 # pepoiothoused ; For raspberry pi , and scripts to run the Remote DIO and Twelite .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 ALEXSADO=/usr/local/bin/pepoalexado
@@ -54,7 +54,7 @@ error(){
   [ -e $tTEMP2FYOUSHITU ] && rm $tTEMP2FYOUSHITU
   exit 0
 }
-trap error SIGQUIT SIGINT SIGTERM SIGHUP
+trap error QUIT INT TERM HUP
 
 while true
 do

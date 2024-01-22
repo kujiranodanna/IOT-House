@@ -18,7 +18,7 @@ error(){
   [ -e ${IMAGE_DIR_TMP}.tar.gz ] && rm ${IMAGE_DIR_TMP}.tar.gz
   exit 0
 }
-trap error SIGQUIT SIGINT SIGTERM SIGHUP
+trap error QUIT INT TERM HUP
 
 while true;do
   j=0

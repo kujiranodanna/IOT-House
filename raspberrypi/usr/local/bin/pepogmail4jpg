@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2021.4.2
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.11 update 2024.1.14
 # pepogmail4jpg ; get jpeg & send mail
 # pepogmail4jpg mail_to subject message
 # /usr/local/bin/pepogmail4jpg $1:mail_to, $2:subject, $3:message ,$4:image.jpg
@@ -22,7 +22,7 @@ MSG=$4
 error(){
   exit 0
 }
-trap error SIGINT SIGTERM SIGHUP SIGKILL
+trap error INT TERM HUP KILL
 
 VIDEO=$DEV
 $FFMPEGCTL $VIDEO $IMAGE $$
