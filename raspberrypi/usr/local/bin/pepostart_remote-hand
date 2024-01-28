@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2023.12.6
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.1.27
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
@@ -285,9 +285,6 @@ EOF
   fi
 else
   echo remote-hand aredy running!
-fi
-if [ ! -e /usr/src/pepolinux/startup.s ];then
-  /usr/local/bin/pepousbttyck
 fi
 rm -f /home/pi/.bash_history
 touch /www/tmp/.bash_history_pi
