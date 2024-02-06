@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2024.1.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2024.2.6
 # pepomsgsend
 # pepomsgsend $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 # pepomsgsend $1:linenotify $2:subject, $3:message ,$4:image.jpeg
@@ -54,7 +54,7 @@ error(){
   [ -e $pidfile ] && rm -f $pidfile
   exit 0
 }
-trap error SIGTERM SIGHUP SIGKILL SIGINT
+trap error TERM HUP KILL INT
 while [ -e ${pidfile} ]
 do
   msleep 1000
