@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.15 update 2023.11.5
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.15 update 2024.2.10
 # pepogpioi2crrdtool ; For lubuntu , and scripts to run the USB I2C Temperature&Humidity Data Base Create and Update.
 # That to run a cron of 60 seconds interval.
 # add following 2 lines --> /etc/cron.d/pepogpioi2crrdtool
@@ -27,7 +27,7 @@ UPTIME=`date -d "${UPTIME}" +%s`
 if [ ! -z $GAS ];then
   if [ ! -e ${DSFILE} ];then
 # db create
-    echo -en "START=${START}" > ${RRDSTART}
+    echo -n "START=${START}" > ${RRDSTART}
     rrdtool create ${DSFILE} --start ${START} --step 60 DS:gpio_temp:GAUGE:600:U:U DS:gpio_hum:GAUGE:600:U:U DS:gpio_pres:GAUGE:600:U:U DS:gpio_gas:GAUGE:600:U:U RRA:MAX:0.5:1:10080 DS:gpio_iaq:GAUGE:600:U:U RRA:MAX:0.5:1:10080 RRA:MAX:0.5:1:10080 RRA:MAX:0.5:1:10080 RRA:MAX:0.5:1:10080 RRA:MAX:0.5:1:10080 
 # db update
     rrdtool update ${DSFILE} --template gpio_temp:gpio_hum:gpio_pres:gpio_gas:gpio_iaq ${UPTIME}:${TEMP}:${HUM}:${PRES}:${GAS}:${IAQ}
@@ -38,7 +38,7 @@ if [ ! -z $GAS ];then
 else
   if [ ! -e ${DSFILE} ];then
 # db create
-    echo -en "START=${START}" > ${RRDSTART}
+    echo -n "START=${START}" > ${RRDSTART}
     rrdtool create ${DSFILE} --start ${START} --step 60 DS:gpio_temp:GAUGE:600:U:U DS:gpio_hum:GAUGE:600:U:U RRA:MAX:0.5:1:10080 RRA:MAX:0.5:1:10080 
   else
 # db update

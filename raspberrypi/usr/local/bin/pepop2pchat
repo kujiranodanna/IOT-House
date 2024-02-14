@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2007.3.18 ; update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2007.3.18 ; update 2024.2.10
 # This scripts sample for ppp chat 
 # usage /usr/local/bin/epicon -l /dev/ttyACM0 -c /usr/local/bin/pepop2pchat
 CLR="\x1b[2J"
@@ -34,14 +34,14 @@ G=""
 sleep 1
 while [ "X$G" != "XOK" ]
 do
-	echo -en "AT&F\r\n" || exit 0
+	echo -n "AT&F\r\n" || exit 0
 #	sleep 5
 	read -s -n 3 -t 2 I || exit 0
 	J=`echo $I|mawk '/OK/{print "OK"}'`
 	if [ "X$J" = "XOK" ]; then
 		{
-		echo -en "$CLR$HOME$BULE" >/dev/tty1
-		echo -en "$MSG1$CR$LF$NORC$NORB" >/dev/tty1
+		echo -n "$CLR$HOME$BULE" >/dev/tty1
+		echo -n "$MSG1$CR$LF$NORC$NORB" >/dev/tty1
 		G=$J
 		}
 	fi
@@ -54,13 +54,13 @@ do
 	J=`echo $I|mawk '/RING/{print "RING"}'`
 	if [ "X$J" = "XRING" ]; then
 		{
-		echo -en "$CRLF$RED" >/dev/tty1
-		echo -en "$MSG2$CR$LF$NORC$NORB" >/dev/tty1
+		echo -n "$CRLF$RED" >/dev/tty1
+		echo -n "$MSG2$CR$LF$NORC$NORB" >/dev/tty1
 		G=$J
 		}
 	fi
 done
-echo -en "ATA\r\n" || exit 0
+echo -n "ATA\r\n" || exit 0
 sleep 2
 exec /usr/sbin/pppd $1
 

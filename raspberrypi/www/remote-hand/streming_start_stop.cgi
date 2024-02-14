@@ -1,16 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.7.21
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 
 # streming_start_stop.cgi
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2020.7.21">
+<META NAME="Build" content="2024.2.10">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>Streming start_stop</TITLE>

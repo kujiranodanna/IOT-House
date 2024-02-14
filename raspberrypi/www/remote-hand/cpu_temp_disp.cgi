@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.8.25
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -54,7 +54,7 @@ if [ -e ${DSFILE} ];then
   fi
   [ -e $GRAP_TEMPFILE ] && rm -f $GRAP_TEMPFILE
 cat >${CMD}<<EOF
-#!/bin/bash
+#!/bin/sh
 rrdtool graph ${GRAP_TEMPFILE} --width 600 --height 120 --start ${START} --end ${END} --upper-limit 70 --lower-limit 20 DEF:a=${DSFILE}:cpu_temp:MAX LINE1:a#FF0000:"CPU Temperature"
 EOF
 fi

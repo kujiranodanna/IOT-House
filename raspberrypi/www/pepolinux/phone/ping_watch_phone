@@ -1,5 +1,5 @@
-#!/bin/bash
-#licence GPLv2 ; this scripts designed by IZAMUKARERA 2010.8.15 update 2022.2.25
+#!/bin/sh
+#licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2010.8.15 update 2022.2.25
 # ping watch of phone-call
 PING_HOST=$1
 CALL_NUM=$2
@@ -15,7 +15,7 @@ if ! ping -c 1 $1 2>&1 >$PING_LOG; then
   sleep 1
   if ! ping -c 1 $1 2>&1 >> $PING_LOG; then
     if [ ! -f "$PING_LOCK" ] && [ ! -f "$PING_DONE" ]; then
-      echo -en $CALL_NUM >$PING_LOCK
+      echo -n $CALL_NUM >$PING_LOCK
       date +"%Y/%m/%d %T" >> $PING_LOG
     fi
   fi

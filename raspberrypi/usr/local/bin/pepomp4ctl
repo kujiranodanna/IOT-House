@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.10.12 update 2024.2.10
 # pepomp4ctl ; get video or jpeg
 # pepomp4ctl dev image pid
 

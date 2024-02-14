@@ -2,7 +2,7 @@
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.3.16 update 2024.1.14
 # pepomail_send.cgi ; Attach the image file and send mail, use the mutt
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -49,7 +49,7 @@ MESSAGE=$msg
 IMAGE=$image_file
 
 cat>$MAIL_CMD<<END
-#!/bin/bash
+#!/bin/sh
 error(){
   exit 0
 }

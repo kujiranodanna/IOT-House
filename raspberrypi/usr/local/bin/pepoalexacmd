@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2022-2027 Isamu.Yamauchi , 2022.8.15 update 2023.12.7
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2022.8.15 update 2024.2.10
 # pepoalexacmd ; For raspberry pi & i386, and scripts to run the Remote DIO and TOCOS .
 # ln -s pepoalexacmd ./pepoalexacmd_on; ln -s pepoalexacmd ./pepoalexacmd_off
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -17,9 +17,9 @@ if [ $# -lt 4 ];then
 fi
 ON_OFF=`echo $0 |mawk 'BEGIN{T="none"};/pepoalexacmd_off/{T="off"};/pepoalexacmd_on/{T="on"};END{printf T}'`
 [ $ON_OFF = "none" ] && exit
-echo -en $ON_OFF >/dev/stderr
+echo -n $ON_OFF >/dev/stderr
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 ping -c 1 $1 >/dev/null
 $ALEXADO $1 $2 $3 $4 $5 $6
 END

@@ -35,7 +35,7 @@ prog=pepojsond
 pidfile=/var/run/$prog.pid
 MAX_TMP_FILE_LIVE=180
 CMD=$DIR/$prog.pepocmd
-echo -en $$ >$pidfile
+echo -n $$ >$pidfile
 WAIT=2000
 error(){
   [ -e "$JSONRD" ] && rm -f $JSONRD
@@ -311,8 +311,8 @@ END
   if [ -n `echo $CT | wc -w` ];then
     for DIO in $CT ; do
       DIOCONT=$DIR/$DIO
-      tDIO=`echo -en $DIO |mawk '{gsub("\\\.","");sub("count","");print $0}'`
-      echo -en \"$tDIO\":{ >>$tJSONRD
+      tDIO=`echo -n $DIO |mawk '{gsub("\\\.","");sub("count","");print $0}'`
+      echo -n \"$tDIO\":{ >>$tJSONRD
       cat $DIOCONT |mawk '
   /^Reset/{printf("%creset%c:%c%s %s%c,",34,34,34,$2,$3,34)}
   /^Update/{printf("%cupdate%c:%c%s %s%c,",34,34,34,$2,$3,34)}
@@ -344,7 +344,7 @@ END
     [ -e $DIRDIP ] && . $DIRDIP
     [ -e $GPIORD ] && . $GPIORD
     if [ "$gpio_i2c" != "-1" ];then
-      gpio_i2c=`echo -en $gpio_i2c | mawk '{gsub(","," ",$0);printf $0}'`
+      gpio_i2c=`echo -n $gpio_i2c | mawk '{gsub(","," ",$0);printf $0}'`
       echo -e $gpio_i2c| mawk '{J=split($0,I," ");if(J>3){printf("\"gpio_i2c\":{\"date\":\"%s\",\"temp\":\"%s℃\",\"hum\":\"%s％\",\"pres\":\"%shPa\",\"gas\":\"%sΩ\",\"iaq\":\"%s\"},\n",I[1],I[2],I[3],I[4],I[5],I[6])}else{printf("\"gpio_i2c\":{\"date\":\"%s\",\"temp\":\"%s℃\",\"hum\":\"%s％\",\"pres\":\"%snone\",\"gas\":\"%snone\",\"iaq\":\"%snone\"},\n",I[1],I[2],I[3],I[4],I[5],I[6])}}' >>$tJSONRD
       GPIO_TEMP=`echo ${gpio_i2c} | mawk '{gsub(","," ",$0);printf $2}'`
       GPIO_TEMP=`echo ${GPIO_TEMP} | mawk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
@@ -389,14 +389,14 @@ END
     unset i2c
     . $TCOSRD
     if [ ! -z "$i2c" ];then
-      i2ctemp=`echo -en $i2c |mawk '{gsub(","," ",$0);printf $0}'`
+      i2ctemp=`echo -n $i2c |mawk '{gsub(","," ",$0);printf $0}'`
       echo  $i2ctemp| mawk '{split($0,I," ");printf("\"i2ctemp\":{\"date\":\"%s\",\"temp\":\"%s\",\"hum\":\"%s\"},\n",I[1],I[2],I[3])}' >>$tJSONRD
       I2C_TEMP=`echo ${i2c} | mawk '{gsub(","," ",$0);printf $2}'`
       I2C_TEMP=`echo ${I2C_TEMP} | mawk '{gsub(/Ž/,"",$0);split($0,I,".");printf I[1]}'`
       if [ ! -z "$I2C_TEMP" -a ! -z "${slice_ai[19]}" ];then
         [ $I2C_TEMP -lt ${slice_ai[19]} ] && old[27]=0 || old[27]=1
       fi
-      I2C_HUM=`echo -en ${i2c} | mawk '{gsub(","," ",$0);printf $3}'`
+      I2C_HUM=`echo -n ${i2c} | mawk '{gsub(","," ",$0);printf $3}'`
       I2C_HUM=`echo ${I2C_HUM} | mawk '{gsub(/%/,"",$0);split($0,J,".");printf J[1]}'`
       if [ ! -z "$I2C_HUM" -a ! -z "${slice_ai[20]}" ];then
         [ $I2C_HUM -lt ${slice_ai[20]} ] && old[28]=0 || old[28]=1

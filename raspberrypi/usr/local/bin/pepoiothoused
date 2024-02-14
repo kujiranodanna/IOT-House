@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.2.10
 # pepoiothoused ; For raspberry pi , and scripts to run the Remote DIO and Twelite .
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 ALEXSADO=/usr/local/bin/pepoalexado

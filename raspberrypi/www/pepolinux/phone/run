@@ -1,5 +1,5 @@
-#!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.4.10 update 2016.8.24
+#!/bin/sh
+# licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2011.4.10 update 2024.2.10
 # FOMA cellular phone dial management for rasberry pi
 # /pepolinux/phone/run
 DIALDIR=/www/remote-hand/tmp
@@ -51,7 +51,7 @@ while true
         if [ "$FOMA_CK" == "NO" -a "$MODEM_CK" == "NO" ];then
           rm -f ${DIALDIR}/${I}
         else
-          echo -en `cat ${DIALDIR}/${I}` > "$PING_FAIL"
+          echo -n `cat ${DIALDIR}/${I}` > "$PING_FAIL"
           check_pppchat
           if [ "$PPPCHAT" == "YES" -o  "$PPPCHAT2" == "YES" ];then
             stop_ppp

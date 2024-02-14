@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2023.11.5
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2024.2.10
 # pepotocoshelp for helper TWE-Lite DIP(Tocos wireless engine) digital-IN/digital-OUT signal.
 # pepotocoshelp $1:ch[1-4] [$2:0 or 1] [$3: timer->1 to 300000ms]
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -46,10 +46,10 @@ writefile(){
     if [ $? = 0 ];then
       if [ -e ${TCOSWD} ];then
       cat ${TCOSWD} | grep -v $DO >${tTCOSWD}
-      echo -en "${DO}=${data}" >>${tTCOSWD}
+      echo -n "${DO}=${data}" >>${tTCOSWD}
       mv ${tTCOSWD} ${TCOSWD}
       else
-        echo -en "${DO}=${data}" >>${tTCOSWD}
+        echo -n "${DO}=${data}" >>${tTCOSWD}
         mv ${tTCOSWD} ${TCOSWD}    
       fi
       chown www-data:www-data ${TCOSWD}

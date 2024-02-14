@@ -1,5 +1,5 @@
-#!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.6.27 update 2022.2.25
+#!/bin/sh
+# licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2011.6.27 update 2024.2.10
 # /pepolinux/pppchat3
 DEMAND=/etc/ppp/options.demand
 CHAT=/etc/ppp/chat-ppp0
@@ -13,7 +13,7 @@ lockfile -3 -r 3 ${LOCKFILE} >/dev/null 2>&1
 if [ $? != 0 ];then
   exit -1
 else
-  echo -en $$ > ${LOCKFILE}
+  echo -n $$ > ${LOCKFILE}
 fi
 
 if [ ! -e "$DEMAND" ];then

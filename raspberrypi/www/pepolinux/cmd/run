@@ -1,5 +1,5 @@
-#!/bin/bash
-#licence GPLv2 ; this scripts designed by IZAMUKARERA 2010.5.6 update 2014.11.21
+#!/bin/sh
+#licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2010.5.6 update 2024.2.10
 #exec cmd for rasberry pi
 DIR=/www/remote-hand/tmp
 EXEC=$DIR/run_cmd

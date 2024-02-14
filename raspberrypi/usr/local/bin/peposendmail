@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2024.2.10
 # peposendmail
 # peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 # peposendmail $1:linenotify $2:subject, $3:message ,$4:image.jpeg
@@ -21,10 +21,10 @@ SUBJECT=`echo $2 | mawk '{gsub(/\+/," ",$0);printf $0}'`
 SUBJECT="$HOSTNAME $SUBJECT"
 MESSAGE=`echo $3 | mawk '{gsub(/\+/," ",$0);printf $0}'`
 IMAGEFILE=$4
-tMAIL_TO=`echo -en $MAIL_TO | tr A-Z a-z`
+tMAIL_TO=`echo -n $MAIL_TO | tr A-Z a-z`
 if [ $tMAIL_TO = "linenotify" ];then
   MESSAGE=${SUBJECT}${MESSAGE}
-  tMESSAGE=`echo -en $MESSAGE | tr " " "+"`
+  tMESSAGE=`echo -n $MESSAGE | tr " " "+"`
   $LINENOTIFY $tMESSAGE $IMAGEFILE
   exit
 fi
@@ -38,7 +38,7 @@ do
   msleep 1000
   kill -HUP `cat ${pidfile}`
 done
-echo -en $$ > ${pidfile}
+echo -n $$ > ${pidfile}
 if [ $# -eq 4 ];then
   echo ${MESSAGE} | ${MUA} -s "${SUBJECT}" "${MAIL_TO}" -a ${DIR}/${IMAGEFILE}
 elif [ $# -eq 3 ];then

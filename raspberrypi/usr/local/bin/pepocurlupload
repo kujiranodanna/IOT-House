@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.8.22 update 2023.11.10
+# Copyright (c) 2022-2028 Isamu.Yamauchi , 2022.8.22 update 2024.2.10
 # pepocurlupload; upload to remote cgi.
 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -23,7 +23,7 @@ USER=$SET_WEBUSER
 PASSWORD=$SET_WEBPASSWORD
 RM_CGI=remote-hand/sound_curl_rec.cgi
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 UPLOAD_SIZE=\$(wc -c $UPLOAD_FILE | mawk '{printf("filesize=%s",\$1)}')
 curl -s --connect-timeout $RETRYTIME --retry $RETRY --max-filesize $GETSIZE --user-agent ${USERAGENT} --tlsv1 -k -u ${USER}:${PASSWORD} -X POST -F 'filesize='\${UPLOAD_SIZE} -F upfile=@${UPLOAD_FILE} http://${RM_HOST}/${RM_CGI} >${DOCFILE}
 rm ${DOCFILE}

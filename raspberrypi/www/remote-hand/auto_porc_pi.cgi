@@ -2,7 +2,7 @@
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -322,7 +322,7 @@ auto_cron_reg() {
   [ $CH -gt 7 -a $CH -lt 14 ] && J=$((CH - 8))
   [ $CH -gt 13 -a $CH -lt 17 ] && J=$((CH - 13))
   cat >$DO_EXEC<<END
-#!/bin/bash
+#!/bin/sh
 if [ $YES_NO = "DISABLE" ];then
   exit
 elif [ "$DI" != -1 ];then
@@ -647,5 +647,5 @@ if [ "${auto_act19_val[9]}" = "reg" ];then
 elif [ "${auto_act19_val[9]}" = "del" ];then
   auto_cron_del
 fi
-echo -en '
+echo -n '
 </HTML>'

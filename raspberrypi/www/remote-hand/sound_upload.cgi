@@ -1,15 +1,15 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update 2024.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update 2024.2.10
 
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2023.11.10">
+<META NAME="build" content="2024.2.10">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Upload Sound File settings</TITLE>
@@ -61,7 +61,7 @@ if [ -e $tSOUND_FILE ];then
     [ -e $tFILE_NAME ] && rm $tFILE_NAME
     [ -e $SOUND_FILE ] && rm $SOUND_FILE
     [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
-    echo -en '</HTML>'
+    echo -n '</HTML>'
     exit
   fi
   cat $tSOUND_FILE | sed -n 6,6p|mawk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
@@ -129,7 +129,7 @@ else
 fi
 if [ -e $FILE_NAME ];then
   . $FILE_NAME
-  if [ $(echo -en ${sound_file[$n]} | wc -c) -ne 0 ];then
+  if [ $(echo -n ${sound_file[$n]} | wc -c) -ne 0 ];then
     [ -e $DIR/${sound_file[$n]} ] && rm $DIR/${sound_file[$n]}
   fi
   cat $FILE_NAME |grep -F -v $tmp >$tFILE_NAME
@@ -140,10 +140,10 @@ else
 fi
 inputFILE=${DIR}/$filename
 outputFILE=${DIR}/$tmpFILENAME
-echo -en '
+echo -n '
 </HTML>'
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 cat $tSOUND_FILE | sed '1,8d' >$SOUND_FILE
 dd if=$SOUND_FILE of=$inputFILE bs=$SIZE count=1
 if [ $CONVERT_YES_NO = "YES" ];then

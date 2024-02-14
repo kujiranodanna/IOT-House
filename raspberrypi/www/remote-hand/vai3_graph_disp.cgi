@@ -1,13 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.8.25
-echo -en '
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.11
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2018.8.25">
+<META NAME="Build" content="2024.2.11">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <META http-equiv="Refresh" content="8;URL=/remote-hand/tmp/i2c_vai3.png">
 <TITLE>I2C Analog Input Graph Create</TITLE>
@@ -53,7 +53,7 @@ if [ -e ${DSFILE} ];then
   fi
   [ -e $GRAP_TEMPFILE ] && rm -f $GRAP_TEMPFILE
 cat >${CMD}<<EOF
-#!/bin/bash
+#!/bin/sh
 rrdtool graph ${GRAP_TEMPFILE} --width 600 --height 120 --start ${START} --end ${END} --upper-limit 2000 --lower-limit 0 DEF:a=${DSFILE}:vai3:MAX LINE1:a#FF0000:"I2C Analog input-3"
 EOF
 fi

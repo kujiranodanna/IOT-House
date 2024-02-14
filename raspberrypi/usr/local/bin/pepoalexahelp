@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2022.3.27 update 2022.4.17
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2022.3.27 update 2024.2.10
 # pepoalexahelp makes it easier to read the value of the environment sensor BME680 
 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -27,4 +27,4 @@ elif [ $IAQ -lt 301 ];then
 elif [ $IAQ -gt 300 ];then
   IAQ_STATUS="さいあく"
 fi
-echo -en "@CPU温度${CPU_TEMP},部屋の温度,${TEMP},湿度,${HUM},気圧,${PRES},空気質,${IAQ}で${IAQ_STATUS}です">$VOICEREQ
+echo -n "@CPU温度${CPU_TEMP},部屋の温度,${TEMP},湿度,${HUM},気圧,${PRES},空気質,${IAQ}で${IAQ_STATUS}です">$VOICEREQ

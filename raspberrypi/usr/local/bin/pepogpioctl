@@ -30,7 +30,7 @@ if [ "$CH" = "b" ];then
     [ $tWD = 1 ] && WD=$high || WD=$low
     $GPIODO ${DO[$j]} $WD
   done
-  echo -en $2
+  echo -n $2
   exit
 fi
 if [ "$CH" -eq 9 ];then
@@ -61,7 +61,7 @@ elif [ $# -eq 1 ];then
     usage
   fi  
   RD=$($GPIODI ${DI[$CH]} |mawk '{gsub("level=","",$3);printf("%s",$3)}')
-  echo -en $RD
+  echo -n $RD
   exit
 elif [ $# -eq 2 -a "$2" -gt 1 ];then
   usage
@@ -82,7 +82,7 @@ else
   [ $tWD = "0" ] && WD=$low || WD=$high
 fi
 $GPIODO ${DO[$CH]} $WD
-echo -en $tWD
+echo -n $tWD
 
 # pinout
 # Description        : Raspberry Pi Zero2W rev 1.0

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.11.5 update 2023.11.23
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.11.5 update 2024.2.10
 # pepousbttyck for detect ANDDIO,TOCOS,MODEM,CP2112
 prog=pepousbttyck
 DIR=/www/remote-hand/tmp
@@ -24,21 +24,21 @@ modem_ck(){
   RETRY=$TRY
   LOCK=/var/lock/LCK..${1}
   while [ -e $LOCK ];do
-    retry_time=`echo -en $RANDOM |cut -c 1-3`
+    retry_time=`echo -n $RANDOM |cut -c 1-3`
     msleep $retry_time
     RETRY=$(($RETRY - 1))
     if [ $RETRY -eq 0 ];then
-      echo -en "-1" >/dev/stderr
+      echo -n "-1" >/dev/stderr
       return
     fi
   done
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 RESULT=""
 RETRY=3
 while [ "X\${RESULT}" != "XOK" ]
 do
-  echo -en "AT&F\\r\\n" || exit 1
+  echo -n "AT&F\\r\\n" || exit 1
   if [ \$? != "0" ];then
     exit
   fi
@@ -64,10 +64,10 @@ END
   RESULT=`echo $RD | mawk '/OK/{print "OK"}'`
   if [ "${RESULT}" = "OK" ];then
     tmodem=${tDEV}
-    echo -en "modem_dev=${tmodem}" >$MODEM_DEV
+    echo -n "modem_dev=${tmodem}" >$MODEM_DEV
   else
     tmodem="none"
-    echo -en "modem_dev=${tmodem}" >$MODEM_DEV
+    echo -n "modem_dev=${tmodem}" >$MODEM_DEV
   fi
 }
 
@@ -79,21 +79,21 @@ anddio_ck(){
   RETRY=$TRY
   LOCK=/var/lock/LCK..${1}
   while [ -e $LOCK ];do
-    retry_time=`echo -en $RANDOM |cut -c 1-3`
+    retry_time=`echo -n $RANDOM |cut -c 1-3`
     msleep $retry_time
     RETRY=$(($RETRY - 1))
     if [ $RETRY -eq 0 ];then
-      echo -en "-1" >/dev/stderr
+      echo -n "-1" >/dev/stderr
       return
     fi
   done
   cat >$CMD<<END
-#!/bin/bash 
+#!/bin/sh 
 RETRY=$TRY
 while [ \${RETRY} -ne 0 ];do
   IN="-1"
-  retry_time=\`echo -en \$RANDOM |cut -c 1-3\`
-  echo -en "$DIOWD\r"
+  retry_time=\`echo -n \$RANDOM |cut -c 1-3\`
+  echo -n "$DIOWD\r"
   if [ \$? != "0" ];then
     RETRY=\$((\${RETRY} - 1))
     msleep \$retry_time
@@ -113,7 +113,7 @@ while [ \${RETRY} -ne 0 ];do
   fi
   break
 done
-echo -en \$RESULT >/dev/stderr
+echo -n \$RESULT >/dev/stderr
 END
   chmod +x $CMD
   RD=`${CMD_DIO} 2>&1`
@@ -155,38 +155,38 @@ READCT=49
 READTM=1
 LOCK=/var/lock/LCK..${1}
 while [ -e $LOCK ];do
-  retry_time=`echo -en $RANDOM |cut -c 1-3`
+  retry_time=`echo -n $RANDOM |cut -c 1-3`
   msleep $retry_time
   RETRY=$(($RETRY - 1))
   if [ $RETRY -eq 0 ];then
-    echo -en "-1" >/dev/stderr
+    echo -n "-1" >/dev/stderr
     return
   fi
 done
   cat >${CMD}<<END
-#!/bin/bash
+#!/bin/sh
 RETRY=$TRY
 while [ \${RETRY} -ne 0 ];do
-  retry_time=\`echo -en \$RANDOM |cut -c 1-2\`
-  echo -en "${send}\\r\\n"
+  retry_time=\`echo -n \$RANDOM |cut -c 1-2\`
+  echo -n "${send}\\r\\n"
   msleep $WAIT
-  echo -en "${d4on}\\r\\n"
+  echo -n "${d4on}\\r\\n"
   msleep $WAIT
   read -s -n ${READCT} -t ${READTM} RD || RD="-1"
-  echo -en "${d4of}\\r\\n"
-  TMP=\`echo -en \${RD} | wc -c\`
+  echo -n "${d4of}\\r\\n"
+  TMP=\`echo -n \${RD} | wc -c\`
   [ \${TMP} -eq ${READCT} ] && break
   RETRY=\$((\${RETRY} - 1))
   msleep \$retry_time
   RD="-1"
 done
-  echo -en \${RD} >/dev/stderr
+  echo -n \${RD} >/dev/stderr
 END
   msleep ${WAIT}
   chmod +x ${CMD}
   RD=`${CMD_TOCOS} 2>&1`
   rm -f ${CMD}
-  RDCT=`echo -en $RD | wc -c`
+  RDCT=`echo -n $RD | wc -c`
   if [ "${RDCT}" -eq $READCT ];then
     [ $TOCOS_TTY = "none" ] && return
     tTOCOS_TTY=$dev

@@ -1,5 +1,5 @@
-#!/bin/bash
-#licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.10.21update 2013.7.24
+#!/bin/sh
+#licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2011.10.21 update 2024.2.10
 # ping watch of dio on for rasberry pi 
 PING_HOST=$1
 DIO_ACT=$2
@@ -67,7 +67,7 @@ dio_write() {
     ;;
   esac
   cat > $FILE <<EOF
-#!/bin/bash
+#!/bin/sh
 $cmd $ARG1 $ARG2 $ARG3
 EOF
   chmod +x $FILE

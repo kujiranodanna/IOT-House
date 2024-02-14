@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2021.12.11
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.10
 # pepoliveserver ;  liveserver for i386
 # pepoliveserver dev timer
 PATH=$PATH:/usr/local/bin:/usr/local/sbin

@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.10.7
 
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -53,7 +53,7 @@ if [ -e ${DSFILE} ];then
   fi
   [ -e $GRAP_TEMPFILE ] && rm -f $GRAP_TEMPFILE
 cat >${CMD}<<EOF
-#!/bin/bash
+#!/bin/sh
 rrdtool graph ${GRAP_TEMPFILE} --width 600 --height 120 --start ${START} --end ${END} --upper-limit 100 --lower-limit 0 DEF:a=${DSFILE}:i2c_hum:MAX LINE1:a#FF0000:"Twlite_Humidity"
 EOF
 fi

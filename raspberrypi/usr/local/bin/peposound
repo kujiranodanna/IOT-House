@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2017.7.13 update 2024.2.10
 # peposound ; Play a sound file
 # usage peposound sound file_Num timer
 if [ $# -lt 1 -o $# -gt 2 ];then
@@ -37,7 +37,7 @@ error(){
 trap error INT TERM HUP
 lockfile -15 -r 1 ${LOCKFILE} >/dev/null 2>&1
 if [ $? = 0 ];then
-  echo -en $$ >${LOCKFILE}
+  echo -n $$ >${LOCKFILE}
 else
   exit
 fi
@@ -51,14 +51,14 @@ else
   SOUND_PLAYER=$SOUND_PLAYER_MPL
 fi
 cat>$SOUND_EXEC_CMD<<END
-#!/bin/bash
+#!/bin/sh
 ${SOUND_PLAYER} ${SOUND_FILE} >/dev/null 2>&1
 rm -f ${LOCKFILE}
 END
 if [ ! -z $TM ];then
   msleep $TM
   cat>$SOUND_EXEC_CMD<<END
-#!/bin/bash
+#!/bin/sh
 ${SOUND_PLAYER} ${SOUND_FILE} >/dev/null 2>&1
 rm -f ${LOCKFILE}
 END

@@ -1,19 +1,19 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , update 2023.2.15
+# Copyright (c) 2021-2027 Isamu.Yamauchi , update 2023.2.13
 PATH=$PATH:/usr/local/bin
 # for raspberry pi
 DIR=/www/remote-hand/tmp
 CMD=$DIR/update_for_wait.pepocmd
-HOMEPAGE=./pi_int.html
+HOMEPAGE=/www/remote-hand/pi_int.html
 RMHOMEPAGE="YES"
 if [ $RMHOMEPAGE = "YES" ];then
   cat>$CMD<<END
-#!/bin/bash
+#!/bin/sh
   rm -f $HOMEPAGE
 END
 fi
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">

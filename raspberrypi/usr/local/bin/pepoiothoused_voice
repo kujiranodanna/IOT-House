@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.2.10
 # pepoiothoused_voice is a script that converts BME680 environmental sensor values into voice even on low power raspberry pi.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
@@ -77,10 +77,10 @@ while true;do
         IAQ_STATUS="さいあく"
       fi
       IAQROOM="空気の状態,"${IAQ}"で"${IAQ_STATUS}"です"
-      echo -en ${ROOMNAME}"の温度,"${TEMPROOM}"度," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMTEMP
-      echo -en "湿度,"${HUMROOM}"%," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMHUM
-      echo -en "気圧,"${PRESROOM}"hPa," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMPRES
-      echo -en ${IAQROOM}"," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMIAQ
+      echo -n ${ROOMNAME}"の温度,"${TEMPROOM}"度," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMTEMP
+      echo -n "湿度,"${HUMROOM}"%," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMHUM
+      echo -n "気圧,"${PRESROOM}"hPa," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMPRES
+      echo -n ${IAQROOM}"," |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMIAQ
       cat >$FFMPEGINPUT<<END
 file $VROOMTEMP
 file $VROOMHUM

@@ -4,13 +4,13 @@
 
 PATH=$PATH:/usr/local/bin
 # irkit_search.cgi, search or set IP Address of IRKit
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2018.2.24">
+<META NAME="Build" content="2020.6.29">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>search IP Address of IRKit</TITLE>
 <script type="text/javascript">
@@ -48,13 +48,13 @@ IRKIT_IP=$DIR/.IRKit_IP
 if [ "$IP" != "none" ];then
 # set IRkit IP
   cat>${CMD}<<END
-#!/bin/bash
+#!/bin/sh
 echo -n $IP >$IRKIT_IP
 END
 else
 # get IRkit IP
   cat>${CMD}<<END
-#!/bin/bash
+#!/bin/sh
 rm -f $IRKIT_IP
 IP=\`${IRKITSERCH}\`
 if [ \${IP} != 0 ];then

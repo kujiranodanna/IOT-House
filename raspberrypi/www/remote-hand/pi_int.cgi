@@ -16,7 +16,7 @@ if [ $ZEROW_YES_NO = "YES" ];then
 else
   DIST_NAME="IOT-House_pi"
 fi
-echo -en '
+echo -n '
 <!DOCTYPE HTML>
 <HTML LANG="ja">
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
@@ -49,7 +49,7 @@ do
 done
 lockfile -3 -r 5 ${LOCKFILE} >/dev/null 2>&1
 if [ $? != 0 ];then
-echo -en '
+echo -n '
 var jump_url = setTimeout("jump_href()", 20000);
 function jump_href() {
   var jump_location = "./pi_int.html?" + (new Date().getTime());
@@ -70,7 +70,7 @@ function jump_href() {
 </HTML>'
   exit -1
 else
-  echo -en $$ >${LOCKPID}
+  echo -n $$ >${LOCKPID}
 fi
 PAGE1=pi_int.html.tmp
 PAGE2=pi_int.html
@@ -81,7 +81,7 @@ echo_f() {
   local DT FL
   DT=$1
   FL=$PAGE1
-  echo -en $DT |cat >>$FL
+  echo -n $DT |cat >>$FL
 }
 disp_int() {
   local INT
@@ -450,7 +450,7 @@ fi
 MODEM=$DIR/.modem
 [ -e $MODEM ] && . $MODEM || modem_dev=none
 LIVE_SERVER=`hostname -I`
-LIVE_SERVER=`echo -en $LIVE_SERVER`
+LIVE_SERVER=`echo -n $LIVE_SERVER`
 cat >>$PAGE1<<END
 <DL id="menu5dl">
 <DT><FONT SIZE="+1"><B>Settings DIO & IRKit & Twelite</B></FONT></DT>
@@ -9586,7 +9586,7 @@ web password
 </HTML>
 END
 mv ${PAGE1} ${PAGE2}
-echo -en '
+echo -n '
 var jump_url = setTimeout("jump_href()", 1000);
 function jump_href() {
   var  jump_location = "/remote-hand/pi_int.html?" + (new Date().getTime());

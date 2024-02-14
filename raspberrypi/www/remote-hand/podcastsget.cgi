@@ -3,7 +3,7 @@
 # Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.5.17 update 2017.9.1
 
 # podcastgets.cgi for podacasts auto get contorol
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -52,7 +52,7 @@ CONV=./conv_get.cgi
 
 if [ "${wget_val[2]}" = "reg" ];then
   cat>$EXEC_PODCAST<<END
-#!/bin/bash
+#!/bin/sh
 $WGET_SH ${wget_val[0]} ${wget_val[1]} ${wget_val[8]} ${wget_val[9]}
 END
   chmod +x $EXEC_PODCAST

@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.4.10 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.4.10 update 2024.2.10
 # FOMA cellular phone or modem dial management for rasberry pi
 DIALDIR=/www/remote-hand/tmp
 CALL=/www/pepolinux/phone/phone_call
@@ -51,7 +51,7 @@ while true
         if [ "$FOMA_CK" == "NO" -a "$MODEM_CK" == "NO" ];then
           rm -f ${DIALDIR}/${I}
         else
-          echo -en `cat ${DIALDIR}/${I}` > "$PING_FAIL"
+          echo -n `cat ${DIALDIR}/${I}` > "$PING_FAIL"
           check_pppchat
           if [ "$PPPCHAT" == "YES" -o  "$PPPCHAT2" == "YES" ];then
             stop_ppp

@@ -56,7 +56,7 @@ while true; do
   if [ -e $ALIAS_DI ];then
     . $ALIAS_DI
   else
-    echo -en "DI_TTY=gpio" >$tALIAS_DI
+    echo -n "DI_TTY=gpio" >$tALIAS_DI
     chown www-data:www-data $tALIAS_DI
     mv $tALIAS_DI $ALIAS_DI
   fi
@@ -73,7 +73,7 @@ while true; do
     PIFACE_INIT=YES
   fi
   if [ "$RD" != "-1" -a "${DI_TTY}" = "piface" ];then
-    LEN=`echo -en $RD | mawk '{print(length($0))}'`
+    LEN=`echo -n $RD | mawk '{print(length($0))}'`
     for i in 1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768; do
       case "$i" in
         1) tRD="$(($((0x$RD & 1)) / 1))" ;j=0 ;;

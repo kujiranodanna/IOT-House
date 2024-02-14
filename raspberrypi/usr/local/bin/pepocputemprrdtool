@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.5.3 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.5.3 update 2024.2.10
 # pepocputemprrdtool ; For raspberry pi or Iubuntu, and scripts to run the CPU Temperature Data Base Create and Update.
 # That to run a cron of 300 seconds interval.
 # add following 2 lines --> /etc/cron.d/pepocputemprrdtool
@@ -20,7 +20,7 @@ if [ ! -e ${DSFILE} ];then
 # db create
   START=`date "+%Y%m%d %H:%M:00"`
   START=`date -d "${START}" +%s`
-  echo -en "START=${START}" > ${RRDSTART}
+  echo -n "START=${START}" > ${RRDSTART}
   rrdtool create ${DSFILE} --start ${START} --step 300 DS:cpu_temp:GAUGE:600:U:U RRA:MAX:0.5:1:1200
   UPTIME=`date "+%Y%m%d %H:%M:00"`
   UPTIME=`date -d "${UPTIME}" +%s`

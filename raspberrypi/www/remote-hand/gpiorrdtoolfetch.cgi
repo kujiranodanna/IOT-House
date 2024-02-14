@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
 
@@ -6,7 +6,7 @@ WORKDIR=/www/remote-hand/tmp
 DSFILE=${WORKDIR}/.gpio_temp_hum.rrd
 FETCHDATA=${WORKDIR}/gpio_rrdfetch.txt
 CMD=${WORKDIR}/gpiorrdtoolfetch.pepocmd
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -44,7 +44,7 @@ function blink() {
 </HTML>'
 if [ -e ${DSFILE} ];then
 cat >${CMD}<<EOF
-#!/bin/bash
+#!/bin/sh
 [ -e $FETCHDATA ] && rm -f $FETCHDATA
 rrdtool fetch ${DSFILE} MAX -r 60 -s -1h | mawk 'BEGIN{print "Date,Temp,Hum,Pres,Gas,IAQ"};!/nan|gpio/{if(length(\$0)==0){next};gsub(/:/,"",\$0);printf("%s,%2.1f,%2.1f,%d,%d,%d\\n",strftime("%Y/%m/%d %H:%M:%S",\$1),\$2,\$3,\$4,\$5,\$6)}' > ${FETCHDATA}
 EOF

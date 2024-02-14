@@ -1,11 +1,11 @@
-#!/bin/bash
-#licence GPLv2 ; this scripts designed by IZAMUKARERA 2008.4.13 update 2022.2.25
+#!/bin/sh
+#licence GPLv2 ; this scripts designed by Isamu.Yamauchi 2008.4.13 update 2024.2.10
 LOCKFILE="/www/remote-hand/tmp/LCK..pppchat"
 lockfile -3 -r 3 ${LOCKFILE} >/dev/null 2>&1
 if [ $? != 0 ];then
   exit -1
 else
-  echo -en $$ > ${LOCKFILE}
+  echo -n $$ > ${LOCKFILE}
 fi
 
 I=""
@@ -13,7 +13,7 @@ G=""
 msleep 5000
 while [ "X$G" != "XOK" ]
 do
-	echo -en "AT&F\r\n"
+	echo -n "AT&F\r\n"
 	if [ $? != "0" ]; then
 		exit
 	fi
@@ -37,7 +37,7 @@ do
 	G=`echo $I|awk '/RING/{print "RING"}'`
 done
 
-echo -en "ATA\r\n"
+echo -n "ATA\r\n"
 if [ $? != "0" ]; then
 	exit
 fi

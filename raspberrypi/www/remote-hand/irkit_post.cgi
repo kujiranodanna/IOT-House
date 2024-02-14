@@ -1,16 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 PATH=$PATH:/usr/local/bin
 # irkit_post.cgi,Post of IR data for IRKit
 # 2023.12.3 Added dummy reading processing as it sometimes slows down
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2023.12.3">
+<META NAME="Build" content="2024.2.10">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Post of IR data IRKit</TITLE>
 <script type="text/javascript">
@@ -66,7 +66,7 @@ fi
 CMD=$DIR/irkit_data.pepocmd
 # post IRkit IR data
 cat>${CMD}<<END
-#!/bin/bash
+#!/bin/sh
 curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} http://${IP}/messages --header "X-Requested-With: PepoLinux" >${DOCFILE}
 msleep 1000
 curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}

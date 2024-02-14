@@ -1,15 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
-
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2018.2.24">
+<META NAME="build" content="2024.2.10">
 <META http-equiv="Refresh" content="5;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Remote-Hand interface change</TITLE>
@@ -42,12 +41,12 @@ function blink() {
 
 CMD=/www/remote-hand/tmp/logout.pepocmd
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 HTPPASS_ORG=/etc/rc.pepo/password
 HTPPASS_TMP=/www/remote-hand/tmp/.htpasswd.tmp
 RAND=`echo -e \$RANDOM`
 mv "\$HTPPASS_ORG" "\$HTPPASS_TMP"
-echo -en "remote:\$RAND" > "\$HTPPASS_ORG"
+echo -n "remote:\$RAND" > "\$HTPPASS_ORG"
 msleep 10000
 mv \$HTPPASS_TMP \$HTPPASS_ORG
 EOF

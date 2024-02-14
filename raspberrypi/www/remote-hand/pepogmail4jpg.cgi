@@ -9,7 +9,7 @@
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIOCMD=/www/remote-hand/tmp/pepogmail4pic_ajax.pepocmd
 FFMPEGCTL=/usr/local/bin/pepomp4ctl
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -48,7 +48,7 @@ CONV=./conv_get.cgi
 . $CONV
 
 cat>$DIOCMD<<END
-#!/bin/bash
+#!/bin/sh
 IMAGE=remote_hand.jpg
 #IMAGE=remote_hand.mp4
 WORKDIR=/www/remote-hand/tmp

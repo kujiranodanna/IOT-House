@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.6.16 update 2024.2.10
 # Scan GPIO IAQ & LED Display for rasberry pi zero W.
 # pepoiaq2led
 # Connect physical Pin 13 ->Red Led, Pin 14 ->Green Led

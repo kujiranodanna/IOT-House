@@ -70,19 +70,19 @@ fi
 if [ $DI_TTY != "gpio" ];then
    PI_INT=$HOMEPAGE_CGI_PI
    cat>$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f /www/remote-hand/pepopiface
 ln -s /usr/local/bin/pepopiface_local /www/remote-hand/pepopiface
 END
 else
   PI_INT=$HOMEPAGE_CGI
    cat>$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f /www/remote-hand/pepopiface
 ln -s /usr/local/bin/pepogpiohelp /www/remote-hand/pepopiface
 END
 fi
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
@@ -119,7 +119,7 @@ do
 done
 lockfile -3 -r 5 ${LOCKFILE} >/dev/null 2>&1
 if [ $? != 0 ];then
-echo -en '
+echo -n '
 var jump_url = setTimeout("jump_href()", 10000);
 function jump_href() {
   var jump_location = "/index.html?" + (new Date().getTime());
@@ -142,7 +142,7 @@ exit -1
 else
 while [ -e ${LOCKCGI} ]
 do
-  echo -en '
+  echo -n '
 var jump_url = setTimeout("jump_href()", 10000);
 function jump_href() {
   var jump_location = "/index.html?" + (new Date().getTime());
@@ -166,11 +166,11 @@ function jump_href() {
   rm -rf ${LOCKCGIPID}
   exit -1
 done
-  echo -en $$ >${LOCKPID}
+  echo -n $$ >${LOCKPID}
 fi
 if [ -e $PPP_SEC ]; then
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 ppp_user=\`cat $PPP_SEC |grep -F -v "#"|mawk 'BEGIN{FS="\""};{print \$2}'\`
 echo \$ppp_user > $PPP_USR
 chown www-data:www-data $PPP_USR
@@ -231,7 +231,7 @@ do
   rm -rf ${LOCKCGIPID}
 done
 if [ -e "./pi_int.html" ];then
-  echo -en '
+  echo -n '
 var jump_url = setTimeout("jump_href()", 500);
 function jump_href() {
   var jump_location = "./pi_int.html?" + (new Date().getTime());
@@ -254,19 +254,19 @@ function jump_href() {
   ./${PI_INT} >/dev/null 2>&1
 else
   if [ $DI_TTY = "gpio" ];then
-    echo -en '
+    echo -n '
 var jump_url = setTimeout("jump_href()", 1500);
 function jump_href() {
   var jump_location = "/remote-hand/pi_int_gpio.cgi?" + (new Date().getTime());
 '
   else
-    echo -en '
+    echo -n '
 var jump_url = setTimeout("jump_href()", 1500);
 function jump_href() {
   var jump_location = "/remote-hand/pi_int.cgi?" + (new Date().getTime());
 '
   fi
-  echo -en '
+  echo -n '
   location.href=jump_location;
   clearTimeout(jump_url);
 }

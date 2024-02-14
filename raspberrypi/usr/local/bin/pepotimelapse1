@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.5 update 2022.1.8
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.5 update 2024.2.10
 # pepotimelapse ; scripts to run the ｔimelapse for security cameras using Raspberry Pi module camera.
 # That to run a of 3600 seconds interval.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin

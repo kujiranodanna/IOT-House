@@ -1,14 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2020.4.23 update 2024.2.10
 # pepoiothouse_voice2 is a script that instantly converts the Raspberry Pi's BME680 environmental value sensor into voice.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 DIR=/www/remote-hand/tmp
 prog=pepoiothoused_voice2
 VOICE_PITCH=0.7
-WAIT1=10000
-WAIT2=30000
-WAIT3=60000
 OPENJTALK=/usr/bin/open_jtalk
 JSON_DATA=/www/remote-hand/.di_read_data.json
 tJSON_DATA=$DIR/${prog}.tmp

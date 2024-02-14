@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/2024.2.10
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2018.2.24
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -46,6 +46,6 @@ HTPASSWD=/usr/bin/htpasswd
 WEB_USER=$user
 WEB_PASS=$password
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 $HTPASSWD -bc $PASSWD_FILE $WEB_USER $WEB_PASS
 EOF

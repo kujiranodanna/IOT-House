@@ -4,7 +4,7 @@
 # di_control_pi1.cgi
 
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
@@ -77,12 +77,12 @@ di_clear() {
   cat $count | head -n 1 >$log
   if [ ! -e $bin ];then
     cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 if [ -e $count ];then
   cat $count |grep -E "Reset" >${count}.tmp
@@ -111,12 +111,12 @@ irkit_exec() {
   ir_num=$2
   time=$3
 cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 $IRKITPOST $ir_num $timer
 if [ -e $count ];then
@@ -149,12 +149,12 @@ tocos_high_low() {
   do_ch=$(($ch + 7))
   cmd=/usr/local/bin/pepotocoshelp
   cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 high_low=$high_low
 if [ $invert != "none" ];then
@@ -191,12 +191,12 @@ do_high_low() {
   invert=$5
   cmd=/usr/local/bin/pepodioctl
   cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 high_low=$high_low
 if [ $invert != "none" ];then
@@ -230,12 +230,12 @@ di_tel() {
   tel="$2"
   tel_file="$3"
   cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 echo $tel >$tel_file
 if [ -e $count ];then
@@ -243,7 +243,7 @@ if [ -e $count ];then
   if [ -e \$LOCK ];then
     exit
   else
-    echo -en \$\$ >\$LOCK
+    echo -n \$\$ >\$LOCK
   fi
   cat $count |grep -E "Reset" >${count}.tmp
   echo Update \`date '+%Y/%m/%d %T'\` >>${count}.tmp
@@ -273,12 +273,12 @@ di_wgetmail() {
   msg_box="$6"
   FFMPEGCTL=/usr/local/bin/pepomp4ctl
   cat >$file<<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 WGETMAIL=/usr/local/bin/peposendmail
 if [ $act = "mail" ];then
@@ -286,12 +286,12 @@ if [ $act = "mail" ];then
   SUBJECT=$msg
 elif [ $act = "mail_message" ];then
   WGETMAIL=/usr/local/bin/pepomsgsend
-  SUBJECT=`echo -en $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
+  SUBJECT=`echo -n $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
 elif [ $act = "web_camera_still" ];then
   IMAGE=remote_hand.jpg
   $FFMPEGCTL /dev/video0 \$IMAGE \$$
   if [ ! -z "$msg_box" ];then
-    SUBJECT=`echo -en $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
+    SUBJECT=`echo -n $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
   else
     SUBJECT=$msg
   fi
@@ -299,7 +299,7 @@ elif [ $act = "web_camera_video" ];then
   IMAGE=remote_hand.mp4
   $FFMPEGCTL /dev/video0 \$IMAGE \$$
   if [ ! -z "$msg_box" ];then
-    SUBJECT=`echo -en $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
+    SUBJECT=`echo -n $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
   else
     SUBJECT=$msg
   fi
@@ -307,7 +307,7 @@ elif [ $act = "mod_camera_still" ];then
   IMAGE=remote_hand.jpg
   $FFMPEGCTL /dev/vchiq \$IMAGE \$$
   if [ ! -z "$msg_box" ];then
-    SUBJECT=`echo -en $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
+    SUBJECT=`echo -n $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
   else
     SUBJECT=$msg
   fi
@@ -315,7 +315,7 @@ elif [ $act = "mod_camera_video" ];then
   IMAGE=remote_hand.mp4
   \$FFMPEGCTL /dev/vchiq \$IMAGE \$$
   if [ ! -z "$msg_box" ];then
-    SUBJECT=`echo -en $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
+    SUBJECT=`echo -n $msg_box |mawk '{gsub(/ /,"+",$0);printf $0}'`
   else
     SUBJECT=$msg
   fi
@@ -357,12 +357,12 @@ di_sendmail() {
   msg="$3""$4""$5"
   hostname=`hostname`
   cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 msg_file="$file".mailmsg
 cat >\$msg_file<<END
@@ -398,12 +398,12 @@ di_sound(){
   time=$3
   cmd=/usr/local/bin/peposound
   cat > $file <<EOF
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 $cmd $ch $time
 if [ -e $count ];then
@@ -432,12 +432,12 @@ del_all() {
   log=$DIR/."$1".log
   CMD=$DIR/dio_control_del_$1.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
 else
-  echo -en \$\$ >\$LOCK
+  echo -n \$\$ >\$LOCK
 fi
 if [ -e $count ];then
   rm -f $file $count $log
@@ -820,7 +820,7 @@ if [ -e "$sDICH" ];then
   done
   CMD=$DIR/dio_control.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
   CT=\`ls $DIR/|grep -E 'dio(0|1|2|3|4|5|6|7|8|9|10)[low|high]+$'\`
   if [ -n \`echo \$CT | wc -w\` ];then
     for DIO in \$CT ; do
@@ -831,5 +831,5 @@ if [ -e "$sDICH" ];then
   fi
 END
 fi
-echo -en '
+echo -n '
 </HTML>'

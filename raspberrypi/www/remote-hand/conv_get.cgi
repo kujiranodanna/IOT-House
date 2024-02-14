@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.2.24 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2013.2.24 update 2024.2.10
 # utilities for QUERY_STRING
 QUERY_CMD=/www/remote-hand/tmp/.QUERY_STRING.cmd
 #echo "$QUERY_STRING" >/www/remote-hand/tmp/QUERY_STRING

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.4.19 update 2013.7.24
 # ping watch of mail for rasberry pi
 PING_HOST=$1
@@ -25,7 +25,7 @@ END
     cat $PING_LOG >>$PING_MSG
     echo '.' >>$PING_MSG
 cat >$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 /usr/sbin/sendmail -i $2 <$PING_MSG
 EOF
       touch $PING_LOCK
@@ -40,7 +40,7 @@ END
     cat $PING_LOG >>$PING_MSG
     echo '.' >>$PING_MSG
 cat >$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 /usr/sbin/sendmail -i $2 <$PING_MSG
 rm -f $PING_LOCK $PING_LOG $PING_MSG
 EOF

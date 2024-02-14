@@ -3,7 +3,7 @@
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.30
 
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -57,7 +57,7 @@ DIORD=$DIR/.di_read_data
 CMD=$DIR/dio_set_start_daemon.pepocmd
 TIME_STOP_DAEMON=1000
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 svc -d /www/pepolinux/gpiod
 svc -d /www/pepolinux/pifaced
 msleep $TIME_STOP_DAEMON
@@ -200,7 +200,7 @@ if [ "$TOCOS_TTY" = "none" -a ! -z "$tocos_ip" ];then
   msleep $SCANTIME
   CMD=$DIR/dio_set_tocos.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f $TCOSRD
 rm -f $TEMPERFILE
 rm -f /www/remote-hand/pepotocoshelp
@@ -210,7 +210,7 @@ else
   msleep $SCANTIME
   CMD=$DIR/dio_set_tocos.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f $TCOSRD
 rm -f $TEMPERFILE
 rm -f /www/remote-hand/pepotocoshelp
@@ -221,7 +221,7 @@ if [ "$DI_TTY" = "none" -a ! -z "$piface_ip" ];then
   msleep $SCANTIME
   CMD=$DIR/dio_set_piface.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f $DIORD
 rm -f $TEMPERFILE
 rm -f /www/remote-hand/pepopiface
@@ -231,7 +231,7 @@ elif [ "$DI_TTY" = "gpio" ];then
   msleep $SCANTIME
   CMD=$DIR/dio_set_piface.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f $DIORD
 rm -f $TEMPERFILE
 rm -f /www/remote-hand/pepopiface
@@ -241,7 +241,7 @@ elif [ "$DI_TTY" = "piface" ];then
   msleep $SCANTIME
   CMD=$DIR/dio_set_piface.pepocmd
   cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 rm -f $DIORD
 rm -f $TEMPERFILE
 rm -f /www/remote-hand/pepopiface
@@ -250,18 +250,18 @@ END
 fi
 CMD=$DIR/dio_set_modem.pepocmd
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 cat >$MODEM_DEV<<EOF
 modem_dev=$modem
 EOF
 END
 CMD=$DIR/dio_set_start_daemon.pepocmd
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 svc -u /www/pepolinux/gpiod
 svc -u /www/pepolinux/pifaced
 END
 TIME_STOP_DAEMON=4000
 msleep $TIME_STOP_DAEMON
-echo -en '
+echo -n '
 </HTML>'

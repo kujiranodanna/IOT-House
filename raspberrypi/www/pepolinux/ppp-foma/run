@@ -1,5 +1,5 @@
-#!/bin/bash
-# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.11.6 update 2024.1.14
+#!/bin/sh
+# licence GPLv2 ; this scripts designed by IZAMUKARERA 2011.11.6 update 2024.2.10
 # foma Cellular phone detect  for rasberry pi
 PPPMODE=/etc/ppp/ppp-dialer-mode
 OPTACM=/etc/ppp/options.ttyACM0

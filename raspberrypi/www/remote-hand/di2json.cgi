@@ -64,7 +64,7 @@ echo '"date":"'$NOWDATE'"' >>$JSONRD
 echo "}" >>$JSONRD
 #cat $JSONRD
 chown apache.apache $JSONRD
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
@@ -75,7 +75,7 @@ echo -en '
 <TITLE>di2json</TITLE>
 '
 cat $JSONRD
-echo -en '
+echo -n '
 </HEAD>
 </BODY>
 </HTML>'

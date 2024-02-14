@@ -1,6 +1,6 @@
-#/bin/bash
+#/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.11.30 update 2019.11.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2019.11.30 update 2024.2.10
 WHO=`whoami`
 if [ $WHO = root ];then
   echo -e 'please type in sudo -u pi' $0 

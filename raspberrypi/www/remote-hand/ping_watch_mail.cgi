@@ -2,7 +2,7 @@
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.8.9
 
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">

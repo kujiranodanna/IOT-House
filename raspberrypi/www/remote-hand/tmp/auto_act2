@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 if [ ENABLE = "DISABLE" ];then
   exit
 elif [ "1" != -1 ];then
@@ -30,7 +30,7 @@ elif [ 21 -gt 16 -a 21 -lt 27 ];then
   WGETMAIL=/usr/local/bin/pepolinemsgsend
   SUBJECT=$prog
   $WGETMAIL $SUBJECT++$TALK
-  echo -en $TALK |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMIAQ
+  echo -n $TALK |$OPENJTALK -r $VOICE_PITCH -x $USEVOICE -ow $VROOMIAQ
   /usr/local/bin/pepocurlupload iot001.local $VROOMIAQ
 #  /usr/bin/aplay $VROOMIAQ
   msleep 10000

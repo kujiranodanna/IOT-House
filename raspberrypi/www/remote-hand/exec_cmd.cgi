@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 
-echo -en '
+echo -n '
 <HTML>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <HEAD>
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
 <META http-equiv="Refresh" content="60;URL=/remote-hand/wait_for.cgi">
-<META NAME="build" content="2023.11.10">
+<META NAME="build" content="2024.2.10">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>command of execution</TITLE>
 <script type="text/javascript">
@@ -43,7 +43,7 @@ CMD=/www/remote-hand/tmp/exec_cmd.pepocmd
 ACT=`echo $QUERY_STRING |mawk 'BEGIN{FS="&"};/poweroff/{print "poweroff"};/reboot/{print "reboot"};/init/{print "init"}'`
 if [ $ACT = "init" ];then
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 [ -e /usr/src/pepolinux/back_up.tar.gz ] && rm -f /usr/src/pepolinux/back_up.tar.gz
 [ -e /usr/src/pepolinux/startup.s ] && rm -f /usr/src/pepolinux/startup.s
 (cd /www/remote-hand ; tar cfz ../remote_tmp.tar.gz ./ ; cd /www ; rm -rf t ; mkdir -p t ; cd t ; tar xfz ../remote_tmp.tar.gz ; rm -rf tmp .di_read_data.json .di_read_data.json.tmp pi_int.html dio_sh.tar.gz ; tar cfz /usr/src/pepolinux/remote_pi.tar.gz ./ ; echo > /root/.bash_history ; cd /usr/bin ; rm -f dio*)
@@ -52,8 +52,8 @@ rm /etc/wpa_supplicant/wpa_supplicant.conf ;touch /etc/wpa_supplicant/wpa_suppli
 rm /etc/exim4/passwd.client
 rm /boot/iothouse_config.txt
 rm /etc/rc.pepo/linenotify
-echo -en >/home/pi/.bash_history
-echo -en >/root/.bash_history
+echo -n >/home/pi/.bash_history
+echo -n >/root/.bash_history
 hostnamectl set-hostname iot000
 cat>/etc/hosts<<END
 :1              localhost ip6-localhost ip6-loopback
@@ -68,12 +68,12 @@ sync
 EOF
 elif [ $ACT = "reboot" ];then
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 /sbin/reboot
 EOF
 elif [ $ACT = "poweroff" ];then
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 /sbin/poweroff
 EOF
 fi

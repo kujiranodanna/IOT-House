@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2024.2.10
 # Convert from gpio to fake twlite data, MonoWireless TWELITE & ToCoStick Wireless dio, ai, i2c, Raspberry Pi
 DIR=/www/remote-hand/tmp
 CMDWIREDIO="/usr/local/bin/pepotocosctl 0"
@@ -103,8 +103,8 @@ END
     fi
     if [ "${RD}" != "-1" ];then
       WRD="-1"
-      DI=`echo -en $RD |mawk '{split($0,I,";");printf I[1]}'`
-      AI=`echo -en $RD |mawk '{split($0,I,";");printf I[2]}'`
+      DI=`echo -n $RD |mawk '{split($0,I,";");printf I[1]}'`
+      AI=`echo -n $RD |mawk '{split($0,I,";");printf I[2]}'`
       for i in 1 2 4 8;do
         case "$i" in
           1) tDI="$(($((0x$DI & 1)) / 1))" ; TI1=${tDI} ;;
@@ -192,9 +192,9 @@ echo pepo1
   if [ "${RD}" != "-1" ];then
     if [ -e ${TCOSRD} ];then
       cat ${TCOSRD} |grep -v "i2c" >${tTCOSRD}
-      echo -en i2c=\"`echo -en $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" >> ${tTCOSRD}
+      echo -n i2c=\"`echo -n $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" >> ${tTCOSRD}
     else
-      echo -en i2c=\"`echo -en $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" > ${tTCOSRD}
+      echo -n i2c=\"`echo -n $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" > ${tTCOSRD}
     fi
     mv  ${tTCOSRD} ${TCOSRD}
   fi

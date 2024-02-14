@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update  2024.1.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update 2024.2.10
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2023.11.10>
+<META NAME="build" content="2024.2.10>
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Upload Sound File for curl</TITLE>
@@ -71,7 +71,7 @@ PLAYFILE=$DIR/$filename
 MP3_YES_NO=$(echo $filename |mawk 'BEGIN{TMP="NO"};/mp3$/{TMP="YES"};END{printf TMP}')
 WAV_YES_NO=$(echo $filename |mawk 'BEGIN{TMP="NO"};/wav$/{TMP="YES"};END{printf TMP}')
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 if [ ! -e $LOCK ];then
   touch $LOCK
   cat $tSOUND_FILE | sed '1,8d' >$SOUND_FILE

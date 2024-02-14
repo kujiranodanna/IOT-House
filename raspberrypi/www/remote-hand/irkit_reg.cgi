@@ -1,16 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2020.12.28
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 
 PATH=$PATH:/usr/local/bin
 # irkit_reg.cgi,Registration of IR data for IRKit
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2020.12.28">
+<META NAME="Build" content="2024.2.10">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Registration of IR data IRKit</TITLE>
 <script type="text/javascript">
@@ -57,6 +57,6 @@ fi
 CMD=$DIR/irkit_data.pepocmd
 # get IRkit IR data
 cat>${CMD}<<END
-#!/bin/bash
+#!/bin/sh
 curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} http://${IP}/messages --header "X-Requested-With: PepoLinux" >${IRFILE}
 END

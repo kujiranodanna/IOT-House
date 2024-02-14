@@ -1,5 +1,5 @@
-#!/bin/bash
-# licence GPLv3 ; this scripts designed by Yamauchi Isamu 2016.8.5 update 2018.2.24
+#!/bin/sh
+# licence GPLv3 ; this scripts designed by Yamauchi Isamu 2016.8.5 update 2024.2.10
 # pepousbthem_graph_mail ; Get the USB Thermometer graph & send mail
 # pepousbthem_graph_mail mail_to subject message
 MAILFROM=$1

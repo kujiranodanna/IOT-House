@@ -1,15 +1,15 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.4.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
 
 PATH=$PATH:/usr/local/bin
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2022.4.26">
+<META NAME="build" content="2024.2.10">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Upload Sound File settings</TITLE>
@@ -62,5 +62,5 @@ if [ $lengthFILE_NAME -eq 0 ];then
   exit
 fi
 done
-echo -en '
+echo -n '
 </HTML>'

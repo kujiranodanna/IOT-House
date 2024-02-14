@@ -2,7 +2,7 @@
 PATH=$PATH:/usr/local/bin
 STOP_FOMA="svc -d /service/ppp-foma"
 RUN_FOMA="svc -u /service/ppp-foma"
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -49,7 +49,7 @@ PPP_64K='64k='$pppmode
 MODEM_DEV=/www/remote-hand/tmp/.modem
 MODEM=$modem
 cat>$CMD<<EOF
-#!/bin/bash
+#!/bin/sh
 $STOP_FOMA
 msleep 500
 cat >$PPP_CAHP<<END

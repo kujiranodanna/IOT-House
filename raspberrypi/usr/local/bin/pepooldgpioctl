@@ -1,6 +1,6 @@
-#! /bin/bash
+#! /bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.6.30 update 2019.6.20
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.6.30 update 2024.2.10
 # pepogpioctl for contorl gpio signal, input and output.
 # pepogpioctl $1:ch[0-9:b] [$2:0-f] [$3: timer->1 to 300000ms]
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
@@ -17,7 +17,7 @@ else
 fi
 if [ "$CH" = "b" ];then
   $GPIOCMDWB $2
-  echo -en $2
+  echo -n $2
   exit
 fi
 if [ "$CH" -eq 9 ];then
@@ -63,7 +63,7 @@ elif [ $# -eq 1 ];then
   fi
   RCH=$(($CH + 3))
   RD=`$GPIOCMD read $RCH`
-  echo -en $RD
+  echo -n $RD
   exit
 elif [ $# -eq 2 -a "$2" -gt 1 ];then
   usage
@@ -82,7 +82,7 @@ else
   DO=$2  
 fi
 TMP=`$GPIOCMD write $CH $DO`
-echo -en $DO
+echo -n $DO
 
 #gpio readall
 # +-----+-----+---------+------+---+-Pi ZeroW-+---+------+---------+-----+-----+

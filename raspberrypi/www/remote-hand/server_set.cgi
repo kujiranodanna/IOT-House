@@ -2,7 +2,7 @@
 # The MIT License
 # Copyright (c) 2020-2027 Isamu.Yamauchi , update 2022.9.26
 
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -50,17 +50,17 @@ SET_WEBUSER="${server_val[0]}"
 SET_WEBPASSWORD="${server_val[1]}"
 SET_LINENOTIFY="${server_val[2]}"
 cat>$tSTARTUP<<EOF
-#!/bin/bash
+#!/bin/sh
 SET_WEBUSER="${SET_WEBUSER}"
 SET_WEBPASSWORD="${SET_WEBPASSWORD}"
 [ ! -z "${SET_WEBUSER}" ] && [ ! -z "${SET_WEBPASSWORD}" ] && htpasswd -bc /etc/rc.pepo/password ${SET_WEBUSER} ${SET_WEBPASSWORD} >/dev/null 2>&1
-SET_LINENOTIFY=\`[ -e $LINENOTIFY_FILE ] && echo -en "OK" || echo -en ""\`
+SET_LINENOTIFY=\`[ -e $LINENOTIFY_FILE ] && echo -n "OK" || echo -n ""\`
 EOF
 chmod +x $tSTARTUP
 cat>$CMD<<END
-#!/bin/bash
+#!/bin/sh
 if [ ! -z "${SET_LINENOTIFY}" ];then
-  echo -en $SET_LINENOTIFY >${LINENOTIFY_FILE}
+  echo -n $SET_LINENOTIFY >${LINENOTIFY_FILE}
 else
   rm ${LINENOTIFY_FILE}
 fi

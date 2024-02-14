@@ -46,10 +46,10 @@ writefile(){
     if [ $? = 0 ];then
       if [ -e ${DOWD} ];then
       cat ${DOWD} | grep -F -v $DO >${tDOWD}
-      echo -en "${DO}=${data}" >>${tDOWD}
+      echo -n "${DO}=${data}" >>${tDOWD}
       mv ${tDOWD} ${DOWD}
       else
-        echo -en "${DO}=${data}" >>${tDOWD}
+        echo -n "${DO}=${data}" >>${tDOWD}
         mv ${tDOWD} ${DOWD}    
       fi
       chown www-data:www-data ${DOWD}

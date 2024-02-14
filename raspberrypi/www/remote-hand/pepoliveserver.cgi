@@ -9,7 +9,7 @@ LIVESERVER=/usr/local/bin/pepoliveserver
 LIVEMP4CTL=/usr/local/bin/pepomp4ctl
 LIVEIMG=remote-hand.jpg
 LIVEMOVE=remote-hand.webm
-echo -en '
+echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
@@ -49,12 +49,12 @@ DEV=/dev/${dev}
 TIMER=$live_timer
 if [ ${TIMER} = 0 ];then
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 $LIVEMP4CTL $DEV $LIVEIMG `echo \$\$`
 END
 else
 cat >$CMD<<END
-#!/bin/bash
+#!/bin/sh
 $LIVESERVER $DEV $TIMER
 END
 fi

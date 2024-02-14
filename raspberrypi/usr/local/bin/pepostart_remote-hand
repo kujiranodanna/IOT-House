@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.1.27
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.10
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
@@ -189,7 +189,7 @@ EOF
     if [ ${ETH_YES_NO} = "YES" ];then
       if [ -z "${SSID}" -a -z "${KEY}" ];then
         ifconfig wlan0 down
-        echo -en >${tWPA_CONF}
+        echo -n >${tWPA_CONF}
         if [ "${IP_ADDRESS}" = "dhcp" -o "${IP_ADDRESS}" = "DHCP" -o -z "${IP_ADDRESS}" ];then
           cat >${tNETWORK_CONF}<<EOF
 auto lo
@@ -254,7 +254,7 @@ dns-nameservers ${NAME_SERVER}
 EOF
         fi
       else
-        echo -en >${tWPA_CONF}
+        echo -n >${tWPA_CONF}
       fi
     fi
   fi
