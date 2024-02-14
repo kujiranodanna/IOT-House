@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi ,2023.11.10 update 2024.2.14
 
 PATH=$PATH:/usr/local/bin
 echo -n '
@@ -57,12 +57,14 @@ cat >$tSOUND_FILE
 if [ -e $tSOUND_FILE ];then
   dd if=$tSOUND_FILE bs=256 count=1 |mawk '/^[a-z]/{gsub("\r","",$0);print}' >$tFILE_NAME
   . $tFILE_NAME  
-  if [ $size -gt $MAXFILESIZE ];then
-    [ -e $tFILE_NAME ] && rm $tFILE_NAME
-    [ -e $SOUND_FILE ] && rm $SOUND_FILE
-    [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
-    echo -n '</HTML>'
-    exit
+  if [ ! -z $size ];then
+    if [ $size -gt $MAXFILESIZE ];then
+      [ -e $tFILE_NAME ] && rm $tFILE_NAME
+      [ -e $SOUND_FILE ] && rm $SOUND_FILE
+      [ -e $tSOUND_FILE ] && rm $tSOUND_FILE
+      echo -n '</HTML>'
+      exit
+    fi
   fi
   cat $tSOUND_FILE | sed -n 6,6p|mawk '{gsub("\r","",$0);gsub(";","",$0);printf("%s\n%s\n",$3,$4)}' >$tFILE_NAME
   . $tFILE_NAME
