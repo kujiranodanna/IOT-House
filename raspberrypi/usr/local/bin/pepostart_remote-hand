@@ -1,12 +1,12 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.15
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
 systemctl disable dphys-swapfile
 systemctl daemon-reload
-hdparm -S 60 /dev/sda
+#hdparm -S 60 /dev/sda
 systemctl stop rsyslog
 systemctl stop networking
 systemctl stop apache2
@@ -288,6 +288,9 @@ else
 fi
 rm -f /home/pi/.bash_history
 touch /www/tmp/.bash_history_pi
+mkdir /www/tmp/.npm
+rm -rf /root/.npm
+ln -s /www/tmp/.npm /root/.npm
 ln -s /www/tmp/.bash_history_pi /home/pi/.bash_history
 rm -f /root/.bash_history
 touch /www/tmp/.bash_history_root
