@@ -23,6 +23,7 @@ tWPA_CONF=${WORKDIR_TMP}/wpa_supplicant.conf
 BOOT_WPA_CONF=/boot/firmware/wpa_supplicant.conf 
 NETWORK_CONF=/etc/network/interfaces
 tNETWORK_CONF=${WORKDIR_TMP}/interfaces
+NET_RESTART="NO"
 if [ ! -e ${WORKDIR} ];then
   [ ! -e /www ] && mkdir -p /www
   [ ! -e ${WORKDIR} ] && mkdir -p ${WORKDIR_TMP}
@@ -259,16 +260,25 @@ EOF
       fi
     fi
   fi
-  [ -e ${tNETWORK_CONF} ] && mv ${tNETWORK_CONF} ${NETWORK_CONF}
+  if [ -e ${tNETWORK_CONF} ];then
+    N_MD5SUM=$(md5sum ${NETWORK_CONF}| mawk '{print $1}')
+    tN_MD5SUM=$(md5sum ${tNETWORK_CONF}| mawk '{print $1}')
+    if [ ${N_MD5SUM} != ${tN_MD5SUM} ];then
+      mv ${tNETWORK_CONF} ${NETWORK_CONF}
+      NET_RESTART="YES"
+    fi
+  fi
   if [ -e ${tWPA_CONF} ];then
     if [ -e ${WPA_CONF} ];then
-      W_MD5SUM=$(tWPA_CONF)
-      tW_MD5SUM=$($tWPA_CONF)
-      if [ ${W_MD5SUM}!= ${tW_MD5SUM} ];then
+      W_MD5SUM=$(md5sum ${WPA_CONF}| mawk '{print $1}')
+      tW_MD5SUM=$(md5sum ${tWPA_CONF}| mawk '{print $1}')
+      if [ ${W_MD5SUM} != ${tW_MD5SUM} ];then
         mv ${tWPA_CONF} ${WPA_CONF}
+        NET_RESTART="YES"
       fi
     else
       mv ${tWPA_CONF} ${WPA_CONF}
+      NET_RESTART="YES"
     fi
     if [ ${BOOT_WPA_CONF} ];then
       rm ${BOOT_WPA_CONF}
@@ -313,7 +323,9 @@ rm -rf /var/lib/logrotate
 mkdir /www/tmp/logrotate
 ln -s /www/tmp/logrotate /var/lib/logrotate
 systemctl restart rsyslog
-systemctl restart networking
+if [ ${NET_RESTART} = "YES" ];then
+  systemctl restart networking
+fi
 systemctl restart apache2
 #systemctl restart exim4
 systemctl restart cron
