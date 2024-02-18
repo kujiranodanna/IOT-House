@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.15
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.18
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
@@ -8,7 +8,7 @@ systemctl disable dphys-swapfile
 systemctl daemon-reload
 #hdparm -S 60 /dev/sda
 systemctl stop rsyslog
-systemctl stop networking
+#systemctl stop networking
 systemctl stop apache2
 systemctl stop exim4
 WORKDIR=/www/remote-hand
@@ -20,6 +20,7 @@ IOTHOSECONF_TMP=${WORKDIR_TMP}/iothouse_config.txt
 IOTHOSECONF=/boot/iothouse_config.txt
 WPA_CONF=/etc/wpa_supplicant/wpa_supplicant.conf
 tWPA_CONF=${WORKDIR_TMP}/wpa_supplicant.conf
+BOOT_WPA_CONF=/boot/firmware/wpa_supplicant.conf 
 NETWORK_CONF=/etc/network/interfaces
 tNETWORK_CONF=${WORKDIR_TMP}/interfaces
 if [ ! -e ${WORKDIR} ];then
@@ -259,7 +260,20 @@ EOF
     fi
   fi
   [ -e ${tNETWORK_CONF} ] && mv ${tNETWORK_CONF} ${NETWORK_CONF}
-  [ -e ${tWPA_CONF} ] && mv ${tWPA_CONF} ${WPA_CONF}
+  if [ -e ${tWPA_CONF} ];then
+    if [ -e ${WPA_CONF} ];then
+      W_MD5SUM=$(tWPA_CONF)
+      tW_MD5SUM=$($tWPA_CONF)
+      if [ ${W_MD5SUM}!= ${tW_MD5SUM} ];then
+        mv ${tWPA_CONF} ${WPA_CONF}
+      fi
+    else
+      mv ${tWPA_CONF} ${WPA_CONF}
+    fi
+    if [ ${BOOT_WPA_CONF} ];then
+      rm ${BOOT_WPA_CONF}
+    fi
+  fi
   if [ ! -z "${HOST_NAME}" ];then
     if [ $ZEROW_YES_NO = "YES" ];then
       if [ $ZERO2W_YES_NO = "YES" ];then
