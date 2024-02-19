@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.18
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.2.19
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
@@ -18,9 +18,10 @@ MAIL_CONF="/etc/exim4/passwd.client"
 tMAIL_CONF=${WORKDIR_TMP}/.passwd.client
 IOTHOSECONF_TMP=${WORKDIR_TMP}/iothouse_config.txt
 IOTHOSECONF=/boot/iothouse_config.txt
+OVERLAY_IOTHOSECONF=/boot/firmware/iothouse_config.txt
 WPA_CONF=/etc/wpa_supplicant/wpa_supplicant.conf
 tWPA_CONF=${WORKDIR_TMP}/wpa_supplicant.conf
-BOOT_WPA_CONF=/boot/firmware/wpa_supplicant.conf 
+BOOT_WPA_CONF=/boot/firmware/wpa_supplicant.conf
 NETWORK_CONF=/etc/network/interfaces
 tNETWORK_CONF=${WORKDIR_TMP}/interfaces
 NET_RESTART="NO"
@@ -159,7 +160,13 @@ iface default inet dhcp
 EOF
     fi
   else
-    . $IOTHOSECONF
+    if [ -e $IOTHOSECONF ];then
+      if [ -e $OVERLAY_IOTHOSECONF ];then
+        . $OVERLAY_IOTHOSECONF
+      else    
+        . $IOTHOSECONF
+      fi
+    fi
     cat >$IOTHOSECONF_TMP<<EOF
 # Please describe the setting for IOTHouse below
 # Wireless address of this machine -->  ${WIFIADDR}
