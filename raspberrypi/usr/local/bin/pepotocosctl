@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2024.2.10 for i386 & raspberry pi.
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.2.10 update 2024.4.2 for i386 & raspberry pi.
 # pepotocsctl for contorl TWE-Lite DIP:Ver1.6 or later(monowireless engine) digital-IN/digital-OUT signal.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 usage(){
@@ -101,7 +101,7 @@ send_dio(){
     fi
   done
   cat >${CMD}<<EOF
-#!/bin/sh
+#!/bin/bash
 RETRY=$TRY
 while [ \${RETRY} -ne 0 ];do
   retry_time=\`echo -n \$RANDOM |cut -c 1-2\`
@@ -148,7 +148,7 @@ i2c_read(){
   tmp=${I2CHEAD}${I2CREAD}${I2CADDR}${I2CREAD_CT}
   read=${HEDER}${tmp}X
   cat >${CMD}<<EOF
-#!/bin/sh
+#!/bin/bash
 RETRY=$TRY
 I2CRD="-1"
 while [ \${RETRY} -ne 0 ];do
@@ -369,7 +369,7 @@ wait_di(){
   local RD READWAIT TMP
   READWAIT=$1
   cat >${CMD}<<EOF
-#!/bin/sh
+#!/bin/bash
 RD="-1"
 read -s -n ${READCT} -t ${READWAIT} RD || RD="-1"
 if [ \${RD} = "-1" ];then
