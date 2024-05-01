@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.1.2
-* remote-hand_pi_gpio.js ver0.21 2024.1.2
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.4.30
+* remote-hand_pi_gpio.js ver0.22 2024.4.30
 */
 function blink(){
   if (!document){ return; }
@@ -664,6 +664,24 @@ function streaming_start_stop(dev,start_stop){
     }
   });
 }
+function send_di(di_ch,do_val){
+  var di_do;
+  di_do = "dio" + di_ch;
+    $.ajax({
+      type: "GET",
+      url: "do_ajax.cgi",
+      timeout : 3000,
+      dataType: "text",
+      data: 'ch=' + di_do + '&val=' + do_val,
+      success: function(){
+        $("#disp_menu5").text("Digtal Input Success!");
+      },
+      error: function(do_sel){
+        $("#disp_menu5").text("Server-Timeout!");
+       }
+    });
+  }
+
 function send_do(do_ch,do_val,do_time){
   if (do_time === undefined){do_time = ""}
   if (do_ch >= 8 && do_ch <= 13){
@@ -1638,7 +1656,6 @@ function voice_do(do_sel,results_voice){
       }
       if (tdo_val == "none"){
         google_speak_none(voice_tmp,voice_lang);
-
         return;
       }
       if (tdo_val == "input_disp"){
@@ -1931,7 +1948,7 @@ function update_di(item){
     }
       $(di_v).html('<INPUT TYPE="button" id="' + do_alias + '" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '" onClick=s_phone_update_do("' + do_item + '")><BR><BR>');
   }
-  function s_phone_di_color_set(di_v, disp_v, val_v){
+  function s_phone_di_color_set(di_v,disp_v,val_v){
     var color_bg;
     var color_font;
     switch (val_v){
@@ -1950,6 +1967,44 @@ function update_di(item){
     }
       $(di_v).html('<INPUT TYPE="text" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:260px;text-align:center" VALUE="' + disp_v + '"><BR><BR>');
   }
+  function s_phone_do_button_color_set(di_v,disp_v,val_v,do_alias,dio_ch){
+    var color_bg;
+    var color_font;
+    switch (val_v){
+      case "high":
+      color_bg = "#DA0B00";
+      color_font = "#F0FFFF";
+      break;
+    case "low":
+      color_bg = "#008000";
+      color_font = "#F0FFFF";
+      break;
+    default:
+      color_bg = "#A9A9A9";
+      color_font = "#F0FFFF";
+      break;
+    }
+    $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_do(' + dio_ch + ',1);"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onClick="send_do(' + dio_ch + ',0);"/><BR>');
+  } 
+  function s_phone_di_button_color_set(di_v,disp_v,val_v,dio_ch){
+    var color_bg;
+    var color_font;
+    switch (val_v){
+      case "high":
+        color_bg = "#DA0B00";
+        color_font = "#F0FFFF";
+        break;
+      case "low":
+        color_bg = "#008000";
+        color_font = "#F0FFFF";
+        break;
+    default:
+      color_bg = "#A9A9A9";
+      color_font = "#F0FFFF";
+      break;
+    }
+    $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_di(' + dio_ch + ',1);"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onclick="send_di(' + dio_ch + ',0);"/><BR>');
+  }
   function s_phone_di_graph(di_span,di_name,di_val,di_cgi,br,wid){
     var color_bg = "#E6E6E6";
     var color_font = "#000000";
@@ -1965,6 +2020,7 @@ function update_di(item){
     var val_alias = "";
     var do_item = "";
     var do_alias = "";
+    var dio_ch = "";
     var reset = "";
     var count = "";
     var update = "";
@@ -2023,6 +2079,8 @@ function update_di(item){
                 do_item = "dosel_0";
                 do_alias = "alias_do_0";
                 s_phone_do_color_set("#s_phone_do0",val_alias,val,do_item,do_alias);
+                dio_ch = "0";
+                s_phone_do_button_color_set("#s_phone_button_do0",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2035,6 +2093,8 @@ function update_di(item){
                 do_item = "dosel_1";
                 do_alias = "alias_do_1";
                 s_phone_do_color_set("#s_phone_do1",val_alias,val,do_item,do_alias);
+                dio_ch = "1";
+                s_phone_do_button_color_set("#s_phone_button_do1",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2047,6 +2107,8 @@ function update_di(item){
                 do_item = "dosel_2";
                 do_alias = "alias_do_2";
                 s_phone_do_color_set("#s_phone_do2",val_alias,val,do_item,do_alias);
+                dio_ch = "2";
+                s_phone_do_button_color_set("#s_phone_button_do2",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2059,6 +2121,8 @@ function update_di(item){
                 do_item = "dosel_3";
                 do_alias = "alias_do_3";
                 s_phone_do_color_set("#s_phone_do3",val_alias,val,do_item,do_alias);
+                dio_ch = "3";
+                s_phone_do_button_color_set("#s_phone_button_do3",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2071,6 +2135,8 @@ function update_di(item){
                 do_item = "dosel_4";
                 do_alias = "alias_do_4";
                 s_phone_do_color_set("#s_phone_do4",val_alias,val,do_item,do_alias);
+                dio_ch = "4";
+                s_phone_do_button_color_set("#s_phone_button_do4",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2083,6 +2149,8 @@ function update_di(item){
                 do_item = "dosel_5";
                 do_alias = "alias_do_5";
                 s_phone_do_color_set("#s_phone_do5",val_alias,val,do_item,do_alias);
+                dio_ch = "5";
+                s_phone_do_button_color_set("#s_phone_button_do5",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2095,6 +2163,8 @@ function update_di(item){
                 do_item = "dosel_6";
                 do_alias = "alias_do_6";
                 s_phone_do_color_set("#s_phone_do6",val_alias,val,do_item,do_alias);
+                dio_ch = "6";
+                s_phone_do_button_color_set("#s_phone_button_do6",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2107,6 +2177,8 @@ function update_di(item){
                 do_item = "dosel_7";
                 do_alias = "alias_do_7";
                 s_phone_do_color_set("#s_phone_do7",val_alias,val,do_item,do_alias);
+                dio_ch = "7";
+                s_phone_do_button_color_set("#s_phone_button_do7",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2122,6 +2194,8 @@ function update_di(item){
                 do_item = "irkitdo_0";
                 do_alias = "alias_do_8";
                 s_phone_do_color_set("#s_phone_do8",val_alias,val,do_item,do_alias);
+                dio_ch = "8";
+                s_phone_do_button_color_set("#s_phone_button_do8",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2137,7 +2211,9 @@ function update_di(item){
                 do_item = "irkitdo_1";
                  do_alias = "alias_do_9";
                 s_phone_do_color_set("#s_phone_do9",val_alias,val,do_item,do_alias);
-             }
+                dio_ch = "9";
+                s_phone_do_button_color_set("#s_phone_button_do9",val_alias,val,do_alias,dio_ch);
+              }
             }
           }
           if (di2json.irdata_2){
@@ -2152,6 +2228,8 @@ function update_di(item){
                 do_item = "irkitdo_2";
                 do_alias = "alias_do_10";
                 s_phone_do_color_set("#s_phone_do10",val_alias,val,do_item,do_alias);
+                dio_ch = "10";
+                s_phone_do_button_color_set("#s_phone_button_do10",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2167,6 +2245,8 @@ function update_di(item){
                 do_item = "irkitdo_3";
                 do_alias = "alias_do_11";
                 s_phone_do_color_set("#s_phone_do11",val_alias,val,do_item,do_alias);
+                dio_ch = "11";
+                s_phone_do_button_color_set("#s_phone_button_do11",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2182,6 +2262,8 @@ function update_di(item){
                 do_item = "irkitdo_4";
                 do_alias = "alias_do_12";
                 s_phone_do_color_set("#s_phone_do12",val_alias,val,do_item,do_alias);
+                dio_ch = "12";
+                s_phone_do_button_color_set("#s_phone_button_do12",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2197,6 +2279,8 @@ function update_di(item){
                 do_item = "irkitdo_5";
                 do_alias = "alias_do_13";
                 s_phone_do_color_set("#s_phone_do13",val_alias,val,do_item,do_alias);
+                dio_ch = "13";
+                s_phone_do_button_color_set("#s_phone_button_do13",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2209,6 +2293,8 @@ function update_di(item){
                 do_item = "tocosdo_1";
                 do_alias = "alias_do_14";
                 s_phone_do_color_set("#s_phone_do14",val_alias,val,do_item,do_alias);
+                dio_ch = "14";
+                s_phone_do_button_color_set("#s_phone_button_do14",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2221,6 +2307,8 @@ function update_di(item){
                 do_item = "tocosdo_2";
                 do_alias = "alias_do_15";
                 s_phone_do_color_set("#s_phone_do15",val_alias,val,do_item,do_alias);
+                dio_ch = "15";
+                s_phone_do_button_color_set("#s_phone_button_do15",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2233,6 +2321,8 @@ function update_di(item){
                 do_item = "tocosdo_3";
                 do_alias = "alias_do_16";
                 s_phone_do_color_set("#s_phone_do16",val_alias,val,do_item,do_alias);
+                dio_ch = "16";
+                s_phone_do_button_color_set("#s_phone_button_do16",val_alias,val,do_alias,dio_ch);
               }
             }
           }
@@ -2275,6 +2365,8 @@ function update_di(item){
               val_alias = di2json.alias_di0;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di0",val_alias,val);
+                dio_ch = "0";
+                s_phone_di_button_color_set("#s_phone_button_di0",val_alias,val,dio_ch);
               }
             }
           }
@@ -2289,6 +2381,8 @@ function update_di(item){
               val_alias = di2json.alias_di1;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di1",val_alias,val);
+                dio_ch = "1";
+                s_phone_di_button_color_set("#s_phone_button_di1",val_alias,val,dio_ch);
               }
             }
           }
@@ -2303,6 +2397,8 @@ function update_di(item){
               val_alias = di2json.alias_di2;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di2",val_alias,val);
+                dio_ch = "2";
+                s_phone_di_button_color_set("#s_phone_button_di2",val_alias,val,dio_ch);
               }
             }
           }
@@ -2317,6 +2413,8 @@ function update_di(item){
               val_alias = di2json.alias_di3;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di3",val_alias,val);
+                dio_ch = "3";
+                s_phone_di_button_color_set("#s_phone_button_di3",val_alias,val,dio_ch);
               }
             }
           }
@@ -2331,6 +2429,8 @@ function update_di(item){
               val_alias = di2json.alias_di4;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di4",val_alias,val);
+                dio_ch = "4";
+                s_phone_di_button_color_set("#s_phone_button_di4",val_alias,val,dio_ch);
               }
             }
           }
@@ -2345,6 +2445,8 @@ function update_di(item){
               val_alias = di2json.alias_di5;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di5",val_alias,val);
+                dio_ch = "5";
+                s_phone_di_button_color_set("#s_phone_button_di5",val_alias,val,dio_ch);
               }
             }
           }
@@ -2359,6 +2461,8 @@ function update_di(item){
               val_alias = di2json.alias_di6;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di6",val_alias,val);
+                dio_ch = "6";
+                s_phone_di_button_color_set("#s_phone_button_di6",val_alias,val,dio_ch);
               }
             }
           }
@@ -2373,6 +2477,8 @@ function update_di(item){
               val_alias = di2json.alias_di7;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di7",val_alias,val);
+                dio_ch = "7";
+                s_phone_di_button_color_set("#s_phone_button_di7",val_alias,val,dio_ch);
               }
             }
           }
@@ -2387,6 +2493,8 @@ function update_di(item){
               val_alias = di2json.alias_di8;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di8",val_alias,val);
+                dio_ch = "8";
+                s_phone_di_button_color_set("#s_phone_button_di8",val_alias,val,dio_ch);
               }
             }
           }
@@ -2401,6 +2509,8 @@ function update_di(item){
               val_alias = di2json.alias_di9;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di9",val_alias,val);
+                dio_ch = "9";
+                s_phone_di_button_color_set("#s_phone_button_di9",val_alias,val,dio_ch);
               }
             }
           }
@@ -2415,6 +2525,8 @@ function update_di(item){
               val_alias = di2json.alias_di10;
               if (val_alias != "none"){
                 s_phone_di_color_set("#s_phone_di10",val_alias,val);
+                dio_ch = "10";
+                s_phone_di_button_color_set("#s_phone_button_di10",val_alias,val,dio_ch);
               }
             }
           }

@@ -1,14 +1,14 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.4.30
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.2.13"
-VERSION="ver:0.21&nbsp;$DATE"
+DATE="2024.4.30"
+VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
 ZEROW=`cat /proc/cpuinfo| grep "Pi Zero"| wc -l`
@@ -67,7 +67,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2023-2026 pepolinux.jpn.org</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2024 pepolinux.jpn.org</TD></TR></TABLE>
 </BODY>
 </HTML>'
   exit -1
@@ -79,6 +79,7 @@ PAGE2=pi_int.html
 PAGE3=setup.html.tmp
 PAGE4=setup.html
 PAGE5=temp_hum.html
+PAGE6=button_ope.html
 echo_f() {
   local DT FL
   DT=$1
@@ -132,6 +133,97 @@ while [ $n -lt 34 ];do
   [ -n "${alias_vdo[$n]}" ] && ALIAS_VDO[$n]="${alias_vdo[$n]}" || ALIAS_VDO[$n]=""
   n=$(($n + 1))
 done
+
+cat >$PAGE6<<END
+<!DOCTYPE HTML>
+<HTML LANG="ja">
+<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
+<META name="Auther" content="yamauchi.isamu">
+<META name="Copyright" content="pepolinux">
+<META name="Build" content="$DATE">
+<META name="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="content-style-type" content="text/css" />
+<META http-equiv="content-script-type" content="text/javascript" />
+<link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
+<script src="jquery-3.5.1.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
+<TITLE>$DIST_NAME Button Control</TITLE>
+</HEAD>
+<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
+<META http-equiv="Refresh" content="120;URL=/remote-hand/$PAGE6">
+<DIV style="text-align:center"><FONT size="5" color="green">$DIST_NAME<FONT size="2">&nbsp;$VERSION</FONT></FONT></DIV>
+<BR>
+<FONT SIZE="+1"><B>Digital output Button Operation</B></FONT>
+<BR>
+<BR>
+<span id="s_phone_button_do0"></span>
+<span id="s_phone_button_do1"></span>
+<span id="s_phone_button_do2"></span>
+<span id="s_phone_button_do3"></span>
+<span id="s_phone_button_do8"></span>
+<span id="s_phone_button_do9"></span>
+<span id="s_phone_button_do10"></span>
+<span id="s_phone_button_do11"></span>
+<span id="s_phone_button_do12"></span>
+<span id="s_phone_button_do13"></span>
+<span id="s_phone_button_do14"></span>
+<span id="s_phone_button_do15"></span>
+<span id="s_phone_button_do16"></span>
+<HR>
+<FONT SIZE="+1"><B>Digital input Button Operation</B></FONT>
+<BR>
+<span id="s_phone_button_di0"></span>
+<span id="s_phone_button_di1"></span>
+<span id="s_phone_button_di2"></span>
+<span id="s_phone_button_di3"></span>
+<span id="s_phone_button_di4"></span>
+<span id="s_phone_button_di5"></span>
+<span id="s_phone_button_di6"></span>
+<span id="s_phone_button_di7"></span>
+<span id="s_phone_button_di8"></span>
+<span id="s_phone_button_di9"></span>
+<span id="s_phone_button_di10"></span>
+</FORM>
+<HR>
+<BR>
+<img border="0" src="./google-microphone.png" width="300" height="300" alt="microphone" onclick="startWebVoiceRecognition();"/>
+<BR>
+<span id="voice_sel">
+Voice control
+<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do('voice_sel')" placeholder="Command" autofocus />
+<SELECT NAME="voice_lang" id="voice_lang">
+<OPTION VALUE="ja" SELECTED>Japanese
+<OPTION VALUE="en">English
+</SELECT>
+</span>
+<BR>
+Computer name:
+<input id="computer_name" type="text" style="width:240px;" NAME="computer_name" VALUE="" placeholder="$Wake_Up_Word" autofocus />
+Continuous
+<SELECT NAME="Continuous" id="voice_continuous">
+<OPTION VALUE="Yes" SELECTED>Yes
+<OPTION VALUE="Yes">Yes
+<OPTION VALUE="No">No
+</SELECT>
+<BR>
+State:<span id="recognition_state" >Stop</span>
+<HR>
+<BR>
+<BR>
+<INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
+<BR>
+<BR>
+<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./setup.html'";>
+<BR>
+<BR>
+<INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
+<BR>
+<BR>
+&copy;2024 pepolinux.jpn.org&nbsp;
+</H1>
+</BODY>
+</HTML>
+END
 
 SMART_PHONE=`echo "$HTTP_USER_AGENT" |mawk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
 if [ $SMART_PHONE = "YES" ];then
@@ -258,6 +350,9 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Temp&Hum Disp" onclick="location.href='./temp_hum.html'";>
 <BR>
 <BR>
+<INPUT style="text-align:center" TYPE="button" VALUE="Button Operation" onclick="location.href='./$PAGE6'";>
+<BR>
+<BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <BR>
 <BR>
@@ -267,7 +362,7 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2023-2026 pepolinux.jpn.org&nbsp;
+&copy;2024 pepolinux.jpn.org&nbsp;
 </H1>
 </BODY>
 </HTML>
@@ -334,7 +429,7 @@ State:<span id="recognition_state" >Stop</span>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
 <BR>
-&copy;2023-2026 pepolinux.jpn.org&nbsp;
+&copy;2024 pepolinux.jpn.org&nbsp;
 <span id="server_time" style="text-align:left"></span>
 </H1>
 </BODY>
@@ -1667,23 +1762,19 @@ Action:low→high
 <OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
-<OPTION VALUE="mod_camera_still">Mod_camera Still
-<OPTION VALUE="mod_camera_video">Mod_camera Video
-<OPTION VALUE="SOUND_0">Sound_1
-<OPTION VALUE="SOUND_1">Sound_2
-<OPTION VALUE="SOUND_2">Sound_3
-<OPTION VALUE="SOUND_3">Sound_4
-<OPTION VALUE="SOUND_4">Sound_5
-<OPTION VALUE="SOUND_5">Sound_6
-<OPTION VALUE="SOUND_6">Sound_7
-<OPTION VALUE="SOUND_7">Sound_8
-<OPTION VALUE="SOUND_8">Sound_9
-<OPTION VALUE="SOUND_9">Sound_10
-</SELECT>
-Alt
-<SELECT NAME="di_act_alt_2">
-<OPTION VALUE="${DI_ACT_ALT[2]}" SELECTED>${DI_ACT_ALT[2]}
-<OPTION VALUE="none">none
+<OPTION VALUE="mod_camera_still">Mo="IREXEC_5">${ALIAS_DO[13]}
+<OPTION VALUE="TON_0">${ALIAS_DO[14]}high
+<OPTION VALUE="TOFF_0">${ALIAS_DO[14]}low
+<OPTION VALUE="TON_1">${ALIAS_DO[15]}high
+<OPTION VALUE="TOFF_1">${ALIAS_DO[15]}low
+<OPTION VALUE="TON_2">${ALIAS_DO[16]}high
+<OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
+<OPTION VALUE="phone">Phone
+<OPTION VALUE="mail">Email
+<OPTION VALUE="mail_message">Send_message
+<OPTION VALUE="web_camera_still">Web_camera Still
+<OPTION VALUE="web_camera_video">Web_camera Video
+<OPTION VALUE="mod_camera_still">Moe
 <OPTION VALUE="alt">alt
 </SELECT>
 &nbsp;
@@ -7842,7 +7933,7 @@ LINE Notify
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>
-<TR><TD><FONT SIZE="-1">&copy;2023-2026 pepolinux.jpn.org&nbsp;
+<TR><TD><FONT SIZE="-1">&copy;2024 pepolinux.jpn.org&nbsp;
 <span id="server_time" style="text-align:left"></span>&nbsp;
 </TR>
 </TABLE>
