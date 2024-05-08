@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.4.30
-* remote-hand_pi_gpio.js ver0.22 2024.4.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.7
+* remote-hand_pi_gpio.js ver0.22 2024.5.7
 */
 function blink(){
   if (!document){ return; }
@@ -304,7 +304,6 @@ function google_speak_none(voice_t,voice_l){
   },15000);
   speak_main(voice_t,voice_l);
 }
-
 // IR data registration processing of IRKit
 function irkit_reg(ir_num,ir_id){
   var ir_val = $(ir_id).val();
@@ -346,7 +345,6 @@ function irkit_reg(ir_num,ir_id){
     }
   });
 }
-
 // IR data output processing of IRKit
 function irkit_post(do_ch,do_time){
   var ir_timer = do_time;
@@ -664,25 +662,64 @@ function streaming_start_stop(dev,start_stop){
     }
   });
 }
-function send_di(di_ch,do_val){
+function send_di(di_ch,do_val,disp_v,di_v){
   var di_do;
-  di_do = "dio" + di_ch;
-    $.ajax({
-      type: "GET",
-      url: "do_ajax.cgi",
-      timeout : 3000,
-      dataType: "text",
-      data: 'ch=' + di_do + '&val=' + do_val,
-      success: function(){
-        $("#disp_menu5").text("Digtal Input Success!");
-      },
-      error: function(do_sel){
-        $("#disp_menu5").text("Server-Timeout!");
-       }
-    });
+  var val_v;
+  if (do_val == "1") val_v = "high";
+  if (do_val == "0") val_v = "low";
+  var color_bg;
+  var color_font;
+  switch (val_v){
+    case "high":
+      color_bg = "#DA0B00";
+      color_font = "#F0FFFF";
+      break;
+    case "low":
+      color_bg = "#008000";
+      color_font = "#F0FFFF";
+      break;
+  default:
+    color_bg = "#A9A9A9";
+    color_font = "#F0FFFF";
+    break;
   }
-
-function send_do(do_ch,do_val,do_time){
+  $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_di(' + di_ch + ',1,\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onclick="send_di(' + di_ch + ',0,\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
+  di_do = "dio" + di_ch;
+  $.ajax({
+    type: "GET",
+    url: "do_ajax.cgi",
+    timeout : 3000,
+    dataType: "text",
+    data: 'ch=' + di_do + '&val=' + do_val,
+    success: function(){
+      $("#disp_menu5").text("Digtal Input Success!");
+    },
+    error: function(do_sel){
+      $("#disp_menu5").text("Server-Timeout!");
+    }
+  });
+}
+function send_do(do_ch,do_val,do_time,disp_v,di_v){
+  var val_v;
+  if (do_val == "1") val_v = "high";
+  if (do_val == "0") val_v = "low";
+  var color_bg;
+  var color_font;
+  switch (val_v){
+    case "high":
+      color_bg = "#DA0B00";
+      color_font = "#F0FFFF";
+      break;
+    case "low":
+      color_bg = "#008000";
+      color_font = "#F0FFFF";
+      break;
+  default:
+    color_bg = "#A9A9A9";
+    color_font = "#F0FFFF";
+    break;
+  }
+  $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_do(' + do_ch + ',1,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onClick="send_do(' + do_ch + ',0,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
   if (do_time === undefined){do_time = ""}
   if (do_ch >= 8 && do_ch <= 13){
     irkit_post(do_ch,do_time);
@@ -1946,7 +1983,7 @@ function update_di(item){
       color_font = "#F0FFFF";
       break;
     }
-      $(di_v).html('<INPUT TYPE="button" id="' + do_alias + '" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '" onClick=s_phone_update_do("' + do_item + '")><BR><BR>');
+    $(di_v).html('<INPUT TYPE="button" id="' + do_alias + '" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '" onClick=s_phone_update_do("' + do_item + '")><BR><BR>');
   }
   function s_phone_di_color_set(di_v,disp_v,val_v){
     var color_bg;
@@ -1965,9 +2002,9 @@ function update_di(item){
       color_font = "#F0FFFF";
       break;
     }
-      $(di_v).html('<INPUT TYPE="text" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:260px;text-align:center" VALUE="' + disp_v + '"><BR><BR>');
+    $(di_v).html('<INPUT TYPE="text" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:260px;text-align:center" VALUE="' + disp_v + '"><BR><BR>');
   }
-  function s_phone_do_button_color_set(di_v,disp_v,val_v,do_alias,dio_ch){
+  function s_phone_do_button_color_set(di_v,disp_v,val_v,do_alias,do_ch){
     var color_bg;
     var color_font;
     switch (val_v){
@@ -1984,9 +2021,9 @@ function update_di(item){
       color_font = "#F0FFFF";
       break;
     }
-    $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_do(' + dio_ch + ',1);"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onClick="send_do(' + dio_ch + ',0);"/><BR>');
+    $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_do(' + do_ch + ',1,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onClick="send_do(' + do_ch + ',0,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
   } 
-  function s_phone_di_button_color_set(di_v,disp_v,val_v,dio_ch){
+  function s_phone_di_button_color_set(di_v,disp_v,val_v,di_ch){
     var color_bg;
     var color_font;
     switch (val_v){
@@ -2003,7 +2040,7 @@ function update_di(item){
       color_font = "#F0FFFF";
       break;
     }
-    $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_di(' + dio_ch + ',1);"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onclick="send_di(' + dio_ch + ',0);"/><BR>');
+    $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_di(' + di_ch + ',1,\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onclick="send_di(' + di_ch + ',0,\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
   }
   function s_phone_di_graph(di_span,di_name,di_val,di_cgi,br,wid){
     var color_bg = "#E6E6E6";

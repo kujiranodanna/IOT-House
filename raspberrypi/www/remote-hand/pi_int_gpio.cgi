@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.4.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.7
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.4.30"
+DATE="2024.5.7"
 VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -213,7 +213,7 @@ State:<span id="recognition_state" >Stop</span>
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <BR>
 <BR>
-<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./setup.html'";>
+<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./$PAGE2'";>
 <BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
