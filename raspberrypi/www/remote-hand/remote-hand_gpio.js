@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.7
-* remote-hand_pi_gpio.js ver0.22 2024.5.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.14
+* remote-hand_pi_gpio.js ver0.22 2024.5.14
 */
 function blink(){
   if (!document){ return; }
@@ -303,6 +303,11 @@ function google_speak_none(voice_t,voice_l){
     google_search .close();
   },15000);
   speak_main(voice_t,voice_l);
+}
+function sound_play (sound_f) {
+  if (sound_f.match(/none/)) return;
+	let sound_val = new Audio(sound_f);
+	sound_val.play();
 }
 // IR data registration processing of IRKit
 function irkit_reg(ir_num,ir_id){
@@ -3119,43 +3124,44 @@ function update_di(item){
 // Disp Sound File
         if (di2json.disp_sound_0){
           val = di2json.disp_sound_0;
-          $("#disp_sound_0").text(val);
+//          $("#disp_sound_0").html('<INPUT TYPE="button" readonly style="width:100px;text-align:center" VALUE="' + val + '">&nbsp;<audio controls src="./tmp/' + val + '"></audio>');
+          $("#disp_sound_0").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_1){
           val = di2json.disp_sound_1;
-          $("#disp_sound_1").text(val);
+          $("#disp_sound_1").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_2){
           val = di2json.disp_sound_2;
-          $("#disp_sound_2").text(val);
+          $("#disp_sound_2").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_3){
           val = di2json.disp_sound_3;
-          $("#disp_sound_3").text(val);
+          $("#disp_sound_3").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_4){
           val = di2json.disp_sound_4;
-          $("#disp_sound_4").text(val);
+          $("#disp_sound_4").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_5){
           val = di2json.disp_sound_5;
-          $("#disp_sound_5").text(val);
+          $("#disp_sound_5").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_6){
           val = di2json.disp_sound_6;
-          $("#disp_sound_6").text(val);
+          $("#disp_sound_6").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_7){
           val = di2json.disp_sound_7;
-          $("#disp_sound_7").text(val);
+          $("#disp_sound_7").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_8){
           val = di2json.disp_sound_8;
-          $("#disp_sound_8").text(val);
+          $("#disp_sound_8").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_9){
           val = di2json.disp_sound_9;
-          $("#disp_sound_9").text(val);
+          $("#disp_sound_9").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
        },
        error: function(di2json){

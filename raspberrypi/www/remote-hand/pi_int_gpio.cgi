@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.14
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.5.7"
+DATE="2024.5.14"
 VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -565,7 +565,7 @@ Sound10
 <span id="disp_sound_9">
 </span>&nbsp;
 <INPUT style="text-align:center" TYPE="button" id="menu4_sound_del_9" VALUE="Delete" onClick="return menu4_ck('menu4_sound_del','disp_sound_9');"/>
-<BR>
+<BR><BR>
 </FORM>
 </DD>
 </DL>
