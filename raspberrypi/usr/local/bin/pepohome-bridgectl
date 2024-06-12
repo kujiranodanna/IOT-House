@@ -1,34 +1,50 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2024.2.21
-# pepohome-bridgectl start/stop svc daemon for rasberry pi zero W.
-
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2024.5.30
+# pepohome-bridgectl, homebridge moniter daemon for rasberry pi zero W.
 LOG=/var/log/homebridge.log
-error(){
-  CT=60
-  while [  $CT -gt 0 ];do
-    ISPROG=`pgrep homebridge| wc -l`
-    if [ $ISPROG -gt 0 ];then
-      pkill -HUP homebridge
-      msleep 1000
-    else
-      break
-    fi
-    CT=$(($CT - 1))
-  done
-  exit
-}
-trap error TERM HUP KILL INT QUIT
-
-while true;do
-  ISPROG=`pgrep homebridge| wc -l`
-  if [ $ISPROG -gt 0 ];then
-    pkill -HUP homebridge
-    msleep 1000
+LOG1=/var/log/homebridge.log.1
+logrote(){
+  if [ -e $LOG ];then
+    tail -n 100 $LOG >$LOG1
+  elif [ -e $LOG1 ];then
+    tail -n 100 $LOG1 >$LOG
   else
-    homebridge -I >$LOG 2>&1
+    echo pepo_logstart >$LOG
+    echo pepo_logstart >$LOG1
   fi
-  while true;do
-    msleep 60000
-  done
+  homebridge -I >$LOG 2>&1
+}
+while true;do
+  ACTTIME=$(date +%H%M)
+  P_PID=$(pgrep homebridge)
+  if [ $ACTTIME = "2355" ];then
+    if [ ! -z "$P_PID" ];then
+      kill -HUP $P_PID
+      msleep 10000
+    fi
+    logrote
+  else
+    if [ -e $LOG ];then
+      TIMESTAMP1=$(date +%s -r $LOG)
+    else
+      TIMESTAMP1=0
+    fi
+    if [ -e $LOG1 ];then
+      TIMESTAMP2=$(date +%s -r $LOG1)
+    else
+      TIMESTAMP2=0
+    fi
+    if [ $TIMESTAMP1 -gt $TIMESTAMP2 ];then
+      CT=$(tail -n 20 $LOG |grep EAI_AGAIN |wc -l)
+    else
+      CT=$(tail -n 20 $LOG1 |grep EAI_AGAIN |wc -l)
+    fi
+    if [ $CT -gt 0 ];then
+      logrote
+    elif [ -z "$P_PID" ];then
+      logrote
+    fi
+  fi
+  msleep 60000
 done
