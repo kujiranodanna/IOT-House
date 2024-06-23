@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.6.23
 
 echo -n '
 <HTML>
@@ -8,7 +8,7 @@ echo -n '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2023.11.10">
+<META NAME="build" content="2024.6.23">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Automatic process settings</TITLE>
@@ -322,7 +322,7 @@ auto_cron_reg() {
   [ $CH -gt 7 -a $CH -lt 14 ] && J=$((CH - 8))
   [ $CH -gt 13 -a $CH -lt 17 ] && J=$((CH - 13))
   cat >$DO_EXEC<<END
-#!/bin/sh
+#!/bin/bash
 if [ $YES_NO = "DISABLE" ];then
   exit
 elif [ "$DI" != -1 ];then

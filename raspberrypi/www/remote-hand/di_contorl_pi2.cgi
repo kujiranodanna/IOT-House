@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.11.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.6.23
 # di_control_pi2.cgi
 
 PATH=$PATH:/usr/local/bin
@@ -10,7 +10,7 @@ echo -n '
 <META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2023.11.10">
+<META NAME="Build" content="2024.6.23">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DI in the action setting for( digital -in)</TITLE>
@@ -68,7 +68,7 @@ tocos_high_low() {
   do_ch=$(($ch + 7))
   cmd=/usr/local/bin/pepotocoshelp
   cat > $file <<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -98,7 +98,7 @@ do_high_low() {
   invert=$5
   cmd=/usr/local/bin/pepodioctl
   cat > $file <<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -123,7 +123,7 @@ irkit_exec() {
   ir_num=$2
   time=$3
 cat > $file <<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -143,7 +143,7 @@ di_tel() {
   tel="$2"
   tel_file="$3"
   cat > $file <<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -203,7 +203,7 @@ di_wgetmail() {
   msg_box="$6"
   FFMPEGCTL=/usr/local/bin/pepomp4ctl
   cat >$file<<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -311,7 +311,7 @@ di_sendmail() {
   msg="$3""$4""$5"
   hostname=`hostname`
   cat > $file <<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -341,7 +341,7 @@ di_sound(){
   time=$3
   cmd=/usr/local/bin/peposound
   cat > $file <<EOF
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -360,7 +360,7 @@ del_all() {
   file=/usr/bin/"$1"
   CMD=$DIR/dio_control_del_$1.pepocmd
   cat >$CMD<<END
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
@@ -742,7 +742,7 @@ if [ -e "$sDICH" ];then
   done
   CMD=$DIR/dio_control2.pepocmd
   cat >$CMD<<END
-#!/bin/sh
+#!/bin/bash
 LOCK=${DIR}/`echo $file |mawk 'BEGIN{FS="/"};{print $NF}'`.lock
 if [ -e \$LOCK ];then
   exit
