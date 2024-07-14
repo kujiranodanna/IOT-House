@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.6.3
-* remote-hand_pi_gpio.js ver0.22 2024.6.3
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.10
+* remote-hand_pi_gpio.js ver0.22 2024.7.10
 */
 function blink(){
   if (!document){ return; }
@@ -28,8 +28,8 @@ var tmp_continuous = "No";
 var regex = "ジャービス"; // Wake Up Word
 var voice_funny = "アーニャ"; // funny response
 var voice_funny_response = false; // funny_response flag
-var funny_response_ng = "、" + voice_funny + "、わ　か　ら　ん"; // interesting reply NG content
-var funny_response_ok = "、" + voice_funny + "、え　ら　い？"; // interesting reply OK content
+var funny_response_ng = "、" + voice_funny + "、わ か ら ん"; // interesting reply NG content
+var funny_response_ok = "、" + voice_funny + "、え ら い？"; // interesting reply OK content
 // It will initiate the voice recognition
 function startWebVoiceRecognition(){
   if (!('webkitSpeechRecognition' in window)){
@@ -77,7 +77,6 @@ recognition.onsoundstart = function(){
 }
 // It does not recognize match
 recognition.onnomatch = function(){
-  recognition.stop();
   if (recognition_continuous === false){
     recognition.stop();
     recognizing = false;
@@ -248,14 +247,12 @@ function speak_exec(voice,lang){
 }
 function speak_main(voice,lang){
   speak_exec(voice,lang);
-//  $(function(){
     setTimeout(function(){
       if (lang != "en"){
         $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="ja" SELECTED>Japanese<OPTION VALUE="en">English</SELECT>');
         } else {
         $("#voice_sel").html('Voice control<input id="voice_val" type="text" style="width:120px;" NAME="voice_val" VALUE="" onkeydown="if(event.keyCode == 13 || event.keyCode == 9) update_do(\'voice_sel\')" placeholder="Command" autofocus /><SELECT NAME="voice_lang" id="voice_lang"><OPTION VALUE="en" SELECTED>English<OPTION VALUE="ja">Japanese</SELECT>');
       }
-//    },5000);
   });
 }
 function google_speak(voice_t,voice_l){
@@ -273,7 +270,7 @@ function google_speak(voice_t,voice_l){
         voice_t = voice_t + "をする。" + funny_response_ok;
       }
       else {
-        voice_t = voice_t + "を実行します。";
+      voice_t = voice_t + "を実行します。";
       }
     }
     else {
@@ -892,25 +889,25 @@ function voice_do(do_sel,results_voice){
       var tvoice_ck = "";
       var voice_lang = $('#voice_lang').val();
       var voice_str = voice_src.replace(/\s+/g, "");
-      var array_voice_alias = new Array(80);
+      var array_voice_alias = new Array(94);
       var voice_tmp = voice_str;
-      voice_str = unescape(escape(voice_str).replace(/^(%u3000|%20|%09)+|(%u3000|%20|%09)+$/g, ""));
+      voice_str = voice_str.replace(/^(%u3000|%20|%09)+|(%u3000|%20|%09)+$/g, "");
       if (voice_lang == "en"){
-            voice_str = voice_src.toLowerCase();
+        voice_str = voice_src.toLowerCase();
       }
       tdo_time = "";
-      if (voice_str == "写真"　|| voice_str == "写真を撮って"　|| voice_str == "写真とって"　|| voice_str == "写真見せて"　||
-      　　voice_str == "写真を見せて"　|| voice_str == "写真みせて"){
+      if (voice_str == "写真" || voice_str == "写真を撮って" || voice_str == "写真とって" || voice_str == "写真見せて" ||
+        voice_str == "写真を見せて" || voice_str == "写真みせて"){
         tdo_val = "start_picture";
       }
       if (voice_str == "動画" || voice_str == "動画を撮って" || voice_str == "動画撮って" ||  voice_str == "動画見せて" ||
-        voice_str == "動画を見せて"　|| voice_str == "動画をみせて"){
+        voice_str == "動画を見せて" || voice_str == "動画をみせて"){
         tdo_val = "start_video";
       }
       if (voice_str == "写真を送って" || voice_str == "写真送信して" || voice_str == "写真おくって"){
         tdo_val = "picture";
       }
-      if (voice_str == "動画を送って"　||　voice_str == "動画送って" || voice_str == "動画おくって"){
+      if (voice_str == "動画を送って" || voice_str == "動画送って" || voice_str == "動画おくって"){
         tdo_val = "video";
       }
       if (voice_str == "takepicture" || voice_str == "picture"){
@@ -940,7 +937,7 @@ function voice_do(do_sel,results_voice){
           var voice_tmp = "It is incomplete e-mail address"
         } else {
           var voice_tmp = "メールアドレスが不完全です"
-    　   }
+        }
       }
       speak_main(voice_tmp,voice_lang);
       return;
@@ -1049,8 +1046,19 @@ function voice_do(do_sel,results_voice){
       array_voice_alias[81] = "えらいね";
       array_voice_alias[82] = "えらいねぇ";
       array_voice_alias[83] = "偉いね";
+      array_voice_alias[84] = di2json.vom_0.vom_val_0;
+      array_voice_alias[85] = di2json.vom_1.vom_val_1;
+      array_voice_alias[86] = di2json.vom_2.vom_val_2;
+      array_voice_alias[87] = di2json.vom_3.vom_val_3;
+      array_voice_alias[88] = di2json.vom_4.vom_val_4;
+      array_voice_alias[89] = di2json.vom_5.vom_val_5;
+      array_voice_alias[90] = di2json.vom_6.vom_val_6;
+      array_voice_alias[91] = di2json.vom_7.vom_val_7;
+      array_voice_alias[92] = di2json.vom_8.vom_val_8;
+      array_voice_alias[93] = di2json.vom_9.vom_val_9;
+      array_voice_alias[94] = di2json.vom_10.vom_val_10;
       tdo_val = "none";
-      for (var i=0; i <= 83; i++){
+      for (var i=0; i <= 94; i++){
         str = array_voice_alias[i];
         if (str == "none") continue;
         if (voice_lang == "en"){
@@ -1059,222 +1067,222 @@ function voice_do(do_sel,results_voice){
           voice_str = voice_str.replace('の','');
           if (str != undefined) str = str.replace('の','');
         }
-        tvoice_ck = str　+ "オン";
+        tvoice_ck = str + "オン";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "おん";
+        tvoice_ck = str + "おん";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "ON";
+        tvoice_ck = str + "ON";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "音";
+        tvoice_ck = str + "音";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "をつけて";
+        tvoice_ck = str + "をつけて";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "つけて";
+        tvoice_ck = str + "つけて";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "回して";
+        tvoice_ck = str + "回して";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "まわして";
+        tvoice_ck = str + "まわして";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "を回して";
+        tvoice_ck = str + "を回して";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "をまわして";
+        tvoice_ck = str + "をまわして";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "点灯";
+        tvoice_ck = str + "点灯";
         if (tvoice_ck == voice_str){
           tdo_val = "1";
           break;
         }
-        tvoice_ck = str　+ "オフ";
+        tvoice_ck = str + "オフ";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "おふ";
+        tvoice_ck = str + "おふ";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "OFF";
+        tvoice_ck = str + "OFF";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "をけして";
+        tvoice_ck = str + "をけして";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "を消して";
+        tvoice_ck = str + "を消して";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
          }
-        tvoice_ck = str　+ "けして";
+        tvoice_ck = str + "けして";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "消して";
+        tvoice_ck = str + "消して";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "を決して";
+        tvoice_ck = str + "を決して";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "決して";
+        tvoice_ck = str + "決して";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "を消灯";
+        tvoice_ck = str + "を消灯";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "消灯";
+        tvoice_ck = str + "消灯";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "とめて";
+        tvoice_ck = str + "とめて";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "止めて";
+        tvoice_ck = str + "止めて";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "をとめて";
+        tvoice_ck = str + "をとめて";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "を止めて";
+        tvoice_ck = str + "を止めて";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "やめて";
+        tvoice_ck = str + "やめて";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "をやめて";
+        tvoice_ck = str + "をやめて";
         if (tvoice_ck == voice_str){
           tdo_val = "0";
           break;
         }
-        tvoice_ck = str　+ "おしえて";
+        tvoice_ck = str + "おしえて";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "をおしえて";
+        tvoice_ck = str + "をおしえて";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "教えて";
+        tvoice_ck = str + "教えて";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "を教えて";
+        tvoice_ck = str + "を教えて";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "は";
+        tvoice_ck = str + "は";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "表示して";
+        tvoice_ck = str + "表示して";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "を表示して";
+        tvoice_ck = str + "を表示して";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "表示";
+        tvoice_ck = str + "表示";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck = str　+ "を表示";
+        tvoice_ck = str + "を表示";
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck =  "Tell me the"　+ str;
+        tvoice_ck =  "Tell me the" + str;
         tvoice_ck = tvoice_ck.replace(/\s+/g, "");
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck =  "Tell me"　+ str;
+        tvoice_ck =  "Tell me" + str;
         tvoice_ck = tvoice_ck.replace(/\s+/g, "");
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck =  "Show"　+ str;
+        tvoice_ck =  "Show" + str;
         tvoice_ck = tvoice_ck.replace(/\s+/g, "");
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck =  "Show the"　+ str;
+        tvoice_ck =  "Show the" + str;
         tvoice_ck = tvoice_ck.replace(/\s+/g, "");
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck =  "Display"　+ str;
+        tvoice_ck =  "Display" + str;
         tvoice_ck = tvoice_ck.replace(/\s+/g, "");
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
           break;
         }
-        tvoice_ck =  "Display the"　+ str;
+        tvoice_ck =  "Display the" + str;
         tvoice_ck = tvoice_ck.replace(/\s+/g, "");
         if (tvoice_ck == voice_str){
           tdo_val = "input_disp";
@@ -1697,6 +1705,84 @@ function voice_do(do_sel,results_voice){
         speak_main(voice_tmp,voice_lang);
         return;
       }
+      // Voice match extension
+      if (i == 84){
+        tdo_ch = "dio0";
+        voice_tmp = di2json.vom_0.vom_ans_0;
+        tdo_id = di2json.vom_0.vom_var_0;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 85){
+        tdo_ch = "dio1";
+        voice_tmp = di2json.vom_0.vom_ans_1;
+        tdo_id = di2json.vom_1.vom_var_1;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 86){
+        tdo_ch = "dio2";
+        voice_tmp = di2json.vom_2.vom_ans_2;
+        tdo_id = di2json.vom_2.vom_var_2;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 87){
+        tdo_ch = "dio3";
+        voice_tmp = di2json.vom_3.vom_ans_3;
+        tdo_id = di2json.vom_3.vom_var_3;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 88){
+        tdo_ch = "dio4";
+        voice_tmp = di2json.vom_4.vom_ans_4;
+        tdo_id = di2json.vom_4.vom_var_4;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 89){
+        tdo_ch = "dio5";
+        voice_tmp = di2json.vom_5.vom_ans_5;
+        tdo_id = di2json.vom_5.vom_var_5;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 90){
+        tdo_ch = "dio6";
+        voice_tmp = di2json.vom_6.vom_ans_6;
+        tdo_id = di2json.vom_6.vom_var_0;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 91){
+        tdo_ch = "dio7";
+        voice_tmp = di2json.vom_7.vom_ans_7;
+        tdo_id = di2json.vom_7.vom_var_7;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 92){
+        tdo_ch = "dio8";
+        voice_tmp = di2json.vom_8.vom_ans_8;
+        tdo_id = di2json.vom_8.vom_var_8;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 93){
+        tdo_ch = "dio9";
+        voice_tmp = di2json.vom_9.vom_ans_9;
+        tdo_id = di2json.vom_9.vom_var_9;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
+      if (i == 94){
+        tdo_ch = "dio10";
+        voice_tmp = di2json.vom_10.vom_ans_10;
+        tdo_id = di2json.vom_10.vom_var_10;
+        if (tdo_id == "high") tdo_val = 1;
+        if (tdo_id == "low") tdo_val = 0;
+      }
       if (tdo_val == "none"){
         google_speak_none(voice_tmp,voice_lang);
         return;
@@ -1714,7 +1800,11 @@ function voice_do(do_sel,results_voice){
       }
       if (tdo_val != "none" && tdo_val != "half"){
         send_do(tdo_ch,tdo_val,tdo_time);
-        google_speak(voice_tmp,voice_lang);
+        if ((i >= 84 && i <= 94)){
+          speak_exec(voice_tmp,voice_lang);
+        } else {
+          google_speak(voice_tmp,voice_lang);
+        }
         return;
       }
       if (tdo_val == "half"){
@@ -3206,7 +3296,7 @@ function update_di(item){
 function kana_ck(){
 /* Phonetic check */
   var str = document.iform.FuriganaText.value;
-  if(str.match(/[^ぁ-んァ-ン　\s]+/)){
+  if(str.match(/[^ぁ-んァ-ン \s]+/)){
     alert("Phonetic, please Input only hiragana, katakana");
     return -1;
   }
@@ -3232,7 +3322,7 @@ function alpha_ck(str){
 }
 
 function num_ck(str){
-/* number　check */
+/* number check */
   if(str.match(/[^0-9]+/)){
     alert(str + "←" + "Non-numeric is entered");
     return -1;
@@ -3331,7 +3421,7 @@ function timer_ck(str){
   }
   else {
     if (str <= 0 || str > 300000){
-    　alert(str + "←" + "Time column I can Input up to blank or 1-300000");
+     alert(str + "←" + "Time column I can Input up to blank or 1-300000");
       error_ct++;
     }
   }
@@ -3349,9 +3439,9 @@ function ipaddr_ck(str){
     return -1;
   }
   ip = str.split(".");
-　for(i = 0; i < 4; i++){
-　  if((ip[i] < 0) || (ip[i] > 255)){
-  　  alert(str + "←" + "The IP address is incorrect") ;
+ for(i = 0; i < 4; i++){
+   if((ip[i] < 0) || (ip[i] > 255)){
+     alert(str + "←" + "The IP address is incorrect") ;
       return -1;
     }
   }
@@ -3622,13 +3712,13 @@ function menu5_ck(){
 }
 
 function i2c_temp_disp(){
-　　window.open("./i2c_temp_disp.cgi" , "i2c_temp_disp" , "width=240,height=160");
-　　return;
+  window.open("./i2c_temp_disp.cgi" , "i2c_temp_disp" , "width=240,height=160");
+  return;
 }
 
 function i2c_hum_disp(){
-　　window.open("./i2c_hum_disp.cgi" , "i2c_hum_disp" , "width=240,height=160");
-　　return;
+  window.open("./i2c_hum_disp.cgi" , "i2c_hum_disp" , "width=240,height=160");
+  return;
 }
 
 function menu6_ck(){
@@ -4096,7 +4186,7 @@ function menu12_ck (){
     switch(i){
       case 0:
       check++;
-      　　str = array_wget[i];
+        str = array_wget[i];
         if (url_ck(str) == -1){
           error_ct++;
         }
@@ -4279,7 +4369,7 @@ function cron_ck(ck_array,ct){
       case 9:
         if (str == "*") check++;
         else {
-          if (str < 0 || str > 7)　{
+          if (str < 0 || str > 7) {
             error_ct++;
             alert(str + "← There is an error in the Input");
           }
@@ -4409,8 +4499,8 @@ function menu12sub_ck(){
 
 function logout(){
   if(window.confirm('Are you sure you want to run the log out ?\r\nTo close the browser when you run')){
-   　location.href='./logout.cgi' ;
-  　　(window.open('','_top').opener=top).close();
+    location.href='./logout.cgi' ;
+    (window.open('','_top').opener=top).close();
 }
   else {
     window.alert('It has been canceled');
@@ -4495,3 +4585,62 @@ function menu15_ck(item){
     }
   }
 }
+function menu16_ck (){
+  /* Voice match check */
+    var check = 0;
+    var error_ct = 0;
+    var array_vom = new Array(10);
+    var array_ans = new Array(10);
+    var array_reg = new Array(10);
+    array_reg[0] = document.menu16.vom_reg_0.value;
+    array_reg[1] = document.menu16.vom_reg_1.value;
+    array_reg[2] = document.menu16.vom_reg_2.value;
+    array_reg[3] = document.menu16.vom_reg_3.value;
+    array_reg[4] = document.menu16.vom_reg_4.value;
+    array_reg[5] = document.menu16.vom_reg_5.value;
+    array_reg[6] = document.menu16.vom_reg_6.value;
+    array_reg[7] = document.menu16.vom_reg_7.value;
+    array_reg[8] = document.menu16.vom_reg_8.value;
+    array_reg[9] = document.menu16.vom_reg_9.value;
+    array_vom[0] = document.menu16.vom_val_0.value;
+    array_vom[1] = document.menu16.vom_val_1.value;
+    array_vom[2] = document.menu16.vom_val_2.value;
+    array_vom[3] = document.menu16.vom_val_3.value;
+    array_vom[4] = document.menu16.vom_val_4.value;
+    array_vom[5] = document.menu16.vom_val_5.value;
+    array_vom[6] = document.menu16.vom_val_6.value;
+    array_vom[7] = document.menu16.vom_val_7.value;
+    array_vom[8] = document.menu16.vom_val_8.value;
+    array_vom[9] = document.menu16.vom_val_9.value;
+    array_ans[0] = document.menu16.vom_ans_0.value;
+    array_ans[1] = document.menu16.vom_ans_1.value;
+    array_ans[2] = document.menu16.vom_ans_2.value;
+    array_ans[3] = document.menu16.vom_ans_3.value;
+    array_ans[4] = document.menu16.vom_ans_4.value;
+    array_ans[5] = document.menu16.vom_ans_5.value;
+    array_ans[6] = document.menu16.vom_ans_6.value;
+    array_ans[7] = document.menu16.vom_ans_7.value;
+    array_ans[8] = document.menu16.vom_ans_8.value;
+    array_ans[9] = document.menu16.vom_ans_9.value;
+    for (var i=0 ; i <=9 ; i++){
+      if (array_reg[i] == "del" && array_vom[i] != ""){
+        check++;
+      }
+      if (array_reg[i] == "reg" && array_vom[i] != "" && array_ans[i] != ""){
+        check++;
+      }
+      if (array_reg[i] == "reg" && array_vom[i] != "" && array_ans[i] == ""){
+        alert("There are places that have not been Input to the Ans. field");
+        return false;
+      }
+      if (array_reg[i] == "reg" && array_vom[i] == "" && array_ans[i] != ""){
+        alert("There are places that have not been Input to Voice Match field");
+        return false;
+      }
+    }
+    if(error_ct == 0 && check > 0){
+      document.getElementById("menu16_form").submit();
+    }
+    return false;
+  }
+  

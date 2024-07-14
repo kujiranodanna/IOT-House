@@ -1,16 +1,16 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
-
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2024.2.10 update 2024.7.14
+# 2024.7.12 add Nature Remo proc
 PATH=$PATH:/usr/local/bin
-# irkit_reg.cgi,Registration of IR data for IRKit
+# irkit_reg.cgi,Registration of IR data for IRKit, Nature Remo
 echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2024.2.10">
+<META NAME="Build" content="2024.7.14">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Registration of IR data IRKit</TITLE>
 <script type="text/javascript">
@@ -45,7 +45,7 @@ CONV=./conv_get.cgi
 . $CONV
 IRNUM=$ir_num
 IRFILE=$DIR/.irdata_${IRNUM}
-USERAGENT="Chrome/87.0.4280.88"
+USERAGENT="Chrome/126.0.6478.127"
 RETRYTIME=2
 RETRY=1
 if [ -e ${IRKIT_IP} ];then
@@ -54,9 +54,34 @@ else
   rm -f $IRFILE
   exit
 fi
+REMO3_MAC="0c:8b:95"
+REMONANO_MAC="c0:4e:30"
+IRKIT_MAC="20:f8:5e"
+ping -c 1 $IP >${DOCFILE}
+tREMO3_MAC=$(arp $IP|grep $REMO3_MAC|wc -l)
+tREMONANO_MAC=$(arp $IP|grep $REMONANO_MAC|wc -l)
+tIRKIT_MAC=$(arp $IP|grep $IRKIT_MAC|wc -l)
+if [ $tREMO_MAC != 0 -a $tREMONANO_MAC != 0 ];then
+  tMAC=REMO
+elif [ $tIRKIT_MAC != 0 ];then
+  tMAC=IRKIT
+else
+  echo $IP Neither IRKit or Nature Remo
+  exit
+fi
+
 CMD=$DIR/irkit_data.pepocmd
+if [ $tMAC = "IRKIT" ];then
 # get IRkit IR data
 cat>${CMD}<<END
 #!/bin/sh
 curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} http://${IP}/messages --header "X-Requested-With: PepoLinux" >${IRFILE}
 END
+elif [ $tMAC = "REMO" ];then
+# get Remo IR data
+cat>${CMD}<<END
+#!/bin/sh
+curl -s http://${IP}/messages -H "X-Requested-With: local" >${IRFILE}
+END
+fi
+

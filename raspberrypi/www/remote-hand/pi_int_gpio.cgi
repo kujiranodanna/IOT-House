@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.5.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.13
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.5.14"
+DATE="2024.7.13"
 VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -476,6 +476,7 @@ cat >$PAGE1<<END
 <LI><a href="#menu10dl" title="DIO Control-2"><span>DIO Control2</span></a></LI>
 <LI><a href="#menu11dl" title="Mail Settings"><span>Mail Settings</span></a></LI>
 <LI><a href="#menu12dl" title="Auto Process"><span>Auto Process</span></a></LI>
+<LI><a href="#menu16dl" title="Voice Control"><span>Voice Control</span></a></LI>
 <LI><a href="#menu13dl" title="Server Control"><span>Server Control</span></a></LI>
 </UL>
 END
@@ -1762,20 +1763,18 @@ Action:low→high
 <OPTION VALUE="mail_message">Send_message
 <OPTION VALUE="web_camera_still">Web_camera Still
 <OPTION VALUE="web_camera_video">Web_camera Video
-<OPTION VALUE="mod_camera_still">Mo="IREXEC_5">${ALIAS_DO[13]}
-<OPTION VALUE="TON_0">${ALIAS_DO[14]}high
-<OPTION VALUE="TOFF_0">${ALIAS_DO[14]}low
-<OPTION VALUE="TON_1">${ALIAS_DO[15]}high
-<OPTION VALUE="TOFF_1">${ALIAS_DO[15]}low
-<OPTION VALUE="TON_2">${ALIAS_DO[16]}high
-<OPTION VALUE="TOFF_2">${ALIAS_DO[16]}low
-<OPTION VALUE="phone">Phone
-<OPTION VALUE="mail">Email
-<OPTION VALUE="mail_message">Send_message
-<OPTION VALUE="web_camera_still">Web_camera Still
-<OPTION VALUE="web_camera_video">Web_camera Video
-<OPTION VALUE="mod_camera_still">Moe
-<OPTION VALUE="alt">alt
+<OPTION VALUE="mod_camera_still">Mod_camera Still
+<OPTION VALUE="mod_camera_video">Mod_camera Video
+<OPTION VALUE="SOUND_0">Sound_1
+<OPTION VALUE="SOUND_1">Sound_2
+<OPTION VALUE="SOUND_2">Sound_3
+<OPTION VALUE="SOUND_3">Sound_4
+<OPTION VALUE="SOUND_4">Sound_5
+<OPTION VALUE="SOUND_5">Sound_6
+<OPTION VALUE="SOUND_6">Sound_7
+<OPTION VALUE="SOUND_7">Sound_8
+<OPTION VALUE="SOUND_8">Sound_9
+<OPTION VALUE="SOUND_9">Sound_10
 </SELECT>
 &nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${DON_TIME[2]}" NAME="don_time_2">ms&nbsp;
@@ -7927,6 +7926,170 @@ LINE Notify
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Run" onClick="return menu14_ck()" ;>
 <INPUT style="text-align:center" TYPE="reset" VALUE="Clear">
+</FORM>
+</DD>
+</DL>
+END
+
+VOM=$DIR/.vomdi
+[ -e $VOM ] && . $VOM
+for n in 0 1 2 3 4 5 6 7 8 9 10;do
+  [ -z ${vom_val[$n]} ] && VOM_VAL[$n]="" || VOM_VAL[$n]=${vom_val[$n]}
+  [ -z ${vom_ans[$n]} ] && VOM_ANS[$n]="はい" || VOM_ANS[$n]=${vom_ans[$n]} 
+  [ -z ${vom_var[$n]} ] && VOM_VAR[$n]="high" || VOM_VAR[$n]=${vom_var[$n]} 
+done 
+cat >>$PAGE1<<END
+<DL id="menu16dl">
+<DT><FONT SIZE="+1"><B>Voice Match DI Action</B></FONT></DT>
+<DD>
+<FORM NAME="menu16" id="menu16_form" ACTION="voice_match_set.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
+Voice Match1<INPUT TYPE="text" style="width:240px;" NAME="vom_val_0" VALUE="${VOM_VAL[0]}">&nbsp;
+Ans.<INPUT id="vom_ans_0" type="text" style="width:120px;" NAME="vom_ans_0" VALUE="${VOM_ANS[0]}">
+<SELECT NAME="vom_var_0">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[0]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_0">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match2<INPUT TYPE="text" style="width:240px;" NAME="vom_val_1" VALUE="${VOM_VAL[1]}">&nbsp;
+Ans.<INPUT id="vom_ans_1" type="text" style="width:120px;" NAME="vom_ans_1" VALUE="${VOM_ANS[1]}">
+<SELECT NAME="vom_var_1">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[1]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_1">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match3<INPUT TYPE="text" style="width:240px;" NAME="vom_val_2" VALUE="${VOM_VAL[2]}">&nbsp;
+Ans.<INPUT id="vom_ans_2" type="text" style="width:120px;" NAME="vom_ans_2" VALUE="${VOM_ANS[2]}">
+<SELECT NAME="vom_var_2">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[2]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_2">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match4<INPUT TYPE="text" style="width:240px;" NAME="vom_val_3" VALUE="${VOM_VAL[3]}">&nbsp;
+Ans.<INPUT id="vom_ans_3" type="text" style="width:120px;" NAME="vom_ans_3" VALUE="${VOM_ANS[3]}">
+<SELECT NAME="vom_var_3">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[3]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_3">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match5<INPUT TYPE="text" style="width:240px;" NAME="vom_val_4" VALUE="${VOM_VAL[4]}">&nbsp;
+Ans.<INPUT id="vom_ans_4" type="text" style="width:120px;" NAME="vom_ans_4" VALUE="${VOM_ANS[4]}">
+<SELECT NAME="vom_var_4">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[4]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_4">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match6<INPUT TYPE="text" style="width:240px;" NAME="vom_val_5" VALUE="${VOM_VAL[5]}">&nbsp;
+Ans.<INPUT id="vom_ans_5" type="text" style="width:120px;" NAME="vom_ans_5" VALUE="${VOM_ANS[5]}">
+<SELECT NAME="vom_var_5">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[5]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_5">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match7<INPUT TYPE="text" style="width:240px;" NAME="vom_val_6" VALUE="${VOM_VAL[6]}">&nbsp;
+Ans.<INPUT id="vom_ans_6" type="text" style="width:120px;" NAME="vom_ans_6" VALUE="${VOM_ANS[6]}">
+<SELECT NAME="vom_var_6">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[6]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_6">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match8<INPUT TYPE="text" style="width:240px;" NAME="vom_val_7" VALUE="${VOM_VAL[7]}">&nbsp;
+Ans.<INPUT id="vom_ans_7" type="text" style="width:120px;" NAME="vom_ans_7" VALUE="${VOM_ANS[7]}">
+<SELECT NAME="vom_var_7">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[7]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_7">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match9<INPUT TYPE="text" style="width:240px;" NAME="vom_val_8" VALUE="${VOM_VAL[8]}">&nbsp;
+Ans.<INPUT id="vom_ans_8" type="text" style="width:120px;" NAME="vom_ans_8" VALUE="${VOM_ANS[8]}">
+<SELECT NAME="vom_var_8">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[8]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_8">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match10<INPUT TYPE="text" style="width:240px;" NAME="vom_val_9" VALUE="${VOM_VAL[9]}">&nbsp;
+Ans.<INPUT id="vom_ans_9" type="text" style="width:120px;" NAME="vom_ans_9" VALUE="${VOM_ANS[9]}">
+<SELECT NAME="vom_var_9">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[9]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_9">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+Voice Match11<INPUT TYPE="text" style="width:240px;" NAME="vom_val_10" VALUE="${VOM_VAL[10]}">&nbsp;
+Ans.<INPUT id="vom_ans_10" type="text" style="width:120px;" NAME="vom_ans_9" VALUE="${VOM_ANS[10]}">
+<SELECT NAME="vom_var_10">
+<OPTION VALUE="high" SELECTED>${VOM_VAR[10]}
+<OPTION VALUE="high">high
+<OPTION VALUE="low">low
+</SELECT>&nbsp;
+<SELECT NAME="vom_reg_10">
+<OPTION VALUE="none" SELECTED>none
+<OPTION VALUE="reg">Entry
+<OPTION VALUE="del">Delete
+</SELECT>
+<BR>
+
+<INPUT style="text-align:center" TYPE="button" VALUE="Run" onClick="return menu16_ck()" ;/>
+<INPUT style="text-align:center" TYPE="reset" VALUE="Clear">
+</FORM>
 </DD>
 </DL>
 

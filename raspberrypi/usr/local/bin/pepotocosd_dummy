@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2016.1.2 update 2024.7.13
 # Convert from gpio to fake twlite data, MonoWireless TWELITE & ToCoStick Wireless dio, ai, i2c, Raspberry Pi
 DIR=/www/remote-hand/tmp
 CMDWIREDIO="/usr/local/bin/pepotocosctl 0"
@@ -13,7 +13,7 @@ TCOSRD=$DIR/.tocos_read_data
 tTCOSRD=$DIR/.tocos_read_data_tmp
 TCOSRDCMD=$DIR/pepotocosctl.*
 ALIAS_DI=$DIR/.alias_di
-GPIOGPIORD=$DIR/.gpiodi_read_data
+GPIORD=$DIR/.gpiodi_read_data
 I2CLOOP=10
 error(){
   [ -e $TCOSRDCMD ] && rm -f $TCOSRDCMD
@@ -27,11 +27,11 @@ trap error TERM HUP KILL INT
 while true;do
   unset tocos_ip TOCOS_TTY
   [ -e $ALIAS_DI ] && . $ALIAS_DI
-  while true;do
-    if [ -e $GPIOGPIORD ];then
-      TEMP=`cat $GPIOGPIORD|mawk '/gpio_i2c/{split($1,I,",");printf I[2]}'`
-      HUM=`cat $GPIOGPIORD|mawk '/gpio_i2c/{split($1,I,",");printf I[3]}'`
-      TIME=`cat $GPIOGPIORD|mawk '/gpio_i2c/{gsub(/gpio_i2c=/,"",$0);split($1,I,":");printf("%s:%s",I[1],I[2])}'`
+  if [ -e $GPIORD ];then
+    TEMP=`cat $GPIORD|mawk '/gpio_i2c/{split($1,I,",");printf I[2]}'`
+    HUM=`cat $GPIORD|mawk '/gpio_i2c/{split($1,I,",");printf I[3]}'`
+    TIME=`cat $GPIORD|mawk '/gpio_i2c/{gsub(/gpio_i2c=/,"",$0);split($1,I,":");printf("%s:%s",I[1],I[2])}'`
+    if [ ! -e $TCOSRD ];then
       cat >$tTCOSRD<<END
 i2c="$TIME $TEMP℃ $HUM％"
 TI1=1
@@ -47,10 +47,15 @@ VAI3=4080
 AI4=-1
 VAI4=4080
 END
-      mv $tTCOSRD $TCOSRD
-      msleep $(($I2CLOOP * 1000))
+    else
+      cat $TCOSRD |grep -v "i2c" >$tTCOSRD
+      cat >>$tTCOSRD<<END
+i2c="$TIME $TEMP℃ $HUM％"
+END
     fi
-  done
+    mv $tTCOSRD $TCOSRD
+    msleep $(($I2CLOOP * 1000))
+  fi
   while [ "$TOCOS_TTY" = "none" ];do
     [ -e $ALIAS_DI ] && . $ALIAS_DI
     msleep  1000
@@ -173,29 +178,4 @@ END
     LOOP=$(($LOOP - 1))
     msleep 3000
   done
-#Tcos i2c read
-echo pepo1
-  RETRY_I2C=3
-  while [ $RETRY_I2C -ne 0 ]
-  do
-    RD=`${CMDWIREI2C} 2>&1`
-    if [ "${RD}" != "-1" ];then
-      break
-    fi
-    RETRY_I2C=$(($RETRY_I2C - 1))
-    msleep 1000
-  done
-  LEN=`echo -n "${RD}" |wc -c`
-  if [ "${LEN}" -lt 34 ];then
-    continue
-  fi
-  if [ "${RD}" != "-1" ];then
-    if [ -e ${TCOSRD} ];then
-      cat ${TCOSRD} |grep -v "i2c" >${tTCOSRD}
-      echo -n i2c=\"`echo -n $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" >> ${tTCOSRD}
-    else
-      echo -n i2c=\"`echo -n $RD | mawk '{split($0,I,",");printf("%s %s %s",substr(I[2],1,5),I[3],I[4])}'`\" > ${tTCOSRD}
-    fi
-    mv  ${tTCOSRD} ${TCOSRD}
-  fi
 done

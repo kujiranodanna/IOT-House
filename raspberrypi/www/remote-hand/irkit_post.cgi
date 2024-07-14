@@ -1,16 +1,15 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.12
+# irkit_post.cgi,Post of IR data for IRKit and Nature Remo
 PATH=$PATH:/usr/local/bin
-# irkit_post.cgi,Post of IR data for IRKit
-# 2023.12.3 Added dummy reading processing as it sometimes slows down
 echo -n '
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
 <META NAME="Auther" content="yamauchi.isamu">
 <META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="2024.2.10">
+<META NAME="Build" content="2024.7.12">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Post of IR data IRKit</TITLE>
 <script type="text/javascript">
@@ -34,11 +33,10 @@ function blink() {
 <TR ALIGN=CENTER class="blink"><TD>It is in the IR data output of IRKit</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2021-2025 pepolinux.jpn.org</TD><TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2024-2027 pepolinux.jpn.org</TD><TR></TABLE>
 </BODY>
 </HTML>
 '
-
 DIR=/www/remote-hand/tmp
 IRKIT_IP=$DIR/.IRKit_IP
 DOCFILE=$DIR/irkit_out_document
@@ -46,36 +44,10 @@ CONV=./conv_get.cgi
 . $CONV
 IRNUM=$ir_num
 TIMER=$ir_timer
-IRFILE=$DIR/.irdata_${IRNUM}
-USERAGENT="Chrome/119.0.6045.199"
-RETRYTIME=10
-RETRY=1
-if [ -e ${IRKIT_IP} ];then
-  IP=`cat ${IRKIT_IP}`
-  if [ -e ${IRFILE} ];then
-    if [ `cat ${IRFILE} |wc -c` = 0 ];then
-      exit -1
-    fi
-  else
-     exit -1
-  fi
-else
-  exit -1
-fi
 
 CMD=$DIR/irkit_data.pepocmd
-# post IRkit IR data
 cat>${CMD}<<END
 #!/bin/sh
-curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} http://${IP}/messages --header "X-Requested-With: PepoLinux" >${DOCFILE}
-msleep 1000
-curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
-if [ ${TIMER}X != "X" ];then
-  msleep ${TIMER}
-  curl -s -m $RETRYTIME --retry $RETRY --user-agent ${USERAGENT} -X POST -F upfile=@/${IRFILE} http://${IP}/messages >${DOCFILE}
-fi
-if [ -e ${DOCFILE} ];then
-  msleep 1000
-  rm ${DOCFILE}
-fi
+pepoirkitpost ${IRNUM} ${TIMER}
 END
+fi
