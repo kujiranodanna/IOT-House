@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.14
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.7.13"
+DATE="2024.7.14"
 VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -1775,6 +1775,13 @@ Action:low→high
 <OPTION VALUE="SOUND_7">Sound_8
 <OPTION VALUE="SOUND_8">Sound_9
 <OPTION VALUE="SOUND_9">Sound_10
+</SELECT>
+Alt
+&nbsp;
+<SELECT NAME="di_act_alt_2">
+<OPTION VALUE="${DI_ACT_ALT[2]}" SELECTED>${DI_ACT_ALT[2]}
+<OPTION VALUE="none">none
+<OPTION VALUE="alt">alt
 </SELECT>
 &nbsp;
 <INPUT TYPE="text" style="width:36px;text-align:right;" VALUE="${DON_TIME[2]}" NAME="don_time_2">ms&nbsp;
