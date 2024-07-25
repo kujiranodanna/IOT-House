@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.10
-* remote-hand_pi_gpio.js ver0.22 2024.7.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.25
+* remote-hand_pi_gpio.js ver0.22 2024.7.25
 */
 function blink(){
   if (!document){ return; }
@@ -18,7 +18,7 @@ function blink(){
   }
   setTimeout("blink()",1000);
 }
-var smapho_reload_tm = 10000;
+var smapho_reload_tm = 20000;
 var unsmapho_reload_tm = 60000;
 var recognition = new webkitSpeechRecognition();
 var recognizing = false;
@@ -664,6 +664,14 @@ function streaming_start_stop(dev,start_stop){
       return false;
     }
   });
+}
+function disp_what_pop(what_pop_img){
+  var close_timer = 30000;
+  var child_url = "./tmp/" +  what_pop_img + "?" + (new Date().getTime());
+  var what_pop_url = window.open(child_url,"width=640,height=480,resizable=yes,scrollbars=no");
+  setTimeout(function () {
+    what_pop_url.close();
+  },close_timer);
 }
 function send_di(di_ch,do_val,disp_v,di_v){
   var di_do;
@@ -3215,7 +3223,6 @@ function update_di(item){
 // Disp Sound File
         if (di2json.disp_sound_0){
           val = di2json.disp_sound_0;
-//          $("#disp_sound_0").html('<INPUT TYPE="button" readonly style="width:100px;text-align:center" VALUE="' + val + '">&nbsp;<audio controls src="./tmp/' + val + '"></audio>');
           $("#disp_sound_0").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_1){
@@ -3253,6 +3260,9 @@ function update_di(item){
         if (di2json.disp_sound_9){
           val = di2json.disp_sound_9;
           $("#disp_sound_9").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+        }
+        if (di2json.what_pop != "none"){
+          disp_what_pop(di2json.what_pop);
         }
        },
        error: function(di2json){
@@ -4571,8 +4581,8 @@ function menu15_ck(item){
     }
     YMD = YY + "/" + MM + "/" + DD;
     HSD = hh + ":" + mm + ":" + ss;
-    $("#menu15_server_date").html('Date：<INPUT TYPE="text" style="width:70px;text-align:left;"' + '" VALUE="' + YMD + '" ' + 'NAME="server_date" onClick="return menu15_ck()">&nbsp;');
-    $("#menu15_server_time").html('Time：<INPUT TYPE="text" style="width:60px;text-align:left;"' + '" VALUE="' + HSD + '" ' + 'NAME="server_time" onClick="return menu15_ck()">');
+    $("#menu15_server_date").html('Date:<INPUT TYPE="text" style="width:70px;text-align:left;"' + '" VALUE="' + YMD + '" ' + 'NAME="server_date" onClick="return menu15_ck()">&nbsp;');
+    $("#menu15_server_time").html('Time:<INPUT TYPE="text" style="width:60px;text-align:left;"' + '" VALUE="' + HSD + '" ' + 'NAME="server_time" onClick="return menu15_ck()">');
   }
   else{
     if (item == "Set"){

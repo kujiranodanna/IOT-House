@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.14
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.22
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.7.14"
+DATE="2024.7.22"
 VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -7947,12 +7947,12 @@ for n in 0 1 2 3 4 5 6 7 8 9 10;do
 done 
 cat >>$PAGE1<<END
 <DL id="menu16dl">
-<DT><FONT SIZE="+1"><B>Voice Match DI Action</B></FONT></DT>
+<DT><FONT SIZE="+1"><B>Voice Match DI Action(/usr/bin/dioNhigh|low)</B></FONT></DT>
 <DD>
 <FORM NAME="menu16" id="menu16_form" ACTION="voice_match_set.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
 Voice Match1<INPUT TYPE="text" style="width:240px;" NAME="vom_val_0" VALUE="${VOM_VAL[0]}">&nbsp;
 Ans.<INPUT id="vom_ans_0" type="text" style="width:120px;" NAME="vom_ans_0" VALUE="${VOM_ANS[0]}">
-<SELECT NAME="vom_var_0">
+&nbsp;&nbsp;dio0<SELECT NAME="vom_var_0">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[0]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -7965,7 +7965,7 @@ Ans.<INPUT id="vom_ans_0" type="text" style="width:120px;" NAME="vom_ans_0" VALU
 <BR>
 Voice Match2<INPUT TYPE="text" style="width:240px;" NAME="vom_val_1" VALUE="${VOM_VAL[1]}">&nbsp;
 Ans.<INPUT id="vom_ans_1" type="text" style="width:120px;" NAME="vom_ans_1" VALUE="${VOM_ANS[1]}">
-<SELECT NAME="vom_var_1">
+&nbsp;&nbsp;dio1<SELECT NAME="vom_var_1">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[1]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -7978,7 +7978,7 @@ Ans.<INPUT id="vom_ans_1" type="text" style="width:120px;" NAME="vom_ans_1" VALU
 <BR>
 Voice Match3<INPUT TYPE="text" style="width:240px;" NAME="vom_val_2" VALUE="${VOM_VAL[2]}">&nbsp;
 Ans.<INPUT id="vom_ans_2" type="text" style="width:120px;" NAME="vom_ans_2" VALUE="${VOM_ANS[2]}">
-<SELECT NAME="vom_var_2">
+&nbsp;&nbsp;dio2<SELECT NAME="vom_var_2">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[2]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -7991,7 +7991,7 @@ Ans.<INPUT id="vom_ans_2" type="text" style="width:120px;" NAME="vom_ans_2" VALU
 <BR>
 Voice Match4<INPUT TYPE="text" style="width:240px;" NAME="vom_val_3" VALUE="${VOM_VAL[3]}">&nbsp;
 Ans.<INPUT id="vom_ans_3" type="text" style="width:120px;" NAME="vom_ans_3" VALUE="${VOM_ANS[3]}">
-<SELECT NAME="vom_var_3">
+&nbsp;&nbsp;dio3<SELECT NAME="vom_var_3">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[3]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8004,7 +8004,7 @@ Ans.<INPUT id="vom_ans_3" type="text" style="width:120px;" NAME="vom_ans_3" VALU
 <BR>
 Voice Match5<INPUT TYPE="text" style="width:240px;" NAME="vom_val_4" VALUE="${VOM_VAL[4]}">&nbsp;
 Ans.<INPUT id="vom_ans_4" type="text" style="width:120px;" NAME="vom_ans_4" VALUE="${VOM_ANS[4]}">
-<SELECT NAME="vom_var_4">
+&nbsp;&nbsp;dio4<SELECT NAME="vom_var_4">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[4]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8017,7 +8017,7 @@ Ans.<INPUT id="vom_ans_4" type="text" style="width:120px;" NAME="vom_ans_4" VALU
 <BR>
 Voice Match6<INPUT TYPE="text" style="width:240px;" NAME="vom_val_5" VALUE="${VOM_VAL[5]}">&nbsp;
 Ans.<INPUT id="vom_ans_5" type="text" style="width:120px;" NAME="vom_ans_5" VALUE="${VOM_ANS[5]}">
-<SELECT NAME="vom_var_5">
+&nbsp;&nbsp;dio5<SELECT NAME="vom_var_5">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[5]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8030,7 +8030,7 @@ Ans.<INPUT id="vom_ans_5" type="text" style="width:120px;" NAME="vom_ans_5" VALU
 <BR>
 Voice Match7<INPUT TYPE="text" style="width:240px;" NAME="vom_val_6" VALUE="${VOM_VAL[6]}">&nbsp;
 Ans.<INPUT id="vom_ans_6" type="text" style="width:120px;" NAME="vom_ans_6" VALUE="${VOM_ANS[6]}">
-<SELECT NAME="vom_var_6">
+&nbsp;&nbsp;dio6<SELECT NAME="vom_var_6">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[6]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8043,7 +8043,7 @@ Ans.<INPUT id="vom_ans_6" type="text" style="width:120px;" NAME="vom_ans_6" VALU
 <BR>
 Voice Match8<INPUT TYPE="text" style="width:240px;" NAME="vom_val_7" VALUE="${VOM_VAL[7]}">&nbsp;
 Ans.<INPUT id="vom_ans_7" type="text" style="width:120px;" NAME="vom_ans_7" VALUE="${VOM_ANS[7]}">
-<SELECT NAME="vom_var_7">
+&nbsp;&nbsp;dio7<SELECT NAME="vom_var_7">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[7]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8056,7 +8056,7 @@ Ans.<INPUT id="vom_ans_7" type="text" style="width:120px;" NAME="vom_ans_7" VALU
 <BR>
 Voice Match9<INPUT TYPE="text" style="width:240px;" NAME="vom_val_8" VALUE="${VOM_VAL[8]}">&nbsp;
 Ans.<INPUT id="vom_ans_8" type="text" style="width:120px;" NAME="vom_ans_8" VALUE="${VOM_ANS[8]}">
-<SELECT NAME="vom_var_8">
+&nbsp;&nbsp;dio8<SELECT NAME="vom_var_8">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[8]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8069,7 +8069,7 @@ Ans.<INPUT id="vom_ans_8" type="text" style="width:120px;" NAME="vom_ans_8" VALU
 <BR>
 Voice Match10<INPUT TYPE="text" style="width:240px;" NAME="vom_val_9" VALUE="${VOM_VAL[9]}">&nbsp;
 Ans.<INPUT id="vom_ans_9" type="text" style="width:120px;" NAME="vom_ans_9" VALUE="${VOM_ANS[9]}">
-<SELECT NAME="vom_var_9">
+&nbsp;&nbsp;dio9<SELECT NAME="vom_var_9">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[9]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low
@@ -8082,7 +8082,7 @@ Ans.<INPUT id="vom_ans_9" type="text" style="width:120px;" NAME="vom_ans_9" VALU
 <BR>
 Voice Match11<INPUT TYPE="text" style="width:240px;" NAME="vom_val_10" VALUE="${VOM_VAL[10]}">&nbsp;
 Ans.<INPUT id="vom_ans_10" type="text" style="width:120px;" NAME="vom_ans_9" VALUE="${VOM_ANS[10]}">
-<SELECT NAME="vom_var_10">
+&nbsp;&nbsp;dio10<SELECT NAME="vom_var_10">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[10]}
 <OPTION VALUE="high">high
 <OPTION VALUE="low">low

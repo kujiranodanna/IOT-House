@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.7.8
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.7.25
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -31,6 +31,7 @@ SOUND_FILE_NAME=$DIR/.sound_file_name
 HOMEPAGE=/www/remote-hand/pi_int.html
 HOMEBRIDEGE_CONF=/www/remote-hand/.homebridge/config.json
 VOM_DI=$DIR/.vomdi
+WHAT_POP=what_pop.*
 #HOMEPAGE=/www/remote-hand/pi_int_cp2112.html
 prog=pepojsond
 pidfile=/var/run/$prog.pid
@@ -490,9 +491,15 @@ END
     fi
   fi
   echo -e \"liveimg\":\"${liveimg}\", >>$tJSONRD
-  echo -e \"livevideo\":\"${livevideo}\" >>$tJSONRD
+  echo -e \"livevideo\":\"${livevideo}\", >>$tJSONRD
   if [ -e $HOMEBRIDEGE_CONF ];then
     cat $HOMEBRIDEGE_CONF |jq .accessories|mawk '{gsub("\\[","",$0);gsub(" ","",$0);print $0}'
+  fi
+  if [ -e $DIR/$WHAT_POP ];then
+    TMP=$(cd $DIR;ls $WHAT_POP)
+    echo -e \"what_pop\":\"${TMP}\" >>$tJSONRD
+  else
+    echo -e \"what_pop\":\"none\" >>$tJSONRD
   fi
   echo "}" >>$tJSONRD
   mv $tJSONRD $JSONRD
@@ -501,9 +508,11 @@ END
   TMP_FILE_PNG=`ls $DIR/|grep ".png"`;CT_PNG=`echo $TMP_FILE_PNG|wc -w`
   TMP_FILE_JPG=`ls $DIR/|grep ".jpg"`;CT_JPG=`echo $TMP_FILE_JPG|wc -w`
   TMP_FILE_TXT=`ls $DIR/|grep ".txt"`;CT_TXT=`echo $TMP_FILE_TXT|wc -w`
-  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT))
+  TMP_FILE_GIF=`ls $DIR/|grep ".gif"`;CT_GIF=`echo $TMP_FILE_GIF|wc -w`
+  TMP_FILE_MP4=`ls $DIR/|grep ".mp4"`;CT_MP4=`echo $TMP_FILE_MP4|wc -w`
+  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT + $CT_GIF + $CT_MP4))
   if [ $TOTAL -gt 0 ];then
-    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT ;do
+    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT $TMP_FILE_GIF $TMP_FILE_MP4;do
       TM=`date +%s -r $DIR/$TMP`
       if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
         rm $DIR/$TMP
