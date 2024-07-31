@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.25
-* remote-hand_pi_gpio.js ver0.22 2024.7.25
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.31
+* remote-hand_pi_gpio.js ver0.22 2024.7.31
 */
 function blink(){
   if (!document){ return; }
@@ -695,7 +695,7 @@ function send_di(di_ch,do_val,disp_v,di_v){
     break;
   }
   $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_di(' + di_ch + ',1,\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onclick="send_di(' + di_ch + ',0,\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
-  di_do = "dio" + di_ch;
+  di_do = "dio" + di_ch + val_v;
   $.ajax({
     type: "GET",
     url: "do_ajax.cgi",
@@ -4612,6 +4612,7 @@ function menu16_ck (){
     array_reg[7] = document.menu16.vom_reg_7.value;
     array_reg[8] = document.menu16.vom_reg_8.value;
     array_reg[9] = document.menu16.vom_reg_9.value;
+    array_reg[10] = document.menu16.vom_reg_10.value;
     array_vom[0] = document.menu16.vom_val_0.value;
     array_vom[1] = document.menu16.vom_val_1.value;
     array_vom[2] = document.menu16.vom_val_2.value;
@@ -4622,6 +4623,7 @@ function menu16_ck (){
     array_vom[7] = document.menu16.vom_val_7.value;
     array_vom[8] = document.menu16.vom_val_8.value;
     array_vom[9] = document.menu16.vom_val_9.value;
+    array_vom[10] = document.menu16.vom_val_10.value;
     array_ans[0] = document.menu16.vom_ans_0.value;
     array_ans[1] = document.menu16.vom_ans_1.value;
     array_ans[2] = document.menu16.vom_ans_2.value;
@@ -4632,7 +4634,8 @@ function menu16_ck (){
     array_ans[7] = document.menu16.vom_ans_7.value;
     array_ans[8] = document.menu16.vom_ans_8.value;
     array_ans[9] = document.menu16.vom_ans_9.value;
-    for (var i=0 ; i <=9 ; i++){
+    array_ans[10] = document.menu16.vom_ans_10.value;
+    for (var i=0 ; i <=10 ; i++){
       if (array_reg[i] == "del" && array_vom[i] != ""){
         check++;
       }
@@ -4651,6 +4654,6 @@ function menu16_ck (){
     if(error_ct == 0 && check > 0){
       document.getElementById("menu16_form").submit();
     }
-    return false;
+    return;
   }
   

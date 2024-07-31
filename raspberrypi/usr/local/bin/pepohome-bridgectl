@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2024.6.17
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2024.7.30
 # pepohome-bridgectl, homebridge moniter daemon for rasberry pi zero W.
 LOG=/var/log/homebridge.log
 LOG1=/var/log/homebridge.log.1
@@ -57,9 +57,12 @@ while true;do
     else
       CT=$(tail -n 100 $LOG1 |grep EAI_AGAIN |wc -l)
     fi
+    LIVE=$(netstat -anp|grep 51826 |grep ESTABLISHED|wc -l)
     if [ $CT -gt 0 ];then
       logrote
     elif [ -z "$P_PID" ];then
+      logrote
+    elif [ $LIVE -eq 0 ];then
       logrote
     fi
   fi

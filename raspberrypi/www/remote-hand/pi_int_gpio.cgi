@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.22
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.28
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int.cgi"
 LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2024.7.22"
+DATE="2024.7.28"
 VERSION="ver:0.22&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -8081,7 +8081,7 @@ Ans.<INPUT id="vom_ans_9" type="text" style="width:120px;" NAME="vom_ans_9" VALU
 </SELECT>
 <BR>
 Voice Match11<INPUT TYPE="text" style="width:240px;" NAME="vom_val_10" VALUE="${VOM_VAL[10]}">&nbsp;
-Ans.<INPUT id="vom_ans_10" type="text" style="width:120px;" NAME="vom_ans_9" VALUE="${VOM_ANS[10]}">
+Ans.<INPUT id="vom_ans_10" type="text" style="width:120px;" NAME="vom_ans_10" VALUE="${VOM_ANS[10]}">
 &nbsp;&nbsp;dio10<SELECT NAME="vom_var_10">
 <OPTION VALUE="high" SELECTED>${VOM_VAR[10]}
 <OPTION VALUE="high">high
@@ -8093,13 +8093,11 @@ Ans.<INPUT id="vom_ans_10" type="text" style="width:120px;" NAME="vom_ans_9" VAL
 <OPTION VALUE="del">Delete
 </SELECT>
 <BR>
-
 <INPUT style="text-align:center" TYPE="button" VALUE="Run" onClick="return menu16_ck()" ;/>
 <INPUT style="text-align:center" TYPE="reset" VALUE="Clear">
 </FORM>
 </DD>
 </DL>
-
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>

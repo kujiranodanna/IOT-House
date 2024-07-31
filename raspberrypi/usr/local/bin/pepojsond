@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.7.25
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.7.28
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -437,7 +437,7 @@ END
   [ ! -z "${vom_val[7]}" ] && echo -e \"vom_7\":{\"vom_val_7\":\"${vom_val[7]}"\",\"vom_ans_7\":\"${vom_ans[7]}\",\"vom_var_7\":\"${vom_var[7]}\"}," >>$tJSONRD || echo -e \"vom_7\":\"none\", >>$tJSONRD
   [ ! -z "${vom_val[8]}" ] && echo -e \"vom_8\":{\"vom_val_8\":\"${vom_val[8]}"\",\"vom_ans_8\":\"${vom_ans[8]}\",\"vom_var_8\":\"${vom_var[8]}\"}," >>$tJSONRD || echo -e \"vom_8\":\"none\", >>$tJSONRD
   [ ! -z "${vom_val[9]}" ] && echo -e \"vom_9\":{\"vom_val_9\":\"${vom_val[9]}"\",\"vom_ans_9\":\"${vom_ans[9]}\",\"vom_var_9\":\"${vom_var[9]}\"}," >>$tJSONRD || echo -e \"vom_9\":\"none\", >>$tJSONRD
-  [ ! -z "${vom_val[10]}" ] && echo -e \"vom_10\":{\"vom_val_9\":\"${vom_val[10]}"\",\"vom_ans_10\":\"${vom_ans[10]}\",\"vom_var_10\":\"${vom_var[10]}\"}," >>$tJSONRD || echo -e \"vom_10\":\"none\", >>$tJSONRD
+  [ ! -z "${vom_val[10]}" ] && echo -e \"vom_10\":{\"vom_val_10\":\"${vom_val[10]}"\",\"vom_ans_10\":\"${vom_ans[10]}\",\"vom_var_10\":\"${vom_var[10]}\"}," >>$tJSONRD || echo -e \"vom_10\":\"none\", >>$tJSONRD
   CPU_TEMP=`cat /sys/class/thermal/thermal_zone0/temp|mawk '{printf(substr($1,1,2)"."substr($1,3,1)"℃")}'`
   echo -e \"cpu_temp\":\"$CPU_TEMP\", >>$tJSONRD
   CPU_TEMP=`echo ${CPU_TEMP} | mawk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
