@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.7.31
-* remote-hand_pi_gpio.js ver0.22 2024.7.31
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.8.20
+* remote-hand_pi_gpio.js ver0.24 2024.8.20
 */
 function blink(){
   if (!document){ return; }
@@ -307,6 +307,23 @@ function sound_play (sound_f) {
 	let sound_val = new Audio(sound_f);
 	sound_val.play();
 }
+// File delete
+function file_delte(file_name){
+  $.ajax({
+    type: "get",
+    url: "file_del.cgi",
+    timeout : 3000,
+    dataType: "text",
+    async: true,
+    data: 'file_name=' + file_name ,
+    success: function(){
+      return true;
+    },
+    error: function(){
+      return false;
+    }
+  });
+}
 // IR data registration processing of IRKit
 function irkit_reg(ir_num,ir_id){
   var ir_val = $(ir_id).val();
@@ -349,27 +366,28 @@ function irkit_reg(ir_num,ir_id){
   });
 }
 // IR data output processing of IRKit
-function irkit_post(do_ch,do_time){
+function irkit_post(ch,do_time){
   var ir_timer = do_time;
+  var do_ch = ch.toString();;
   var ir_num;
   switch (do_ch){
     case '8':
-      ir_num = 0;
+      ir_num = "0";
       break;
     case '9':
-      ir_num = 1;
+      ir_num = "1";
       break;
     case '10':
-      ir_num = 2;
+      ir_num = "2";
       break;
     case '11':
-      ir_num = 3;
+      ir_num = "3";
       break;
     case '12':
-      ir_num = 4;
+      ir_num = "4";
       break;
     case '13':
-      ir_num = 5;
+      ir_num = "5";
       break;
   }
   $.ajax({
@@ -671,6 +689,7 @@ function disp_what_pop(what_pop_img){
   var what_pop_url = window.open(child_url,"width=640,height=480,resizable=yes,scrollbars=no");
   setTimeout(function () {
     what_pop_url.close();
+    file_delte(what_pop_img);
   },close_timer);
 }
 function send_di(di_ch,do_val,disp_v,di_v){
@@ -710,8 +729,9 @@ function send_di(di_ch,do_val,disp_v,di_v){
     }
   });
 }
-function send_do(do_ch,do_val,do_time,disp_v,di_v){
+function send_do(ch,do_val,do_time,disp_v,di_v){
   var val_v;
+  var do_ch = ch.toString();
   if (do_val == "1") val_v = "high";
   if (do_val == "0") val_v = "low";
   var color_bg;
@@ -731,7 +751,6 @@ function send_do(do_ch,do_val,do_time,disp_v,di_v){
     break;
   }
   $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_do(' + do_ch + ',1,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onClick="send_do(' + do_ch + ',0,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
-  if (do_time === undefined){do_time = ""}
   if (do_ch >= 8 && do_ch <= 13){
     irkit_post(do_ch,do_time);
   }
@@ -1723,7 +1742,7 @@ function voice_do(do_sel,results_voice){
       }
       if (i == 85){
         tdo_ch = "dio1";
-        voice_tmp = di2json.vom_0.vom_ans_1;
+        voice_tmp = di2json.vom_1.vom_ans_1;
         tdo_id = di2json.vom_1.vom_var_1;
         if (tdo_id == "high") tdo_val = 1;
         if (tdo_id == "low") tdo_val = 0;
@@ -2205,8 +2224,9 @@ function update_di(item){
                     if (voice_lang_val === null) voice_lang_val = ja;
                     val = tmp[0];
                     speak_exec(val,voice_lang_val);
+                    file_delte(".voice_req");
                   } else {
-                      update_do("voice_sel",val);
+                    update_do("voice_sel",val);
                 }
               }
             }
@@ -3272,22 +3292,11 @@ function update_di(item){
   });
   if (item == "onload"){
     var browser_os = "unknown";
-    var tmp_os = navigator.platform;
-    var tmp_ua = navigator.userAgent;
-    // ios
-    if (tmp_os == "iPhone") browser_os = "iPhone";
-    if (tmp_os == "iPad") browser_os = "iPad";
-    // Android
-    if (tmp_os == "Android") browser_os = "Android";
-    if (tmp_ua.indexOf("Android") > 0) browser_os = "Android";
-    //Windows, MacOS
-/*    var tmp_ua = navigator.userAgent;
-    if (tmp_ua.indexOf("iPhone") > 0) browser_os = "iPhone";
-    if (tmp_ua.indexOf("Windows") > 0) browser_os = "Windows";
-    if (tmp_ua.indexOf("Mac") > 0) browser_os = "MacOS";
-    if (tmp_ua.indexOf("Android") > 0) browser_os = "Android";
-    if (tmp_ua.indexOf("Linux") > 0) browser_os = "Linux";
-*/
+    if (navigator.userAgent.match(/iPhone/)) browser_os = "iPhone";
+    if (navigator.userAgent.match(/Android/)) browser_os = "Android";
+    if ((document.getElementById("computer_name") !== null)) {
+      var unsmapho_reload_tm = 20000;
+    }
     if (browser_os == "iPhone" || browser_os == "Android"){
       if (document.getElementById("s_phone_temp_hum") != null){
         Update_di_Timer = setTimeout("update_di('onload')",unsmapho_reload_tm); // Temp&Hum Disp information update time (milliseconds)

@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2024.7.30
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2024.8.14
 # pepohome-bridgectl, homebridge moniter daemon for rasberry pi zero W.
 LOG=/var/log/homebridge.log
 LOG1=/var/log/homebridge.log.1
@@ -24,6 +24,7 @@ logrote(){
     tail -n 100 $LOG1 >$LOG
     homebridge -I >$LOG1 2>&1
   fi
+  msleep 10000
 }
 trap logrote TERM HUP KILL INT QUIT
 P_PID=$(pgrep homebridge)
@@ -34,10 +35,10 @@ fi
 logrote
 while true;do
   ACTTIME=$(date +%H%M)
-  P_PID=$(pgrep homebridge)
+  P_PID=$(svstat /www/pepolinux/homebridge| mawk '{gsub(/[^0-9\.]+/,"",$4);printf $4}')
   if [ $ACTTIME = "2355" ];then
     if [ ! -z "$P_PID" ];then
-      kill -HUP $P_PID
+      kill -KILL $P_PID
       msleep 5000
     fi
     logrote
