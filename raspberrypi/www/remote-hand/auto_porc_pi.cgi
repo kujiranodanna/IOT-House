@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.6.23
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.12.4
 
 echo -n '
 <HTML>
@@ -8,13 +8,12 @@ echo -n '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2024.6.23">
+<META NAME="build" content="2024.12.4">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <TITLE>Automatic process settings</TITLE>
 <script type="text/javascript">
 function blink() {
-//  if (!document.all) { return; }
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);
     if (obj.className == "blink") {
@@ -355,6 +354,12 @@ END
   elif [ ! -e $PING_CRON ];then
     echo "${WORK[2]}" "${WORK[4]}" "${WORK[6]}" "${WORK[7]}" "${WORK[8]}" "cp -f $DO_EXEC $CMD">"$PING_CRON"
    fi
+  CRON_NOMAIL=$(echo -en $PING_CRON |grep MAILTO|wc -l)
+  if [ $CRON_NOMAIL = 0 ];then
+    echo -e 'MAILTO=""' >$tPING_CRON
+    cat $PING_CRON |grep -v "MAILTO" >>$tPING_CRON
+    mv $tPING_CRON $PING_CRON
+  fi
   crontab $PING_CRON
   if [ -e $AUTO_ACT_LIST ];then
     cat $AUTO_ACT_LIST | mawk "! /($CRON_COND_NAME|$CRON_NAME)/{print}" > $tAUTO_ACT_LIST
@@ -376,7 +381,7 @@ auto_cron_del() {
   if [ -e $PING_CRON ];then
     cat $PING_CRON | mawk "! /($CRON_NAME)/{print}" > $tPING_CRON
     mv $tPING_CRON $PING_CRON
-    LEN=`cat $PING_CRON | wc -l`
+    LEN=`cat $PING_CRON| grep -v "MAILTO"| wc -l`
     if [ $LEN != 0 ];then
       crontab $PING_CRON
     else
