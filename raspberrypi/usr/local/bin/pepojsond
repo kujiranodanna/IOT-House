@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.8.20
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.12.3
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -28,15 +28,14 @@ IRKIT_IP=$DIR/.IRKit_IP
 TCOSWD=$DIR/.tocos_write_data
 TCOSRD=$DIR/.tocos_read_data
 SOUND_FILE_NAME=$DIR/.sound_file_name
-HOMEPAGE=/www/remote-hand/pi_int.html
+if [ -e /www/remote-hand/pi_int_gpio.cgi ];then
+  HOMEPAGE=/www/remote-hand/pi_int.html
+elif [ -e /www/remote-hand/pi_int_cp2112.cgi ];then
+  HOMEPAGE=/www/remote-hand/pi_int_cp2112.html
+fi
 HOMEBRIDEGE_CONF=/www/remote-hand/.homebridge/config.json
 VOM_DI=$DIR/.vomdi
 WHAT_POP=what_pop.*
-[ $(uname -a|grep microsoft|wc -l) -gt 0 ] && IS_MSCONTAINER="YES" || IS_MSCONTAINER="NO"
-[ -e /.dockerenv ] && IS_CONTAINER="YES" || IS_CONTAINER="NO"
-if [ $IS_MSCONTAINER = "YES" -o $IS_CONTAINER = "YES" ];then
-  HOMEPAGE=/www/remote-hand/pi_int_cp2112.html
-fi
 prog=pepojsond
 pidfile=/var/run/$prog.pid
 MAX_TMP_FILE_LIVE=180
@@ -55,7 +54,6 @@ trap error TERM HUP KILL INT
 [ -e $pidfile ] && rm -f $pidfile
 
 # loop for gpio polling read
-# Is it a container?
 while true
 do
   unset di do alias_di alias_do alias_vdo sound_file piface_ip tocos_ip
@@ -200,7 +198,7 @@ do
       33) [ ! -z "${alias_vdo[$n]}" ] && alias_do54="${alias_vdo[$n]}" || alias_do54="none" ;;
     esac
   done
-  NOWDATE=$(date +"%Y/%m/%d %T:%a")
+  NOWDATE=`date +"%Y/%m/%d %T:%a"`
   cat>$tJSONRD<<END
 {
 "di0":"$di0",
@@ -443,18 +441,13 @@ END
   [ ! -z "${vom_val[8]}" ] && echo -e \"vom_8\":{\"vom_val_8\":\"${vom_val[8]}"\",\"vom_ans_8\":\"${vom_ans[8]}\",\"vom_var_8\":\"${vom_var[8]}\"}," >>$tJSONRD || echo -e \"vom_8\":\"none\", >>$tJSONRD
   [ ! -z "${vom_val[9]}" ] && echo -e \"vom_9\":{\"vom_val_9\":\"${vom_val[9]}"\",\"vom_ans_9\":\"${vom_ans[9]}\",\"vom_var_9\":\"${vom_var[9]}\"}," >>$tJSONRD || echo -e \"vom_9\":\"none\", >>$tJSONRD
   [ ! -z "${vom_val[10]}" ] && echo -e \"vom_10\":{\"vom_val_10\":\"${vom_val[10]}"\",\"vom_ans_10\":\"${vom_ans[10]}\",\"vom_var_10\":\"${vom_var[10]}\"}," >>$tJSONRD || echo -e \"vom_10\":\"none\", >>$tJSONRD
-  if [ $IS_CONTAINER = "NO" ];then
-    CPU_TEMP=`cat /sys/class/thermal/thermal_zone0/temp|mawk '{printf(substr($1,1,2)"."substr($1,3,1)"℃")}'`
-    echo -e \"cpu_temp\":\"$CPU_TEMP\", >>$tJSONRD
-    CPU_TEMP=`echo ${CPU_TEMP} | mawk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
-    if [ ! -z "$CPU_TEMP" -a ! -z "${slice_ai[16]}" ];then
-      [ $CPU_TEMP -lt ${slice_ai[16]} ] && old[24]=0 || old[24]=1
-   else
-      old[24]="-1"
-    fi
+  CPU_TEMP=`cat /sys/class/thermal/thermal_zone0/temp|mawk '{printf(substr($1,1,2)"."substr($1,3,1)"℃")}'`
+  echo -e \"cpu_temp\":\"$CPU_TEMP\", >>$tJSONRD
+  CPU_TEMP=`echo ${CPU_TEMP} | mawk '{gsub(/Ž/,"",$0);split($0,J,".");printf J[1]}'`
+  if [ ! -z "$CPU_TEMP" -a ! -z "${slice_ai[16]}" ];then
+    [ $CPU_TEMP -lt ${slice_ai[16]} ] && old[24]=0 || old[24]=1
   else
     old[24]="-1"
-    echo -e \"cpu_temp\":\"none\", >>$tJSONRD    
   fi
   cat>$tSLICE_AI<<END
 old[24]=${old[24]}
@@ -469,29 +462,33 @@ END
   chown www-data:www-data $tSLICE_AI 
   mv $tSLICE_AI $SLICE_AI
   voice_req="none"
-  if [ -e "${VOICEREQ}" ];then
-    voice_req=`cat ${VOICEREQ}`
-    [ -z "${voice_req}" ] && voice_req="none"
+  if [ ! -e "${tVOICEREQ}" ];then
+    if [ -e ${VOICEREQ} ];then
+      mv ${VOICEREQ} ${tVOICEREQ}
+      voice_req=`cat ${tVOICEREQ}`
+      [ -z "${voice_req}" ] && voice_req="none"
+    fi
+  else
+    voice_req=`cat ${tVOICEREQ}`
+    rm ${tVOICEREQ}
   fi
   echo -e \"voice_req\":\"${voice_req}\", >>$tJSONRD
-  if [ $IS_CONTAINER = "NO" ];then
-    if [ voice_req != "none" -a -e $JTALK ];then
-      $JTALK
-    fi
+  if [ voice_req != "none" -a -e $JTALK ];then
+    $JTALK
   fi
-  HP_TIMESTAMP=$(date +%s -r $HOMEPAGE)
+  HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
   echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\", >>$tJSONRD
   liveimg="none"
   livevideo="none"
-  NOWSECOND=$(date +%s)
+  NOWSECOND=`date +%s`
   if [ -e $LIVEIMG ];then
-    LIVEIMGSTAMP=$(date +%s -r $LIVEIMG)
+    LIVEIMGSTAMP=`date +%s -r $LIVEIMG`
     if [ $(($NOWSECOND - $LIVEIMGSTAMP)) -gt 2 ];then
       liveimg="remote-hand.jpg"
     fi
   fi
   if [ -e $LIVEMOVE ];then
-    LIVEIMGSTAMP=$(date +%s -r $LIVEMOVE)
+    LIVEIMGSTAMP=`date +%s -r $LIVEMOVE`
     if [ $(($NOWSECOND - $LIVEIMGSTAMP)) -gt 5 ];then
       livevideo="remote-hand.webm"
     fi
@@ -516,17 +513,22 @@ END
   TMP_FILE_TXT=`ls $DIR/|grep ".txt"`;CT_TXT=`echo $TMP_FILE_TXT|wc -w`
   TMP_FILE_GIF=`ls $DIR/|grep ".gif"`;CT_GIF=`echo $TMP_FILE_GIF|wc -w`
   TMP_FILE_MP4=`ls $DIR/|grep ".mp4"`;CT_MP4=`echo $TMP_FILE_MP4|wc -w`
-  TMP_FILE_WHAT_WAV=`ls $DIR/|grep "what_pop.wav"`;CT_WAV=`echo $TMP_FILE_WHAT_WAV|wc -w`
-  TMP_FILE_WHAT_MP3=`ls $DIR/|grep "what_pop.mp3"`;CT_MP3=`echo $TMP_FILE_WHAT_MP3|wc -w`
-  TMP_FILE_VOICE_REQ=`ls -a $DIR/|grep ".voice_req"`;CT_VOICEREQ=`echo $TMP_FILE_VOICE_REQ|wc -w`
-  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT + $CT_GIF + $CT_MP4 + $CT_MP3 + $CT_WAV + $CT_VOICEREQ))
+  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT + $CT_GIF + $CT_MP4))
   if [ $TOTAL -gt 0 ];then
-    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT $TMP_FILE_GIF $TMP_FILE_MP4 $TMP_FILE_WHAT_WAV $TMP_FILE_WHAT_MP3 $TMP_FILE_VOICE_REQ;do
-      TM=$(date +%s -r $DIR/$TMP)
+    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT $TMP_FILE_GIF $TMP_FILE_MP4;do
+      TM=`date +%s -r $DIR/$TMP`
       if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
         rm $DIR/$TMP
       fi
     done
   fi
+  if [ -e ${VOICEREQ} ];then
+    FILE_LIVE=`date +%s -r ${VOICEREQ}`
+    if [ $(($NOWSECOND - $FILE_LIVE)) -gt $MAX_TMP_FILE_LIVE ];then
+      rm ${VOICEREQ}
+    fi
+  fi
+# error mail spool remove
+  rm -rf /var/spool/exim4/input/* ;rm -rf /var/spool/exim4/msglog/*
   msleep ${POLLTIME}
 done
