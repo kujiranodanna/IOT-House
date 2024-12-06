@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.9.21
-* remote-hand_pi_gpio.js ver0.24 2024.9.21
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.11.26
+* remote-hand_pi_gpio.js ver0.24 2024.11.26
 */
 function blink(){
   if (!document){ return; }
@@ -3243,43 +3243,43 @@ function update_di(item){
 // Disp Sound File
         if (di2json.disp_sound_0){
           val = di2json.disp_sound_0;
-          $("#disp_sound_0").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_0").html('<INPUT TYPE="button" id="disp_sound_val_0" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_1){
           val = di2json.disp_sound_1;
-          $("#disp_sound_1").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_1").html('<INPUT TYPE="button" id="disp_sound_val_1" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_2){
           val = di2json.disp_sound_2;
-          $("#disp_sound_2").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_2").html('<INPUT TYPE="button" id="disp_sound_val_2" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_3){
           val = di2json.disp_sound_3;
-          $("#disp_sound_3").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_3").html('<INPUT TYPE="button" id="disp_sound_val_3" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_4){
           val = di2json.disp_sound_4;
-          $("#disp_sound_4").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_4").html('<INPUT TYPE="button" id="disp_sound_val_4" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_5){
           val = di2json.disp_sound_5;
-          $("#disp_sound_5").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_5").html('<INPUT TYPE="button" id="disp_sound_val_5" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_6){
           val = di2json.disp_sound_6;
-          $("#disp_sound_6").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_6").html('<INPUT TYPE="button" id="disp_sound_val_6" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_7){
           val = di2json.disp_sound_7;
-          $("#disp_sound_7").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_7").html('<INPUT TYPE="button" id="disp_sound_val_7" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_8){
           val = di2json.disp_sound_8;
-          $("#disp_sound_8").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_8").html('<INPUT TYPE="button" id="disp_sound_val_8" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.disp_sound_9){
           val = di2json.disp_sound_9;
-          $("#disp_sound_9").html('<INPUT TYPE="button" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
+          $("#disp_sound_9").html('<INPUT TYPE="button" id="disp_sound_val_9" style="width:100px;text-align:center" VALUE="' + val + '" onClick="sound_play(\'./tmp/' + val + '\')">');
         }
         if (di2json.what_pop != "none"){
           disp_what_pop(di2json.what_pop);
@@ -3615,9 +3615,40 @@ function menu4_ck(button_id,disp_id){
       break;
   }
   if (call_cgi == 'sound_del.cgi'){
-    var disp_info = '#' + disp_id;
-    file_name = $(disp_info).html();
-    if (file_name != ""){
+    switch (disp_id){
+      case 'disp_sound_0':
+        file_name = document.menu4.disp_sound_val_0.value;
+        break;
+      case 'disp_sound_1':
+        file_name = document.menu4.disp_sound_val_1.value;
+        break;
+      case 'disp_sound_2':
+        file_name = document.menu4.disp_sound_val_2.value;
+        break;
+      case 'disp_sound_3':
+        file_name = document.menu4.disp_sound_val_3.value;
+        break;
+      case 'disp_sound_4':
+        file_name = document.menu4.disp_sound_val_4.value;
+        break;
+      case 'disp_sound_5':
+        file_name = document.menu4.disp_sound_val_5.value;
+        break;
+      case 'disp_sound_6':
+        file_name = document.menu4.disp_sound_val_6.value;
+        break;
+      case 'disp_sound_7':
+        file_name = document.menu4.disp_sound_val_7.value;
+        break;
+      case 'disp_sound_8':
+        file_name = document.menu4.disp_sound_val_8.value;
+        break;
+      case 'disp_sound_9':
+        file_name = document.menu4.disp_sound_val_9.value;
+        break;
+    }
+    if (file_name != "none"){
+      var disp_info = '#' + disp_id;
       $(disp_info).text("File Delete in progress.");
       $.ajax({
         type: "get",
@@ -3628,13 +3659,16 @@ function menu4_ck(button_id,disp_id){
         data: disp_id + '=' + file_name,
         success: function(){
           $(disp_info).text("File Delete Success!");
-          return;
         },
         error: function(){
           $(disp_info).text("File Delete faile!");
-          return;
         }
       });
+      setInterval(function(){
+          var jump_location = "wait_for.cgi?"
+          location.href=jump_location;
+          return;
+      },30000);
     }
     return false;
   }

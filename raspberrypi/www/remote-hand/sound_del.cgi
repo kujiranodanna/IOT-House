@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.11.28
 
 PATH=$PATH:/usr/local/bin
 echo -n '
@@ -9,13 +9,11 @@ echo -n '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2024.2.10">
-<META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
+<META NAME="build" content="2024.11.28">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
-<TITLE>Upload Sound File settings</TITLE>
+<TITLE>Sound delete file</TITLE>
 <script type="text/javascript">
 function blink() {
-//  if (!document.all) { return; }
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);
     if (obj.className == "blink") {
@@ -41,6 +39,11 @@ function blink() {
 CONV=./conv_get.cgi
 . $CONV
 DIR=/www/remote-hand/tmp
+prog=sound_del
+LOCK=$DIR/${prog}_lock
+LOCK_OTHER=$DIR/sound_upload_lock
+[ -e $LOCK -o -e $LOCK_OTHER ] && exit
+echo -en $$ >$LOCK
 FILE_NAME=$DIR/.sound_file_name
 tFILE_NAME=$DIR/.sound_file_name_tmp
 if [ ! -e $FILE_NAME ];then
@@ -50,7 +53,7 @@ else
 fi
 for n in 0 1 2 3 4 5 6 7 8 9;do
 if [ -n "${disp_sound[$n]}" ];then
-  if [ ${sound_file[$n]}=${disp_sound[$n]} ];then
+  if [ "${sound_file[$n]}" = "${disp_sound[$n]}" ];then
     cat $FILE_NAME | grep -F -v ${sound_file[$n]} > $tFILE_NAME
     mv $tFILE_NAME $FILE_NAME
     rm -f $DIR/${sound_file[$n]}
@@ -62,5 +65,6 @@ if [ $lengthFILE_NAME -eq 0 ];then
   exit
 fi
 done
+[ -e $LOCK ] && rm $LOCK
 echo -n '
 </HTML>'
