@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.11.26
-* remote-hand_pi_gpio.js ver0.24 2024.11.26
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.12.12
+* remote-hand_pi_gpio.js ver0.25 2024.12.12
 */
 function blink(){
   if (!document){ return; }
@@ -38,12 +38,8 @@ function startWebVoiceRecognition(){
   else {
     if (recognizing === false){
       var voice_lang_val = $("#voice_lang").val();
-      if (voice_lang_val == "en"){
-        recognition.lang = "en";
-      }
-      else {
-        recognition.lang = "ja";
-      }
+      if (voice_lang_val == "en") recognition.lang = "en-US";
+      if (voice_lang_val == "ja") recognition.lang = "ja-JP"; 
     }
     var tmp_continuous = $("#voice_continuous").val();
     if (tmp_continuous == "Yes"){
