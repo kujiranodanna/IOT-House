@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.5 update 2024.2.10
-# pepotimelapse ; scripts to run the ｔimelapse for security cameras using Raspberry Pi module camera.
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2021.7.5 update 2021.12.7
+# pepotimelapse ; scripts to run the timelapse for security cameras using Raspberry Pi module camera.
 # That to run a of 3600 seconds interval.
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 WORKDIR=/www/remote-hand/tmp
@@ -18,7 +18,7 @@ error(){
   [ -e ${IMAGE_DIR_TMP}.tar.gz ] && rm ${IMAGE_DIR_TMP}.tar.gz
   exit 0
 }
-trap error QUIT INT TERM HUP
+trap error SIGQUIT SIGINT SIGTERM SIGHUP
 
 while true;do
   j=0

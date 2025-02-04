@@ -85,7 +85,7 @@ END
     else
       TMP=0
       WRD=`${CMDWIREDIO} $TMP 2>&1`
-	fi
+	  fi
 #Tocos di & ai set
     [ -e $ALIAS_DI ] && . $ALIAS_DI
     RD="-1" ;  AI="-1" ; TI1=-1 ; TI2=-1 ; TI3=-1 ; TI4=-1 ; AI1=-1 ; AI2=-1 ; AI3=-1 ; AI4=-1 ; VAI1=-1 ; VAI2=-1 ; VAI3=-1 ; VAI4=-1 ;
