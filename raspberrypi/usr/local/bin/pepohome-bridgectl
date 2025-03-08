@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2025.2.23
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2025.3.3
 # pepohome-bridgectl, homebridge moniter daemon for Rasberry pi zero W2.
 LOG1=/var/log/homebridge.log
 LOG2=/var/log/homebridge.log.1
@@ -48,10 +48,8 @@ logrote(){
     TIMESTAMP2=$(date +%s -r $LOG2)
   fi
   if [ $TIMESTAMP1 -gt $TIMESTAMP2 ];then
-    tail -n 100 $LOG1 >$LOG2
     homebridge -I >$LOG2 &
   else
-    tail -n 100 $LOG2 >$LOG1
     homebridge -I >$LOG1 &
   fi
   msleep 10000
