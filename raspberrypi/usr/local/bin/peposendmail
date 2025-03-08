@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2024.2.10
-# peposendmail
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2012.7.8 update 2025.3.8
+# peposendmail 
 # peposendmail $1:mail_to, $2:subject, $3:message ,$4:image.jpeg
 # peposendmail $1:linenotify $2:subject, $3:message ,$4:image.jpeg
 if [ $# -lt 3 -o $# -gt 4 ];then
-  echo "usage: $0 mail_to subject message | image(remote.mp4|remote.jpg)"
+  echo "usage: $0 mail_to(bcc) subject message | image(remote.mp4|remote.jpg)"
   exit
 fi
 DIR=/www/remote-hand/tmp
@@ -21,10 +21,10 @@ SUBJECT=`echo $2 | mawk '{gsub(/\+/," ",$0);printf $0}'`
 SUBJECT="$HOSTNAME $SUBJECT"
 MESSAGE=`echo $3 | mawk '{gsub(/\+/," ",$0);printf $0}'`
 IMAGEFILE=$4
-tMAIL_TO=`echo -n $MAIL_TO | tr A-Z a-z`
+tMAIL_TO=`echo -en $MAIL_TO | tr A-Z a-z`
 if [ $tMAIL_TO = "linenotify" ];then
   MESSAGE=${SUBJECT}${MESSAGE}
-  tMESSAGE=`echo -n $MESSAGE | tr " " "+"`
+  tMESSAGE=`echo -en $MESSAGE | tr " " "+"`
   $LINENOTIFY $tMESSAGE $IMAGEFILE
   exit
 fi
@@ -32,17 +32,17 @@ error(){
   [ -e $pidfile ] && rm -f $pidfile
   exit 0
 }
-trap error TERM HUP KILL INT
+trap error SIGTERM SIGHUP SIGKILL SIGINT
 while [ -e ${pidfile} ]
 do
   msleep 1000
   kill -HUP `cat ${pidfile}`
 done
-echo -n $$ > ${pidfile}
+echo -en $$ > ${pidfile}
 if [ $# -eq 4 ];then
-  echo ${MESSAGE} | ${MUA} -s "${SUBJECT}" "${MAIL_TO}" -a ${DIR}/${IMAGEFILE}
+  echo ${MESSAGE} | ${MUA} -s "${SUBJECT}" -b "${MAIL_TO}" -a ${DIR}/${IMAGEFILE}
 elif [ $# -eq 3 ];then
-  echo ${MESSAGE} | ${MUA} -s "${SUBJECT}" "${MAIL_TO}"
+  echo ${MESSAGE} | ${MUA} -s "${SUBJECT}" -b "${MAIL_TO}"
 fi
 [ -e ${pidfile} ] && rm ${pidfile}
 [ -e ${MAIL_LOG} ] && rm -f ${MAIL_LOG}
