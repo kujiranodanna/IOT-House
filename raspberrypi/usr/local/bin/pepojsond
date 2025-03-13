@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2024.12.3
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2025.3.13
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -529,6 +529,29 @@ END
     fi
   fi
 # error mail spool remove
-  rm -rf /var/spool/exim4/input/* ;rm -rf /var/spool/exim4/msglog/*
+  EXIM4_INPUT=/var/spool/exim4/input
+  EXIM4_LOG=/var/spool/exim4/msglog
+  if [ -e $EXIM4_INPUT ];then
+    INPUT_DEL=$(ls $EXIM4_INPUT/);CT=$(echo $INPUT_DEL|wc -w)
+    if [ $CT -gt 0 ];then
+      for TMP in $INPUT_DEL;do
+        TM=$(date +%s -r $EXIM4_INPUT/$TMP)
+        if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
+          rm $EXIM4_INPUT/$TMP
+        fi
+      done
+    fi
+  fi
+  if [ -e $EXIM4_LOG ];then
+    INPUT_DEL=$(ls $EXIM4_LOG/);CT=$(echo $INPUT_DEL|wc -w)
+    if [ $CT -gt 0 ];then
+      for TMP in $INPUT_DEL;do
+        TM=$(date +%s -r $EXIM4_LOG/$TMP)
+        if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
+          rm $EXIM4_LOG/$TMP
+        fi
+      done
+    fi
+  fi
   msleep ${POLLTIME}
 done
