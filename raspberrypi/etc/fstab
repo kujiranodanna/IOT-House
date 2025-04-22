@@ -4,7 +4,7 @@ PARTUUID=15ae16d5-02  /               ext4    defaults,noatime  0       1
 # a swapfile is not a swap partition, no line here
 #   use  dphys-swapfile swap[on|off]  for that
 # Raspberry pi Zero2 W requires ssd drive swap file
-/dev/sda2 none swap sw 0 0
+# /dev/sda2 none swap sw 0 0
 tmpfs /www tmpfs defaults,noatime,size=200m 0 0
 tmpfs /var/log tmpfs defaults,noatime,size=64m 0 0
 tmpfs /tmp tmpfs defaults,noatime,size=100m 0 0

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2025.3.13
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2025.4.13
 # pepojsond is for daemon make json data
 
 USR_BIN=/usr/bin/dio
@@ -461,7 +461,10 @@ old[35]=${old[35]}
 END
   chown www-data:www-data $tSLICE_AI 
   mv $tSLICE_AI $SLICE_AI
+  NOWSECOND=`date +%s`
   voice_req="none"
+  HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
+  echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\", >>$tJSONRD
   if [ ! -e "${tVOICEREQ}" ];then
     if [ -e ${VOICEREQ} ];then
       mv ${VOICEREQ} ${tVOICEREQ}
@@ -470,17 +473,18 @@ END
     fi
   else
     voice_req=`cat ${tVOICEREQ}`
-    rm ${tVOICEREQ}
+    [ -z "${voice_req}" ] && voice_req="none"
+    LIVEVOICESTAMP=$(date +%s -r ${tVOICEREQ})
+    if [ $(($NOWSECOND - $LIVEVOICESTAMP)) -gt $MAX_TMP_FILE_LIVE ];then
+      rm ${tVOICEREQ}
+    fi
   fi
   echo -e \"voice_req\":\"${voice_req}\", >>$tJSONRD
   if [ voice_req != "none" -a -e $JTALK ];then
     $JTALK
   fi
-  HP_TIMESTAMP=`date +%s -r $HOMEPAGE`
-  echo -e \"hp_timestamp\":\"${HP_TIMESTAMP}\", >>$tJSONRD
   liveimg="none"
   livevideo="none"
-  NOWSECOND=`date +%s`
   if [ -e $LIVEIMG ];then
     LIVEIMGSTAMP=`date +%s -r $LIVEIMG`
     if [ $(($NOWSECOND - $LIVEIMGSTAMP)) -gt 2 ];then
@@ -522,15 +526,10 @@ END
       fi
     done
   fi
-  if [ -e ${VOICEREQ} ];then
-    FILE_LIVE=`date +%s -r ${VOICEREQ}`
-    if [ $(($NOWSECOND - $FILE_LIVE)) -gt $MAX_TMP_FILE_LIVE ];then
-      rm ${VOICEREQ}
-    fi
-  fi
 # error mail spool remove
   EXIM4_INPUT=/var/spool/exim4/input
   EXIM4_LOG=/var/spool/exim4/msglog
+  EXIM4_PANIC=/var/log/exim4/paniclog
   if [ -e $EXIM4_INPUT ];then
     INPUT_DEL=$(ls $EXIM4_INPUT/);CT=$(echo $INPUT_DEL|wc -w)
     if [ $CT -gt 0 ];then
@@ -551,6 +550,15 @@ END
           rm $EXIM4_LOG/$TMP
         fi
       done
+    fi
+  fi
+  if [ -e $EXIM4_PANIC ];then
+    INPUT_DEL=$(ls $EXIM4_PANIC);CT=$(echo $INPUT_DEL|wc -w)
+    if [ $CT -gt 0 ];then
+      TM=$(date +%s -r $EXIM4_PANIC)
+      if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
+        rm $EXIM4_PANIC
+      fi
     fi
   fi
   msleep ${POLLTIME}

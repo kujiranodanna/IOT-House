@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.3.6
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.17
 
 # gamil_set.cgi
 echo -n '
@@ -61,8 +61,6 @@ if [ $REG = "del" ];then
   GMAILUSER="root"
   cat>$CMD<<END
 #!/bin/sh
-[ -e $CONF ] && rm $CONF
-cp $MAIL_CONF_ORG $MAIL_CONF
 cat>$tROOT_MURC<<EOF
 set mbox_type = Mbox
 set copy = no
@@ -74,7 +72,51 @@ set use_from = "yes"
 set envelope_from = "yes"
 EOF
 mv $tROOT_MURC $ROOT_MURC
-cp -a $MAIL_CONF_CONF_ORG $MAIL_CONF_CONF
+cat >$tMAIL_CONF<<EOF
+# password file used when the local exim is authenticating to a remote
+# host as a client.
+#
+# see exim4_passwd_client(5) for more documentation
+#
+# Example:
+### target.mail.server.example:login:password
+EOF
+mv $tMAIL_CONF $MAIL_CONF
+cat >$tMAIL_CONF<<EOF
+# /etc/exim4/update-exim4.conf.conf
+#
+# Edit this file and /etc/mailname by hand and execute update-exim4.conf
+# yourself or use 'dpkg-reconfigure exim4-config'
+#
+# Please note that this is _not_ a dpkg-conffile and that automatic changes
+# to this file might happen. The code handling this will honor your local
+# changes, so this is usually fine, but will break local schemes that mess
+# around with multiple versions of the file.
+#
+# update-exim4.conf uses this file to determine variable values to generate
+# exim configuration macros for the configuration file.
+#
+# Most settings found in here do have corresponding questions in the
+# Debconf configuration, but not all of them.
+#
+# This is a Debian specific file
+
+dc_eximconfig_configtype='local'
+dc_other_hostnames=$(hostname)
+dc_local_interfaces='127.0.0.1'
+dc_readhost=''
+dc_relay_domains=''
+dc_minimaldns='false'
+dc_relay_nets=''
+dc_smarthost=''
+CFILEMODE='644'
+dc_use_split_config='false'
+dc_hide_mailname=''
+dc_mailname_in_oh='true'
+dc_localdelivery='mail_spool'
+EOF
+mv $tMAIL_CONF $MAIL_CONF_CONF
+END
 msleep 100
 update-exim4.conf
 END
@@ -113,7 +155,7 @@ cat $MAIL_CONF_ORG | awk '
 cat>$MAIL_CONF_CONF<<EOF
 # 2018.2.11 pepo
 dc_eximconfig_configtype='smarthost'
-dc_other_hostnames=''
+dc_other_hostnames=$(hostname)
 dc_local_interfaces='127.0.0.1'
 dc_readhost=''
 dc_relay_domains=''

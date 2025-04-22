@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2023.12.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.15
 
 PATH=$PATH:/usr/local/bin
 echo -n '
@@ -9,7 +9,7 @@ echo -n '
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META NAME="auther" content="yamauchi.isamu">
 <META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2023.12.30">
+<META NAME="build" content="2025.4.15">
 <META NAME="reply-to" content="izamu@pepolinux.jpn.org">
 <META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
 <TITLE>DIO settings</TITLE>
@@ -143,7 +143,9 @@ for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16; do
 done
 [ -e "$tALIAS_DO" ] && mv "$tALIAS_DO" "$ALIAS_DO"
 for n in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25; do
-   [ -z "${alias_di_reg[$n]}" ] && continue
+  if [ $n -ne 25 ];then
+    [ -z "${alias_di_reg[$n]}" ] && continue
+  fi
   if [ "${alias_di_reg[$n]}" != "none" ];then
     if [ -e "$ALIAS_DI" ];then
       cat "$ALIAS_DI" | grep -F -v [$n] > "$tALIAS_DI"

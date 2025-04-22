@@ -1,21 +1,20 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2024-2027 Isamu.Yamauchi ,2024.8.20 update 2024.8.20
-
+# Copyright (c) 2024-2027 Isamu.Yamauchi ,2024.8.20 update 2025.4.3
 PATH=$PATH:/usr/local/bin
 echo -n '
+<!DOCTYPE HTML>
 <HTML>
 <HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META NAME="auther" content="yamauchi.isamu">
-<META NAME="copyright" content="pepolinux.jpn.org">
-<META NAME="build" content="2024.8.20">
-<META http-equiv="Refresh" content="2;URL=/remote-hand/wait_for.cgi">
-<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<META NAME="auther" content="yamauchi.isamu" />
+<META NAME="copyright" content="pepolinux.jpn.org" />
+<META NAME="build" content="2025.4.3" />
+<META http-equiv="Refresh" content="10;URL=/remote-hand/wait_for.cgi" />
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org" />
 <TITLE>File delete</TITLE>
 <script type="text/javascript">
 function blink() {
-  // if (!document.all) { return; }
   for (i = 0; i < document.all.length; i++) {
     obj = document.all(i);
     if (obj.className == "blink") {
@@ -33,7 +32,7 @@ function blink() {
 <BODY onload="blink()" BGCOLOR="#E0FFFF">
 <HR>
 <TABLE ALIGN=CENTER BORDER=0 CELLPADDING=6 CELLSPACING=2>
-<TR ALIGN=CENTER class="blink"><TD>Processing Upload Image File</TD></TR></TABLE>
+<TR ALIGN=CENTER class="blink"><TD>File deletion in progress</TD></TR></TABLE>
 <HR>
 <TABLE ALIGN=RIGHT><TR><TD>&copy;2024-2026 pepolinux.jpn.org</TD><TR></TABLE>
 </BODY>'

@@ -1,14 +1,14 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.3.7
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.20
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
-LOCKFILE="$DIR/LCK..pi_int.cgi"
-LOCKPID="$DIR/LCK..pi_int.cgi.pid"
-DATE="2025.3.7"
-VERSION="ver:0.23&nbsp;$DATE"
+LOCKFILE="$DIR/LCK..pi_int_gpio.cgi"
+LOCKPID="$DIR/LCK..pi_int_gpio.cgi.pid"
+DATE="2025.4.20"
+VERSION="ver:0.24&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
 ZEROW=`cat /proc/cpuinfo| grep "Pi Zero"| wc -l`
@@ -20,14 +20,13 @@ echo -n '
 <!DOCTYPE HTML>
 <HTML LANG="ja">
 <HEAD>
-<META http-equiv="Content-Type" content="text/HTML; charset=utf-8">
-<META NAME="Auther" content="yamauchi.isamu">
-<META NAME="Copyright" content="pepolinux.jpn.org">
-<META NAME="Build" content="$DATE">
-<META NAME="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Content-Type" content="text/HTML; charset=utf-8" />
+<META NAME="Auther" content="yamauchi.isamu" />
+<META NAME="Copyright" content="pepolinux.jpn.org" />
+<META NAME="Build" content="$DATE" />
+<META NAME="reply-to" content="izamu@pepolinux.jpn.org" />
 <TITLE>$DIST_NAME command execution</TITLE>
 <script type="text/javascript">
-<!--
 function blink() {
   for (var i = 0; i < document.all.length; i++) {
     obj = document.all(i);
@@ -44,8 +43,7 @@ function blink() {
 }'
 # wait proceed
 BUSY=`ls $DIR/|grep -E ".pepocmd$"|wc -w`
-while [ "$BUSY" != 0 ]
-do
+while [ "$BUSY" != 0 ];do
   msleep 500
   BUSY=`ls $DIR/|grep -E ".pepocmd$"|wc -w`
 done
@@ -67,7 +65,7 @@ function jump_href() {
 <TR ALIGN=CENTER><TD>Please wait</TD></TR>
 </TABLE>
 <HR>
-<TABLE ALIGN=RIGHT><TR><TD>&copy;2024 pepolinux.jpn.org</TD></TR></TABLE>
+<TABLE ALIGN=RIGHT><TR><TD>&copy;2025 pepolinux.jpn.org</TD></TR></TABLE>
 </BODY>
 </HTML>'
   exit -1
@@ -134,24 +132,26 @@ while [ $n -lt 34 ];do
   n=$(($n + 1))
 done
 
+# button_ope.html
 cat >$PAGE6<<END
 <!DOCTYPE HTML>
 <HTML LANG="ja">
-<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
-<META name="Auther" content="yamauchi.isamu">
-<META name="Copyright" content="pepolinux">
-<META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+<META name="Auther" content="yamauchi.isamu" >
+<META name="Copyright" content="pepolinux" />
+<META name="Build" content="$DATE" />
+<META name="reply-to" content="izamu@pepolinux.jpn.org" />
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
-<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.js" type="text/javascript"></script>
 <TITLE>$DIST_NAME Button Control</TITLE>
 </HEAD>
-<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
-<META http-equiv="Refresh" content="120;URL=/remote-hand/$PAGE6">
+<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" visibilityState="update_di('onunload')>
+<META http-equiv="Refresh" content="120;URL=/remote-hand/$PAGE6" />
 <DIV style="text-align:center"><FONT size="5" color="green">$DIST_NAME<FONT size="2">&nbsp;$VERSION</FONT></FONT></DIV>
+<BR>
 <BR>
 <FONT SIZE="+1"><B>Digital output Button Operation</B></FONT>
 <BR>
@@ -207,120 +207,87 @@ Continuous
 </SELECT>
 <BR>
 State:<span id="recognition_state" >Stop</span>
-<HR>
 <BR>
+<span id="popup"></span>
+<BR>
+<HR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <BR>
 <BR>
-<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./$PAGE2'";>
+<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./pi_int.html'";>
 <BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2024 pepolinux.jpn.org&nbsp;
+&copy;2025 pepolinux.jpn.org&nbsp;
 </H1>
 </BODY>
 </HTML>
 END
-
-SMART_PHONE=`echo "$HTTP_USER_AGENT" |mawk 'BEGIN{S_PHONE="NO"};/(iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
+SMART_PHONE=`echo "$HTTP_USER_AGENT" |mawk 'BEGIN{S_PHONE="NO"};/(iPad|iPhone|Android)/{S_PHONE="YES"};END{printf S_PHONE}'`
 if [ $SMART_PHONE = "YES" ];then
   cat >$PAGE1<<END
 <!DOCTYPE HTML>
 <HTML LANG="ja">
-<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
-<META name="Auther" content="yamauchi.isamu">
-<META name="Copyright" content="pepolinux">
-<META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+<META name="Auther" content="yamauchi.isamu" />
+<META name="Copyright" content="pepolinux" />
+<META name="Build" content="$DATE" />
+<META name="reply-to" content="izamu@pepolinux.jpn.org" />
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
+<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int.html" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
-<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.js" type="text/javascript"></script>
 <TITLE>$DIST_NAME Smart Phone Control</TITLE>
 </HEAD>
-<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
-<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int.cgi">
+<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" visibilityState="update_di('onunload')>
 <DIV style="text-align:center"><FONT size="5" color="green">$DIST_NAME<FONT size="2">&nbsp;$VERSION</FONT></FONT></DIV>
+<BR>
 <BR>
 <FORM NAME="menu5" id="menu5_form"  ACTION="./dio_set.cgi" METHOD="get" onsubmit="this.disabled=true;" ENCTYPE="multipart/form-data">
 <FONT SIZE="+1"><B>Digital output information</B></FONT>
 <BR>
-<span id="s_phone_do0">
-</span>
-<span id="s_phone_do1">
-</span>
-<span id="s_phone_do2">
-</span>
-<span id="s_phone_do3">
-</span>
-<span id="s_phone_do8">
-</span>
-<span id="s_phone_do9">
-</span>
-<span id="s_phone_do10">
-</span>
-<span id="s_phone_do11">
-</span>
-<span id="s_phone_do12">
-</span>
-<span id="s_phone_do13">
-</span>
-<span id="s_phone_do14">
-</span>
-<span id="s_phone_do15">
-</span>
-<span id="s_phone_do16">
-</span>
+<BR>
+<span id="s_phone_do0"></span>
+<span id="s_phone_do1"></span>
+<span id="s_phone_do2"></span>
+<span id="s_phone_do3"></span>
+<span id="s_phone_do8"></span>
+<span id="s_phone_do9"></span>
+<span id="s_phone_do10"></span>
+<span id="s_phone_do11"></span>
+<span id="s_phone_do12"></span>
+<span id="s_phone_do13"></span>
+<span id="s_phone_do14"></span>
+<span id="s_phone_do15"></span>
+<span id="s_phone_do16"></span>
 <HR>
 <FONT SIZE="+1"><B>Digital input information</B></FONT>
 <BR>
-<span id="s_phone_di0">
-</span>
-<span id="s_phone_di1">
-</span>
-<span id="s_phone_di2">
-</span>
-<span id="s_phone_di3">
-</span>
-<span id="s_phone_di8">
-</span>
-<span id="s_phone_di9">
-</span>
-<span id="s_phone_di10">
-</span>
-<span id="s_phone_di11">
-</span>
-<span id="s_phone_di12">
-</span>
-<span id="s_phone_di13">
-</span>
-<span id="s_phone_di14">
-</span>
-<span id="s_phone_di15">
-</span>
-<span id="s_phone_di16">
-</span>
-<span id="s_phone_di17">
-</span>
-<span id="s_phone_di18">
-</span>
-<span id="s_phone_di19">
-</span>
-<span id="s_phone_di20">
-</span>
-</span>
-<span id="s_phone_di21">
-</span>
-</span>
-<span id="s_phone_di22">
-</span>
-</span>
-<span id="s_phone_di23">
-</span>
+<span id="s_phone_di0"></span>
+<span id="s_phone_di1"></span>
+<span id="s_phone_di2"></span>
+<span id="s_phone_di3"></span>
+<span id="s_phone_di8"></span>
+<span id="s_phone_di9"></span>
+<span id="s_phone_di10"></span>
+<span id="s_phone_di11"></span>
+<span id="s_phone_di12"></span>
+<span id="s_phone_di13"></span>
+<span id="s_phone_di14"></span>
+<span id="s_phone_di15"></span>
+<span id="s_phone_di16"></span>
+<span id="s_phone_di17"></span>
+<span id="s_phone_di18"></span>
+<span id="s_phone_di19"></span>
+<span id="s_phone_di20"></span>
+<span id="s_phone_di21"></span>
+<span id="s_phone_di22"></span>
+<span id="s_phone_di23"></span>
 </FORM>
 <HR>
 <img border="0" src="./google-microphone.png" width="300" height="300" alt="microphone" onclick="startWebVoiceRecognition();"/>
@@ -333,6 +300,11 @@ Voice control
 <OPTION VALUE="en">English
 </SELECT>
 </span>
+<BR>
+State:<span id="recognition_state" >Stop</span>
+<BR>
+<span id="popup"></span>
+<BR>
 <HR>
 <span id="s_phone_cpu_temp_graph"></span>
 <span id="s_phone_gpio_temp_graph"></span>
@@ -347,7 +319,7 @@ Voice control
 <span id="s_phone_vai_2_graph"></span>
 <span id="s_phone_vai_3_graph"></span>
 <span id="s_phone_vai_4_graph"></span>
-<INPUT style="text-align:center" TYPE="button" VALUE="Temp&Hum Disp" onclick="location.href='./temp_hum.html'";>
+<INPUT style="text-align:center" TYPE="button" VALUE="Temp&Hum Disp" onclick="location.href='./$PAGE5'";>
 <BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Button Operation" onclick="location.href='./$PAGE6'";>
@@ -356,13 +328,13 @@ Voice control
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <BR>
 <BR>
-<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./setup.html'";>
+<INPUT style="text-align:center" TYPE="button" VALUE="Setup" onclick="location.href='./$PAGE4'";>
 <BR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <BR>
 <BR>
-&copy;2024 pepolinux.jpn.org&nbsp;
+&copy;2025 pepolinux.jpn.org&nbsp;
 </H1>
 </BODY>
 </HTML>
@@ -376,21 +348,23 @@ fi
 cat >$PAGE5<<END
 <!DOCTYPE HTML>
 <HTML LANG="ja">
-<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
-<META name="Auther" content="yamauchi.isamu">
-<META name="Copyright" content="pepolinux">
-<META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+<META name="Auther" content="yamauchi.isamu" />
+<META name="Copyright" content="pepolinux" />
+<META name="Build" content="$DATE" />
+<META name="reply-to" content="izamu@pepolinux.jpn.org" />
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
+<META http-equiv="Refresh" content="120;URL=/remote-hand/$PAGE5" />
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
-<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.js" type="text/javascript"></script>
 <TITLE>IOT-House Temperature&Humidity</TITLE>
 </HEAD>
-<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
-<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int.cgi">
+<BODY BGCOLOR="#e0ffff" onload="update_di('onload')" visibilityState="update_di('onunload')>
 <DIV style="text-align:center"><FONT size="5" color="green">$DIST_NAME<FONT size="2">&nbsp;$VERSION</FONT></FONT></DIV>
+<BR>
+<BR>
 <span id="s_phone_temp_hum"></span>
 <span id="s_phone_gpio_temp_graph"></span>
 <span id="s_phone_gpio_hum_graph"></span>
@@ -426,10 +400,11 @@ Continuous
 <BR>
 State:<span id="recognition_state" >Stop</span>
 <BR>
+<span id="popup"></span>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Home" onclick="location.href='./pi_int.html'";/>
 <BR>
-&copy;2024 pepolinux.jpn.org&nbsp;
+&copy;2025 pepolinux.jpn.org&nbsp;
 <span id="server_time" style="text-align:left"></span>
 </H1>
 </BODY>
@@ -440,17 +415,17 @@ END
 cat >$PAGE1<<END
 <!DOCTYPE HTML>
 <HTML LANG="ja">
-<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8">
-<META name="Auther" content="yamauchi.isamu">
-<META name="Copyright" content="pepolinux">
-<META name="Build" content="$DATE">
-<META name="reply-to" content="izamu@pepolinux.jpn.org">
+<META http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+<META name="Auther" content="yamauchi.isamu" />
+<META name="Copyright" content="pepolinux" />
+<META name="Build" content="$DATE" />
+<META name="reply-to" content="izamu@pepolinux.jpn.org" />
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
 <link rel="stylesheet" href="pepo_ui.tabs.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
 <script src="jquery-ui.min.js" type="text/javascript"></script>
-<script src="remote-hand_gpio.min.js" type="text/javascript"></script>
+<script src="remote-hand_gpio.js" type="text/javascript"></script>
 <script type="text/javascript">
   \$(function() {
     \$("#tabs").tabs();
@@ -461,8 +436,8 @@ cat >$PAGE1<<END
 </script>
 <TITLE>$DIST_NAME Control Panel</TITLE>
 </HEAD>
-<BODY id="tab_cont_body" BGCOLOR="#e0ffff" onload="update_di('onload')" onunload="update_di('onunload')>
-<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int_gpio.cgi">
+<BODY id="tab_cont_body" BGCOLOR="#e0ffff" onload="update_di('onload')" visibilityState="update_di('onunload')>
+<META http-equiv="Refresh" content="120;URL=/remote-hand/pi_int.html" />
 <DIV id="tabs">
 <DIV  style="text-align:center"><FONT size="5" color="green">$DIST_NAME</FONT><FONT size="2">&nbsp;$VERSION</FONT></DIV>
 <DIV id="tab_cont_div">
@@ -914,7 +889,8 @@ Voice control
 <BR>
 <input type="button" value="Recognition start" onclick="startWebVoiceRecognition();"/>
 <input type="button" value="Recognition stop" onclick="stopWebVoiceRecognition();"/>
-State<span id="recognition_state" >Stop</span>
+State<span id="recognition_state" >Stop</span>&nbsp&nbsp
+<span id="popup"></span>
 <BR>
 <HR>
 <input type="button" value="Camera_1 photo" onclick="start_photo('video0');"/>&nbsp
@@ -8101,7 +8077,7 @@ Ans.<INPUT id="vom_ans_10" type="text" style="width:120px;" NAME="vom_ans_10" VA
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
 <INPUT style="text-align:center" TYPE="button" VALUE="Logout" onclick="logout()" ;>
 <TABLE ALIGN=RIGHT>
-<TR><TD><FONT SIZE="-1">&copy;2024 pepolinux.jpn.org&nbsp;
+<TR><TD><FONT SIZE="-1">&copy;2025 pepolinux.jpn.org&nbsp;
 <span id="server_time" style="text-align:left"></span>&nbsp;
 </TR>
 </TABLE>

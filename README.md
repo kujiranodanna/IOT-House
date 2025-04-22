@@ -22,6 +22,25 @@ If it is judged that the outside air humidity is low and the underfloor exchange
 
 After playing with Raspberry Pi, let's practice home appliances and home security with IOT House.
 
+<b>Install</b>
+`
+apt-get update && apt-get install -y \
+apache2 \
+daemontools \
+dnsutils \
+exim4 \
+ffmpeg \
+gawk \
+jq \
+lrzsz \
+procmail \
+nkf \
+mplayer \
+mutt \
+rrdtool
+# copy svscan /etc/init.d
+# 
+`
 <b>Hardware</b> -> https://kujiranodanna.github.io/tags/hardware
 
 <b>Binary image</b> -> "IOT-House_zero_w" is available here -> https://osdn.net/projects/pepolinux/releases/p15935

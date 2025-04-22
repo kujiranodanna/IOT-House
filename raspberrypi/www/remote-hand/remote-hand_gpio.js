@@ -1,7 +1,7 @@
 /*
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2024.12.12
-* remote-hand_pi_gpio.js ver0.25 2024.12.12
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.13
+* remote-hand_pi_gpio.js ver0.26 2025.4.13
 */
 function blink(){
   if (!document){ return; }
@@ -18,6 +18,29 @@ function blink(){
   }
   setTimeout("blink()",1000);
 }
+function CheckBrowser(){
+  var userAgent = window.navigator.userAgent.toLowerCase();
+  if(userAgent.indexOf('edg') != -1)     { return "Edge";}
+  if(userAgent.indexOf('chrome') != -1)  { return "Chrome";}
+  if(userAgent.indexOf('safari') != -1)  { return "Safari";}
+  if(userAgent.indexOf('iPhone') != -1)  { return "Safari";}
+  if(userAgent.indexOf('ipad') != -1)    { return "Safari";}
+  if(userAgent.indexOf('firefox') != -1) { return "FireFox";}
+  if(userAgent.indexOf('opera') != -1)   { return "Opera";}
+  return "Unknown";
+}
+function CheckBrowserOS(){
+  var userAgent = window.navigator.userAgent.toLowerCase();
+  var tmp_str;
+  tmp_str = /android/;if(userAgent.match(tmp_str) != null) {return "Android"};
+  tmp_str = /linux/; if(userAgent.match(tmp_str) != null)   {return "Linux";}
+  tmp_str = /windows/; if(userAgent.match(tmp_str) != null) {return "Windows";}
+  tmp_str = /iphone/; if(userAgent.match(tmp_str) != null)  {return "iPhone";}
+  tmp_str = /ipad/; if(userAgent.match(tmp_str) != null)    {return "iPad";}
+  tmp_str = /mac/; if(userAgent.match(tmp_str) != null)     {return "Mac";}
+  return "Unknown";
+}
+
 var smapho_reload_tm = 20000;
 var unsmapho_reload_tm = 60000;
 var recognition = new webkitSpeechRecognition();
@@ -216,30 +239,28 @@ function initWebVoice(state){
     },5000);
   $("#recognition_state").text(state);
 }
-function CheckBrowser(){
-  var userAgent = window.navigator.userAgent.toLowerCase();
-  if(userAgent.indexOf('edg') != -1)     { return "Edge";   }
-  if(userAgent.indexOf('chrome') != -1)   { return "Chrome";  }
-  if(userAgent.indexOf('safari') != -1)    { return "Safari";  }
-  if(userAgent.indexOf('iphone') != -1)    { return "Safari";  }
-  if(userAgent.indexOf('ipad') != -1)    { return "Safari";  }
-  if(userAgent.indexOf('firefox') != -1)  { return "FireFox"; }
-  if(userAgent.indexOf('opera') != -1)    { return "Opera";   }
-  return "Unknown";
-}
 function speak_exec(voice,lang){
   var Browser = CheckBrowser();
+  var OS = CheckBrowserOS();
   var lang_temp;
   if(Browser == "Chrome" | Browser == "FireFox" | Browser == "Edge" | Browser == "Safari"){
-    var utterance = new SpeechSynthesisUtterance();
-    if (lang == "en") lang_temp = "en-US";
-    if (lang == "ja") lang_temp = "ja";
-    utterance.text = voice;
-    utterance.lang = lang_temp;
-    utterance.pitch = 1.2;
-    utterance.rate = 0.8;
-    speechSynthesis.speak(utterance);
-  }
+    if (OS == "Linux"){
+      jtalk2what_pop(voice);
+      return;
+    }
+  } else return;
+  const speechsynth = window.speechSynthesis;
+  var utterance = new SpeechSynthesisUtterance(voice);
+  if (lang == "en") lang_temp = "en-US";
+  if (lang == "ja") lang_temp = "ja-JP";
+  utterance.lang = lang_temp;
+  utterance.pitch = 1.2;
+  utterance.rate = 0.8;
+  speechsynth.speak(utterance);
+}
+function VoiceConfirmAction(t_voice,t_lang){
+  speak_exec(t_voice,t_lang);
+  file_delte(".voice_req.tmp");
 }
 function speak_main(voice,lang){
   speak_exec(voice,lang);
@@ -572,7 +593,7 @@ function start_video(dev){
   else if (video_dev == "vchiq"){
     live_timer = $('#live_timer3').val();
   }
-  if (live_timer === undefined){
+  if (typeof live_timer === "undefined"){
     live_timer = 10;
   }
   live_timer = live_timer * 1 + 5;
@@ -679,6 +700,24 @@ function streaming_start_stop(dev,start_stop){
     }
   });
 }
+// openjtalk to what_pop.wav
+function jtalk2what_pop(voice){
+  $.ajax({
+    type: "get",
+    url: "jtalk2whatpop.cgi",
+    timeout : 3000,
+    dataType: "text",
+    async: true,
+    data: 'voice=' + voice ,
+    success: function(){
+      return true;
+    },
+    error: function(){
+      return false;
+    }
+  });
+}
+
 function disp_what_pop(what_pop_img){
   var close_timer = 30000;
   var child_url = "./tmp/" +  what_pop_img + "?" + (new Date().getTime());
@@ -746,6 +785,7 @@ function send_do(ch,do_val,do_time,disp_v,di_v){
     color_font = "#F0FFFF";
     break;
   }
+  if(typeof do_time === "undefined") do_time = "";
   $(di_v).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '">&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#DA0B00" VALUE="ON" onClick="send_do(' + do_ch + ',1,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/>&nbsp&nbsp&nbsp&nbsp<INPUT TYPE="button" size="4" style="width:80px;color:#F0FFFF;background-color:#008000" VALUE="OFF" onClick="send_do(' + do_ch + ',0,\'\',\'' + disp_v + '\',\'' + di_v + '\');"/><BR>');
   if (do_ch >= 8 && do_ch <= 13){
     irkit_post(do_ch,do_time);
@@ -1088,7 +1128,7 @@ function voice_do(do_sel,results_voice){
           str = str.toLowerCase();
         } else {
           voice_str = voice_str.replace('の','');
-          if (str != undefined) str = str.replace('の','');
+          if (typeof str != "undefined") str = str.replace('の','');
         }
         tvoice_ck = str + "オン";
         if (tvoice_ck == voice_str){
@@ -2012,7 +2052,7 @@ function update_do(do_sel,results_voice){
       tdo_time = $('#don_time_16').val();
       break;
     case 'voice_sel':
-      if (results_voice === undefined){
+      if (typeof results_voice === "undefined"){
         var results_voice = $('#voice_val').val();
       if (results_voice == "") return;
       }
@@ -2080,7 +2120,7 @@ function update_di(item){
     }
   }
   function diocount(t_item, t_reset, t_update, t_count, t_log_id){
-    if (t_update === undefined) t_update = "";
+    if (typeof t_update === "undefined") t_update = "";
     $(t_item).html('Count:<INPUT TYPE="text" readonly style="width:36px;text-align:right;" VALUE="' + t_count + '">&nbsp;' + t_reset + ' ～ ' + t_update);
     var disp_log = '#' + t_log_id;
     $(disp_log).html('<input type="button" value="Log display" onclick="disp_di_log(\'' + t_log_id + '\');"/>');
@@ -2102,7 +2142,7 @@ function update_di(item){
       color_font = "#F0FFFF";
       break;
     }
-    $(di_v).html('<INPUT TYPE="button" id="' + do_alias + '" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:240px;text-align:center" VALUE="' + disp_v + '" onClick=s_phone_update_do("' + do_item + '")><BR><BR>');
+    $(di_v).html('<INPUT TYPE="button" id="' + do_alias + '" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:260px;text-align:center" VALUE="' + disp_v + '" onClick=s_phone_update_do("' + do_item + '")><BR><BR>');
   }
   function s_phone_di_color_set(di_v,disp_v,val_v){
     var color_bg;
@@ -2164,8 +2204,8 @@ function update_di(item){
   function s_phone_di_graph(di_span,di_name,di_val,di_cgi,br,wid){
     var color_bg = "#E6E6E6";
     var color_font = "#000000";
-    if (wid === undefined) wid = 400;
-    if (br == "" || br === undefined){
+    if (typeof wid === "undefined") wid = 400;
+    if (br == "" || br === "undefined"){
       $(di_span).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:' + wid + "px" + ';text-align:center" VALUE="' + di_name + " " + di_val + '" onClick="window.open(\'' + di_cgi + '\',\'\',\'width=600,height=200\')"><BR><BR>');
     } else {
       $(di_span).html('<INPUT TYPE="button" readonly style="color:' + color_font + ';background-color:' + color_bg + ';width:' + wid + "px" + ';text-align:center" VALUE="' + di_name + " " + di_val + '" onClick="window.open(\'' + di_cgi + '\',\'\',\'width=600,height=200\')">');
@@ -2200,8 +2240,6 @@ function update_di(item){
             var fstamp_m = di2json.hp_timestamp * 1000;
             var time_lag = Math.abs(now_m - fstamp_m) ; // mili second calculation of time
             var reload_tm = unsmapho_reload_tm + 2000;
- //             console.log({time_lag});
- //             console.log({reload_tm});
             if (time_lag <  reload_tm) {
               setTimeout(function(){
                 location.reload();
@@ -2210,6 +2248,7 @@ function update_di(item){
           }
           if (di2json.voice_req){
             val = di2json.voice_req;
+            s_phone_di_color_set("#popup","VoiceMsgOff", val);
             if (val == "high"){
               startWebVoiceRecognition();
             } else {
@@ -2217,10 +2256,9 @@ function update_di(item){
                   var tmp = (val.match(/[^@＠]+/));
                   if (tmp.index == 1){
                     var voice_lang_val = $("#voice_lang").val();
-                    if (voice_lang_val === null) voice_lang_val = ja;
+                    if (voice_lang_val === null) voice_lang_val = "ja";
                     val = tmp[0];
-                    speak_exec(val,voice_lang_val);
-                    file_delte(".voice_req");
+                    $("#popup").html('<INPUT TYPE="button" size="4" readonly style="color:#A9A9A9;background-color:#008000;width:260px;text-align:center" VALUE="VoiceMsgOn" onClick="VoiceConfirmAction(\'' + val+ '\',\'' + voice_lang_val + '\');"/>');
                   } else {
                     update_do("voice_sel",val);
                 }
@@ -2985,7 +3023,7 @@ function update_di(item){
                 $("#gpio_gas_graph").html('&nbsp;<input type="button" NAME="gpio_gas_disp" VALUE="Gas Graph" onClick="window.open(\'./gpio_gas_disp.cgi\',\'\',\'width=600,height=200\')">&nbsp;<input type="button" NAME="gpio_gas_disp" VALUE="Gas Day Graph" onClick="window.open(\'./gpio_gas_disp_day.cgi\',\'\',\'width=600,height=200\')">');
                 $("#gpio_iaq_graph").html('&nbsp;<input type="button" NAME="gpio_iaq_disp" VALUE="IAQ Graph" onClick="window.open(\'./gpio_iaq_disp.cgi\',\'\',\'width=600,height=200\')">&nbsp;<input type="button" NAME="gpio_iaq_disp" VALUE="IAQ Day Graph" onClick="window.open(\'./gpio_iaq_disp_day.cgi\',\'\',\'width=600,height=200\')">&nbsp;<input type="button" NAME="gpio_iaq_disp" VALUE="Last hour CSV data" onClick="window.open(\'./gpiorrdtoolfetch.cgi\',\'\',\'width=400,height=600\')">');
                 if (iaq_val != "none") color_set("#gpio_iaq_val",iaq_val,iaq_color);
-                if (val != undefined) s_phone_di_graph("#s_phone_cpu_temp_graph","CPU Temp",val, "cpu_temp_disp.cgi");
+                if (typeof val != "undefined") s_phone_di_graph("#s_phone_cpu_temp_graph","CPU Temp",val, "cpu_temp_disp.cgi");
                 if (tval[1] != "none") s_phone_di_graph("#s_phone_gpio_temp_graph","GPIO Temp",tval[1], "gpio_temp_disp_day.cgi");
                 if (tval[2] != "none") s_phone_di_graph("#s_phone_gpio_hum_graph","GPIO Hum",tval[2], "gpio_hum_disp_day.cgi");
                 if (tval[3] != "none") s_phone_di_graph("#s_phone_gpio_pres_graph","GPIO Pres",tval[3], "gpio_pres_disp_day.cgi");
@@ -3287,13 +3325,11 @@ function update_di(item){
     });
   });
   if (item == "onload"){
-    var browser_os = "unknown";
-    if (navigator.userAgent.match(/iPhone/)) browser_os = "iPhone";
-    if (navigator.userAgent.match(/Android/)) browser_os = "Android";
+    var browser_os = CheckBrowserOS();
     if ((document.getElementById("computer_name") !== null)) {
       unsmapho_reload_tm = 20000;
     }
-    if (browser_os == "iPhone" || browser_os == "Android"){
+    if (browser_os == "iPhone" || browser_os == "Android" || browser_os == "iPad"){
       if (document.getElementById("s_phone_temp_hum") != null){
         Update_di_Timer = setTimeout("update_di('onload')",unsmapho_reload_tm); // Temp&Hum Disp information update time (milliseconds)
       } else {

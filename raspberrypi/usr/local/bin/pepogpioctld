@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2025.4.17
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
@@ -144,6 +144,7 @@ while true;do
         GAS_SUM=0
         GAS[$i]=$BME680GAS
         while [ $i -lt $BASECT ];do
+          GAS[$i]=$((${GAS[$i]} + 0))
           if [ ${GAS[$i]} -ne 0 ];then
             GAS_SUM=$(($GAS_SUM + ${GAS[$i]}))
             j=$(($j + 1))
@@ -155,6 +156,7 @@ while true;do
         done
         i=1
         while [ $i -lt $BASECT ];do
+          tGAS[$i]=$((${tGAS[$i]} + 0))
           if [ ${tGAS[$i]} -ne 0 ];then
             GAS[$i]=${tGAS[$i]}
             i=$(($i + 1))

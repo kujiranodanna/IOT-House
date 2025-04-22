@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2024.7.30
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2025.4.17
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
@@ -59,7 +59,21 @@ if [ ! -e ${WORKDIR} ];then
   else
     [ -e /usr/src/pepolinux/back_up.tar.gz ] && rm -f /usr/src/pepolinux/back_up.tar.gz
     [ -e /usr/src/pepolinux/back_up_log.tar.gz ] && rm -f /usr/src/pepolinux/back_up_log.tar.gz
-    cat >${tMAIL_CONF}<<END
+  fi
+  chown www-data:www-data ${WORKDIR} ${WORKDIR_TMP}
+  if [ -e ${WORKDIR_TMP}/.ping_watch.cron ];then
+    crontab -u www-data ${WORKDIR_TMP}/.ping_watch.cron
+  fi
+  if [ -e ${WORKDIR_TMP}/.pepogmail4dio.conf ];then
+      cp /etc/exim4/update-exim4.conf.conf.org  /etc/exim4/update-exim4.conf.conf
+    . ${WORKDIR_TMP}/.pepogmail4dio.conf
+    cat >/etc/exim4/passwd.client<<END
+gmail-smtp.l.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+*.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+smtp.gmail.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+END
+  else
+    cat >/etc/exim4/passwd.client<<END
 # password file used when the local exim is authenticating to a remote
 # host as a client.
 #
@@ -67,25 +81,40 @@ if [ ! -e ${WORKDIR} ];then
 #
 # Example:
 ### target.mail.server.example:login:password
-gmail-smtp.l.google.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
-*.google.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
-smtp.gmail.com:YOUR-USER-NAME@gmail.com:YOUR-USER-PASSWORD
 END
-    mv ${tMAIL_CONF} ${MAIL_CONF_ORG} ; cp ${MAIL_CONF_ORG} ${MAIL_CONF}
-    update-exim4.conf
-  fi
-  chown www-data:www-data ${WORKDIR} ${WORKDIR_TMP}
-  if [ -e ${WORKDIR_TMP}/.ping_watch.cron ];then
-    crontab -u www-data ${WORKDIR_TMP}/.ping_watch.cron
-  fi
-  if [ -e ${WORKDIR_TMP}/.pepogmail4dio.conf ];then
-    . ${WORKDIR_TMP}/.pepogmail4dio.conf
-    cat >/etc/exim4/passwd.client<<END
-gmail-smtp.l.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
-*.google.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
-smtp.gmail.com:${GMAILUSER}@gmail.com:${GMAILPASSWORD}
+    cat >/etc/exim4/update-exim4.conf.conf<<END
+# /etc/exim4/update-exim4.conf.conf
+#
+# Edit this file and /etc/mailname by hand and execute update-exim4.conf
+# yourself or use 'dpkg-reconfigure exim4-config'
+#
+# Please note that this is _not_ a dpkg-conffile and that automatic changes
+# to this file might happen. The code handling this will honor your local
+# changes, so this is usually fine, but will break local schemes that mess
+# around with multiple versions of the file.
+#
+# update-exim4.conf uses this file to determine variable values to generate
+# exim configuration macros for the configuration file.
+#
+# Most settings found in here do have corresponding questions in the
+# Debconf configuration, but not all of them.
+#
+# This is a Debian specific file
+
+dc_eximconfig_configtype='local'
+dc_other_hostnames=$(hostname)
+dc_local_interfaces='127.0.0.1'
+dc_readhost=''
+dc_relay_domains=''
+dc_minimaldns='false'
+dc_relay_nets=''
+dc_smarthost=''
+CFILEMODE='644'
+dc_use_split_config='false'
+dc_hide_mailname=''
+dc_mailname_in_oh='true'
+dc_localdelivery='mail_spool'
 END
-    update-exim4.conf
   fi
   ZEROW=`cat /proc/cpuinfo| grep "Pi Zero"| wc -l`
   ZERO2W=`cat /proc/cpuinfo| grep "Pi Zero 2 W"| wc -l`
@@ -317,6 +346,7 @@ EOF
 else
   echo remote-hand aredy running!
 fi
+update-exim4.conf
 rm -f /home/pi/.bash_history
 touch /www/tmp/.bash_history_pi
 mkdir /www/tmp/.npm
@@ -326,6 +356,10 @@ ln -s /www/tmp/.bash_history_pi /home/pi/.bash_history
 rm -f /root/.bash_history
 touch /www/tmp/.bash_history_root
 ln -s /www/tmp/.bash_history_root /root/.bash_history
+[ -e /root/.viminfo ] && rm /root/.viminfo
+[ -e /root/.lesshst ] && rm /root/.lesshst
+[ -e /root/.wget-hsts ] && /root/.wget-hsts
+[ -e /root/.ssh ] && rm -rf /root/.ssh
 rm -rf /var/lib/logrotate
 mkdir /www/tmp/logrotate
 ln -s /www/tmp/logrotate /var/lib/logrotate
@@ -333,8 +367,8 @@ systemctl restart rsyslog
 if [ ${NET_RESTART} = "YES" ];then
   systemctl restart networking
 fi
-[ -e $tNETWORK_CONF ] && $tNETWORK_CONF
-[ -e $tWPA_CONF ] && $tWPA_CONF
+[ -e $tNETWORK_CONF ] && rm $tNETWORK_CONF
+[ -e $tWPA_CONF ] && rm $tWPA_CONF
 systemctl restart apache2
 #systemctl restart exim4
 systemctl restart cron
