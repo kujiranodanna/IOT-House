@@ -38,8 +38,9 @@ nkf \
 mplayer \
 mutt \
 rrdtool
-# copy svscan /etc/init.d
-# 
+### copy svscan /etc/init.d
+
+<hr>
 `
 <b>Hardware</b> -> https://kujiranodanna.github.io/tags/hardware
 
