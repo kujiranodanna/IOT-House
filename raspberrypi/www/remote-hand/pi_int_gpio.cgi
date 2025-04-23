@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.20
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.24
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int_gpio.cgi"
 LOCKPID="$DIR/LCK..pi_int_gpio.cgi.pid"
-DATE="2025.4.20"
+DATE="2025.4.24"
 VERSION="ver:0.24&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -7873,7 +7873,6 @@ END
 tSTARTUP=$DIR/.startup.s.tmp
 [ -e $tSTARTUP ] && . $tSTARTUP
 [ ! -z $vWEBPASSWORD ] && vWEBPASSWORD="*"
-[ ! -z $vLINENOTIFY ] && vLINENOTIFY="*"
 cat >>$PAGE1<<END
 <DL id="menu13dl">
 <DT><FONT SIZE="+1"><B>Server configuration and save</B></FONT></DT>
@@ -7894,9 +7893,6 @@ web user
 <BR>
 web password
 <INPUT TYPE="password" size="22" style="width:110px;" VALUE="$vWEBPASSWORD" NAME="server_val_1">
-<BR>
-LINE Notify
-<INPUT TYPE="password" size="22" style="width:110px;" VALUE="$vLINENOTIFY" NAME="server_val_2">
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Run" onClick="return menu13_ck()" ;>
 <INPUT style="text-align:center" TYPE="reset" VALUE="Clear">
