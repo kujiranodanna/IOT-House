@@ -1,14 +1,14 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.4.24
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.7.13
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int_gpio.cgi"
 LOCKPID="$DIR/LCK..pi_int_gpio.cgi.pid"
-DATE="2025.4.24"
-VERSION="ver:0.24&nbsp;$DATE"
+DATE="2025.7.13"
+VERSION="$(hostname)&nbsp;&nbsp;Ver:0.24&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
 ZEROW=`cat /proc/cpuinfo| grep "Pi Zero"| wc -l`
@@ -209,7 +209,6 @@ Continuous
 State:<span id="recognition_state" >Stop</span>
 <BR>
 <span id="popup"></span>
-<BR>
 <HR>
 <BR>
 <INPUT style="text-align:center" TYPE="button" VALUE="Update" onclick="clearTimeout(Update_di_Timer);location.href='./update.cgi'">&nbsp;
@@ -304,7 +303,6 @@ Voice control
 State:<span id="recognition_state" >Stop</span>
 <BR>
 <span id="popup"></span>
-<BR>
 <HR>
 <span id="s_phone_cpu_temp_graph"></span>
 <span id="s_phone_gpio_temp_graph"></span>
@@ -355,7 +353,9 @@ cat >$PAGE5<<END
 <META name="reply-to" content="izamu@pepolinux.jpn.org" />
 <META http-equiv="content-style-type" content="text/css" />
 <META http-equiv="content-script-type" content="text/javascript" />
+<!--
 <META http-equiv="Refresh" content="120;URL=/remote-hand/$PAGE5" />
+-->
 <link rel="stylesheet" href="rasp_phone.css" type="text/css" media="print, projection, screen">
 <script src="jquery-3.5.1.min.js" type="text/javascript"></script>
 <script src="remote-hand_gpio.js" type="text/javascript"></script>
@@ -891,7 +891,6 @@ Voice control
 <input type="button" value="Recognition stop" onclick="stopWebVoiceRecognition();"/>
 State<span id="recognition_state" >Stop</span>&nbsp&nbsp
 <span id="popup"></span>
-<BR>
 <HR>
 <input type="button" value="Camera_1 photo" onclick="start_photo('video0');"/>&nbsp
 <input type="button" value="Camera_2 photo" onclick="start_photo('video1');"/>&nbsp
