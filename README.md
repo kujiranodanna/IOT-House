@@ -16,7 +16,7 @@ We will inform you by photo email when the security sensor works.
 
 Play music at a fixed time.
 
-You will be notified by email and phone (Wan Gi) when a fire detector reports.
+You will be notified by email and phone (Wan Giri) when a fire detector reports.
 
 If it is judged that the outside air humidity is low and the underfloor exchange humidity is high, the underfloor ventilation fan is operated intermittently.
 
