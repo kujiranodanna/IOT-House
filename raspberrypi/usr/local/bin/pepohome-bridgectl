@@ -1,10 +1,11 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2025.3.3
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2025.7.14
 # pepohome-bridgectl, homebridge moniter daemon for Rasberry pi zero W2.
 LOG1=/var/log/homebridge.log
 LOG2=/var/log/homebridge.log.1
 prog_pid=/root/.homebridge/pepohome-bridgectl_pid
+TIMEWAIT=20000
 # logrotate time,0155 -> 155
 LOGROTATE=155
 error(){
@@ -12,7 +13,7 @@ error(){
     P_PID=$(pgrep homebridge)
     if [ ! -z "$P_PID" ];then
       kill -HUP $P_PID
-      msleep 10000
+      msleep $TIMEWAIT
     fi
     P_PID=$(pgrep homebridge)
     if [ -z "$P_PID" ];then
@@ -24,15 +25,15 @@ error(){
 }
 logrote(){
   if [ ! -e $LOG1 -a ! -e $LOG2 ];then
-    echo pepo_logstart >$LOG1
-    msleep 1000
-    echo pepo_logstart >$LOG2
+    echo pepo_log1start >$LOG1
+    msleep $TIMEWAIT
+    echo pepo_log2start >$LOG2
   fi
   while true;do
     P_PID=$(pgrep homebridge)
     if [ ! -z "$P_PID" ];then
       kill -HUP $P_PID
-      msleep 10000
+      msleep $TIMEWAIT
     fi
     P_PID=$(pgrep homebridge)
     if [ -z "$P_PID" ];then
@@ -52,7 +53,7 @@ logrote(){
   else
     homebridge -I >$LOG1 &
   fi
-  msleep 10000
+  msleep $TIMEWAIT
 }
 trap error TERM HUP INT QUIT
 while [ -e $prog_pid ];do
@@ -60,13 +61,13 @@ while [ -e $prog_pid ];do
   ctPID=$(ps ax |grep $tPID |wc -l)
   if [ $ctPID -gt 1 ];then
     kill -HUP $tPID
-    msleep 10000
+    msleep $TIMEWAIT
   fi
   rm $prog_pid
   P_PID=$(pgrep homebridge)
   if [ ! -z "$P_PID" ];then
     kill -HUP $P_PID
-    msleep 10000
+    msleep $TIMEWAIT
   fi
 done
 echo pepo_logstart >$LOG1
@@ -93,23 +94,8 @@ while true;do
   if [ -z "$P_PID" ];then
     logrote
   else
-    TIMESTAMP1=0
-    TIMESTAMP2=0
-    if [ -e $LOG1 ];then
-      TIMESTAMP1=$(date +%s -r $LOG)
-    fi
-    if [ -e $LOG2 ];then
-      TIMESTAMP2=$(date +%s -r $LOG1)
-    fi
-    if [ $TIMESTAMP1 -gt $TIMESTAMP2 ];then
-      CT=$(tail -n 100 $LOG1 |grep EAI_AGAIN |wc -l)
-    else
-      CT=$(tail -n 100 $LOG2 |grep EAI_AGAIN |wc -l)
-    fi
-    LIVE=$(netstat -anp|grep 51826 |grep ESTABLISHED|wc -l)
-    if [ $CT -gt 0 ];then
-      logrote
-    elif [ $LIVE -eq 0 ];then
+    LIVE=$(netstat -anp| grep 51826)
+    if [ $LIVE -eq 0 ];then
       logrote
     fi
   fi
