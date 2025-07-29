@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2025.4.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2018.1.8 update 2025.7.29
 # Scan GPIO for rasberry pi zero W.
 # pepogpioctld
 GPIOCTL="/usr/local/bin/pepogpioctl 8"
@@ -14,6 +14,10 @@ LOOPDOCT=2
 LOOPI2CT=20
 LOOPI2CT_BME680=2
 BASECT=50
+AMB_TEMP=25
+AMB_TEMPAVG=$AMB_TEMP
+AMB_TEMPDEF=2
+GAS_BASECONST=3000000
 EPOCHOLD=`date -ud "0 second ago" +%s`
 EPOC5MIN=300
 gpio_i2c="-1"
@@ -34,7 +38,7 @@ error(){
   [ -e $tGPIORD ] && rm -f $tGPIORD
   [ -e $GPIORD ] && rm -f $GPIORD
   [ -e $GPIOWD ] && rm -f $GPIOWD
-  pkill -f $GPIOCTL_I2CBME680
+  pkill -f "GPIOCTL_I2CBME680"
   exit 0
 }
 trap error TERM HUP KILL INT QUIT
@@ -44,7 +48,7 @@ trap error TERM HUP KILL INT QUIT
 [ -e $tGPIOWD ] && rm -f $tGPIOWD
 LOOPDO=${LOOPDOCT}
 LOOPI2C=${LOOPI2CT}
-pkill -f $GPIOCTL_I2CBME680
+pkill -f "GPIOCTL_I2CBME680"
 i=0
 while [ $i -lt $BASECT ];do
   GAS[$i]=0
@@ -61,7 +65,7 @@ while true;do
     GPIO_INIT_FLAG=YES
     LOOPTIME=$LOOPSLEEP
     msleep $LOOPTIME
-    pkill -f $GPIOCTL_I2CBME680
+    pkill -f "GPIOCTL_I2CBME680"
     continue
   fi
   unset piface_ip di do DO
@@ -134,11 +138,21 @@ while true;do
       if [ ! -z $GAS_BASE_CONF ];then
         GAS_BASE=$GAS_BASE_CONF
       else
-        GAS_BASE=3000000
+        GAS_BASE=$GAS_BASECONST
       fi
       EPOCHNOW=`date -ud "0 second ago" +%s`
       if [ $(($EPOCHNOW - $EPOCHOLD)) -gt $EPOC5MIN ];then
         EPOCHOLD=$EPOCHNOW
+        if [ $BME680TEMP -gt $AMB_TEMPAVG ];then
+          TEM_DEF=$(($BME680TEMP - $AMB_TEMPAVG))
+        else
+          TEM_DEF=$(($AMB_TEMPAVG - $BME680TEMP))
+        fi
+        AMB_TEMPAVG=$BME680TEMP
+        if [ $TEM_DEF -gt $AMB_TEMPDEF ];then
+# Ambient temperature set before resetting the BME680 gas sensor. Executed using the USR1 signal.  
+          pkill -USR1 -f "$GPIOCTL_I2CBME680"
+        fi
         i=0
         j=0
         GAS_SUM=0
@@ -201,7 +215,7 @@ while true;do
     else
       if [ ! -z $EPOCHNOW ];then
         tEPOCHNOW=$(date -ud "0 second ago" +%s)
-        if [ $(($tEPOCHNOW - $EPICONOW)) -gt $BME680_ALIVE ];then
+        if [ $(($tEPOCHNOW - $EPOCHNOW)) -gt $BME680_ALIVE ];then
           $GPIOCTL_I2CBME680 &
         fi
       else
