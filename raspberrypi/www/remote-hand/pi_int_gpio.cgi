@@ -1,13 +1,13 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.7.13
+# Copyright (c) 2020-2027 Isamu.Yamauchi , update 2025.8.13
 # pi_int_gpio.cgi ;gpio main script
 
 PATH=$PATH:/usr/local/bin
 DIR=/www/remote-hand/tmp
 LOCKFILE="$DIR/LCK..pi_int_gpio.cgi"
 LOCKPID="$DIR/LCK..pi_int_gpio.cgi.pid"
-DATE="2025.7.13"
+DATE="2025.8.13"
 VERSION="$(hostname)&nbsp;&nbsp;Ver:0.24&nbsp;$DATE"
 # Voice ontorl wake up word 
 Wake_Up_Word="ジャービス"
@@ -1157,7 +1157,10 @@ Slice<INPUT TYPE="text" style="width:24px;" NAME="slice_ai_23" VALUE="${SLICE_AI
 <span id="gpio_iaq_graph"></span>
 <BR>
 <FONT SIZE="-2">IAQ is Sample 0(Good) to 500(Hazardous) Temperature(17-28℃):10% Humidity(40-70%):10% Gas(Gas±Gas_base/Gas_base):80%
-</FONT><BR>
+</FONT>
+&nbsp;
+<input type="button" value="BME680 amb_temp correction" onclick="location.href='./bme680_amb_temp.cgi'">
+<BR>
 <HR>
 Interface<SELECT NAME="DI_TTY">
 <OPTION VALUE="${DI_TTY}" SELECTED>${vTTY}
