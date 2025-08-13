@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2025.4.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2011.11.28 update 2025.8.5
 # pepostart_remote-hand ; start remote-hand for raspberry pi or zero
 systemctl stop dphys-swapfile
 dphys-swapfile swapoff
@@ -369,6 +369,7 @@ if [ ${NET_RESTART} = "YES" ];then
 fi
 [ -e $tNETWORK_CONF ] && rm $tNETWORK_CONF
 [ -e $tWPA_CONF ] && rm $tWPA_CONF
+[ -e $IOTHOSECONF_TMP ] && rm $IOTHOSECONF_TMP
 systemctl restart apache2
 #systemctl restart exim4
 systemctl restart cron
