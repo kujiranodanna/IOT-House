@@ -1,9 +1,9 @@
 #! /bin/bash
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2023.10.2 update 2023.11.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2023.10.2 update 2025.8.13
 # pepogpioctl for contorl gpio signal, input and output.
 # pepogpioctl $1:ch[0-9:b] [$2:0-f] [$3: timer->1 to 300000ms]
-# GPIO PIN Dout:0-3{17,18,27,22} Dinput:0-3{23,24,25,7} 
+# GPIO PIN Dout:0-3{17,18,27,22} Dinput:0-3{23,24,25,4} 
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 usage(){
   echo "usage $0 read->chno:0-9|b | write->chno:0-3 [DO:0|1|0-f] [timer->1 to 300000ms]" >/dev/stderr
@@ -12,7 +12,7 @@ usage(){
 GPIOCMD=/usr/bin/raspi-gpio
 GPIODO="$GPIOCMD set"
 GPIODI="$GPIOCMD get"
-DO[0]=17 ;DO[1]=18 ;DO[2]=27 ;DO[3]=22 ;DI[0]=23 ;DI[1]=24 ;DI[2]=25 ;DI[3]=7 ;high=dh ;low=dl
+DO[0]=17 ;DO[1]=18 ;DO[2]=27 ;DO[3]=22 ;DI[0]=23 ;DI[1]=24 ;DI[2]=25 ;DI[3]=4 ;high=dh ;low=dl
 if [ $# -eq 0 ];then
   usage
 else
@@ -34,22 +34,22 @@ if [ "$CH" = "b" ];then
   exit
 fi
 if [ "$CH" -eq 9 ];then
-  $GPIOCMD set 17,18,27,22 op dl
-  $GPIOCMD set 23,24,25,7 ip pu
+  $GPIOCMD set ${DO[0]},${DO[1]},${DO[2]},${DO[3]} op $low
+  $GPIOCMD set ${DI[0]},${DI[1]},${DI[2]},${DI[3]} ip pu
   exit
 elif [ "$CH" -eq 8 ];then
   RD=0;tRD=0
-  for i in 17 18 27 22 23 24 25 7 ;do
+  for i in ${DO[0]} ${DO[1]} ${DO[2]} ${DO[3]} ${DI[0]} ${DI[1]} ${DI[2]} ${DI[3]};do
     tRD=$($GPIODI $i |mawk '{gsub("level=","",$3);printf("%s",$3)}')
     case "$i" in
-      17) RD=$(($RD + $tRD)) ;;
-      18) RD=$(($RD+ $(($tRD * 2)))) ;;
-      27) RD=$(($RD+ $(($tRD * 4)))) ;;
-      22) RD=$(($RD+ $(($tRD * 8)))) ;;
-      23) RD=$(($RD+ $(($tRD * 16)))) ;;
-      24) RD=$(($RD+ $(($tRD * 32)))) ;;
-      25) RD=$(($RD+ $(($tRD * 64)))) ;;
-      7) RD=$(($RD+ $(($tRD * 128)))) ;;
+      ${DO[0]}) RD=$(($RD + $tRD)) ;;
+      ${DO[1]}) RD=$(($RD+ $(($tRD * 2)))) ;;
+      ${DO[2]}) RD=$(($RD+ $(($tRD * 4)))) ;;
+      ${DO[3]}) RD=$(($RD+ $(($tRD * 8)))) ;;
+      ${DI[0]}) RD=$(($RD+ $(($tRD * 16)))) ;;
+      ${DI[1]}) RD=$(($RD+ $(($tRD * 32)))) ;;
+      ${DI[2]}) RD=$(($RD+ $(($tRD * 64)))) ;;
+      ${DI[3]}) RD=$(($RD+ $(($tRD * 128)))) ;;
     esac
   done
   printf "%02x" $RD
