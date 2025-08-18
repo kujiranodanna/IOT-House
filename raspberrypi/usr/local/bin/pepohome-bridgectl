@@ -1,11 +1,11 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2025.7.27
+# Copyright (c) 2021-2027 Isamu.Yamauchi , 2021.6.21 update 2025.8.17
 # pepohome-bridgectl, homebridge moniter daemon for Rasberry pi zero W2.
 LOG1=/var/log/homebridge.log
 LOG2=/var/log/homebridge.log.1
 prog_pid=/root/.homebridge/pepohome-bridgectl_pid
-TIMEWAIT=30000
+TIMEWAIT=50000
 # logrotate time,0155 -> 155
 LOGROTATE=155
 error(){
@@ -26,7 +26,7 @@ error(){
 logrote(){
   if [ ! -e $LOG1 -a ! -e $LOG2 ];then
     echo pepo_log1start >$LOG1
-    msleep $TIMEWAIT
+    msleep 3000
     echo pepo_log2start >$LOG2
   fi
   while true;do
@@ -54,24 +54,20 @@ logrote(){
     homebridge -I >$LOG1 &
   fi
   msleep $TIMEWAIT
+  TIMESTAMP1=$(date +%s -r $LOG1)
+  TIMESTAMP2=$(date +%s -r $LOG2)
+  if [ $TIMESTAMP1 -gt $TIMESTAMP2 ];then
+    alexaDiscovery=$(tail -n 100 $LOG1 |grep "alexaDiscovery" |wc -l)
+  else
+    alexaDiscovery=$(tail -n 100 $LOG2 |grep "alexaDiscovery" |wc -l)
+  fi
+  if [ $alexaDiscovery -eq 0 ];then
+    echo alexaDiscovery:$alexaDiscovery 
+    exit
+  fi
 }
 trap error TERM HUP INT QUIT
-while [ -e $prog_pid ];do
-  tPID=$(cat $prog_pid)
-  ctPID=$(ps ax |grep $tPID |wc -l)
-  if [ $ctPID -gt 1 ];then
-    kill -KILL $tPID
-    msleep $TIMEWAIT
-  fi
-  rm $prog_pid
-  P_PID=$(pgrep homebridge)
-  if [ ! -z "$P_PID" ];then
-    kill -KILL $P_PID
-    msleep $TIMEWAIT
-  fi
-done
-echo pepo_logstart >$LOG1
-echo pepo_logstart >$LOG2
+logrote
 echo -n $$ >$prog_pid
 while true;do
   P_PID=$(pgrep homebridge)
@@ -111,7 +107,7 @@ while true;do
       logrote
       continue
     fi
-    LIVE=$(netstat -anp| grep 51826)
+    LIVE=$(netstat -anp| grep 51826| wc -l)
     if [ $LIVE -eq 0 ];then
       logrote
     fi
