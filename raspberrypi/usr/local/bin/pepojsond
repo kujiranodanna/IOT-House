@@ -1,7 +1,7 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2025.4.13
-# pepojsond is for daemon make json data
+# Copyright (c) 2021-2028 Isamu.Yamauchi , 2013.7.15 update 2025.9.12
+# pepojsond daemon make json data
 
 USR_BIN=/usr/bin/dio
 EXEC_CMD=/usr/local/bin/pepodiodexec
@@ -517,9 +517,10 @@ END
   TMP_FILE_TXT=`ls $DIR/|grep ".txt"`;CT_TXT=`echo $TMP_FILE_TXT|wc -w`
   TMP_FILE_GIF=`ls $DIR/|grep ".gif"`;CT_GIF=`echo $TMP_FILE_GIF|wc -w`
   TMP_FILE_MP4=`ls $DIR/|grep ".mp4"`;CT_MP4=`echo $TMP_FILE_MP4|wc -w`
-  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT + $CT_GIF + $CT_MP4))
+  TMP_FILE_LOCK=`ls $DIR/|grep ".lock"`;CT_LOCK=`echo $TMP_FILE_LOCK|wc -w`
+  TOTAL=$(($CT_PNG + $CT_JPG + $CT_TXT + $CT_GIF + $CT_MP4 + $CT_LOCK))
   if [ $TOTAL -gt 0 ];then
-    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT $TMP_FILE_GIF $TMP_FILE_MP4;do
+    for TMP in $TMP_FILE_PNG $TMP_FILE_JPG $TMP_FILE_TXT $TMP_FILE_GIF $TMP_FILE_MP4 $TMP_FILE_LOCK;do
       TM=`date +%s -r $DIR/$TMP`
       if [ $(($NOWSECOND - $TM)) -gt $MAX_TMP_FILE_LIVE ];then
         rm $DIR/$TMP
