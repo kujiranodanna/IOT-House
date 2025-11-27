@@ -1,0 +1,14 @@
+#!/bin/sh
+# The MIT License
+# Copyright (c) 2025-2032 Isamu.Yamauchi , 2025.11.7 update 2025.11.7
+# For information about Volumio's API, see below.
+# pepovolumio_start_stop; A script that stops and starts Volumio music on Raspberry Pi or i386,  designed by Isamu.Yamauchi
+# 
+# 1. apt install sshpass
+# 2. http://volumio.local/dev/ SSH ENABLE
+# 3. First time, ssh volumio@volumio.local
+# 4. ssh volumio@volumio.local command['volumio toggle' play start/stop]
+# For information about Volumio's API, see below.
+# https://developers.volumio.com/api/command-line-client
+#!/bin/sh
+sshpass -p "volumio" ssh volumio@volumio.local volumio toggle
