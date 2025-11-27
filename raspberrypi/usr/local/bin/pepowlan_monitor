@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.8.26 update 2024.2.10
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.8.26 update 2025.11.17
 # ping monitoring of wlan0 fail for rasberry pi
 # pepowlan_monitor 
 MSLEEP=34567
@@ -28,6 +28,7 @@ do
     fi
     GATEWAY=`ip route show|mawk '/default/{printf $3}'`
     if [ ! -z $GATEWAY ];then
+      /etc/init.d/avahi-daemon restart
       break
     fi
   done
