@@ -1,9 +1,9 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2022-2027 Isamu.Yamauchi , 2025.12.26 update 2025.12.26
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2025.12.26 update 2025.12.31
 ####################################################################################
 # What's this?
-# This is used to transfer Python programs to the RP2040-Zero connected to the Raspberry Pi USB.
+# This script writes about 300 lines of RP2040 program.
 # This program requires epicon.
 # Please install it by following the instructions below.
 # https://github.com/kujiranodanna/epicon
@@ -14,6 +14,8 @@ pid=`echo -n $$`
 CMD="${DIR}/$prog.cmd"
 RPICMD="${DIR}/RP2040.cmd"
 DIO_DEV=/dev/ttyACM0
+EPICON_TTY_LOCK="/var/lock/LCK..ttyacm0"
+EPICON_SOCKET="/var/lock/epicon_socket.*"
 CMD_DIO="/usr/local/bin/epicon -ql ${DIO_DEV} -s 115200 -d 5 -D 50 -c ${CMD}"
 rm -f /var/lock/epicon_socket.*
 rm -f /var/lock/LCK..ttyacm0
@@ -54,8 +56,10 @@ echo
 END
 chmod +x ${CMD}
 ${CMD}
-rm -f /var/lock/LCK..ttyacm0
-rm -f /var/lock/epicon_socket.*
+rm -f $EPICON_TTY_LOCK
+rm -f $EPICON_SOCKET
+echo RP2040 Program Writer Start
 ${CMD_DIO}
 rm -f ${RPICMD} ${CMD}
+echo RP2040 Program Writer End
 exit
