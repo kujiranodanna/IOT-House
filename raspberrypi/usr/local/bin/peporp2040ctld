@@ -1,0 +1,130 @@
+#!/bin/bash
+# The MIT License
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2026.1.23 update 2026.1.23
+####################################################################################
+# peporp2040ctld
+# What's this?
+# This is a shell program daemon that sends and receives data on the RP2040.
+# The client is the shell program peporp2040ctl.
+# This program requires epicon.
+# Please install it by following the instructions below.
+# https://github.com/kujiranodanna/epicon
+##################################################################################### peporp2040ctl
+DIR=/www/remote-hand/tmp
+prog=peporp2040ctld
+sprog=peporp2040ctl
+DIO_DEV=/dev/ttyACM0
+EPICON_CMD=${DIR}/${prog}.cmd
+RP2040_RD=${DIR}/${prog}.rd
+RP2040_SD=${DIR}/${prog}.sd
+MYPID=${DIR}/${prog}.pid
+SDPID=${DIR}/${sprog}.pid
+EPICONPID=${DIR}/${prog}.epicon_pid
+if [ ! -e $MYPID ];then
+  echo -en $$ >$MYPID
+else
+  exit
+fi
+
+WAIT=1000
+sWAIT=50
+READTM=1
+DATEjitter=2
+# RP2040_RD MAX Bytes
+READCT=47
+CMD_DIO="/usr/local/bin/epicon -ql ${DIO_DEV} -s 115200 -c ${EPICON_CMD}"
+error(){
+  cPID=$(pgrep epicon)
+  while [ ! -z $cPID ];do
+    if [ -e $EPICONPID ];then
+      kill -HUP $(cat $EPICONPID)
+    fi
+    msleep 100
+    cPID=$(pgrep epicon)
+  done
+  [ -e $RP2040_RD ] && rm -f $RP2040_RD
+  [ -e $RP2040_SD ] && rm -f $RP2040_SD
+  [ -e $EPICON_CMD ] && rm -f $EPICON_CMD
+  [ -e $MYPID ] && rm -f $MYPID
+  [ -e $EPICONPID ] && rm -f $EPICONPID
+  exit 0
+}
+trap error TERM HUP INT QUIT
+
+cat >${EPICON_CMD}<<EOF
+#!/bin/bash
+[ -e $RP2040_RD ] && rm -f $RP2040_RD
+[ -e $EPICONPID ]  && rm -f $EPICONPID
+echo -en \$\$ >$EPICONPID
+error(){
+  [ -e $RP2040_RD ] && rm -f $RP2040_RD
+  [ -e $RP2040_SD ] && rm -f $RP2040_SD
+  exit 0
+}
+trap error TERM HUP INT QUIT
+
+rp2040_write(){
+  local SD
+  SD=\$(echo \$1| mawk '{gsub(" ","",\$0);printf \$0}')
+  echo -en "\$SD\\n"
+  echo -en "\\n\$SD\\n" >>$RP2040_SD
+  msleep $WAIT
+}
+
+rp2040_rdout(){
+  [ ! -e $SDPID ] && return
+  sdPID=\$(cat $SDPID)
+  echo -en "\$1\\n" >$RP2040_RD
+  msleep $sWAIT
+  kill -USR1 \$sdPID
+}
+
+rp2040_dummy_read(){
+  read -s -n ${READCT} -t $READTM RD
+  msleep $sWAIT
+}
+
+rp2040_read(){
+  read -s -n \$1 -t ${READTM} RD
+  msleep $sWAIT
+  rp2040_rdout \$RD
+}
+
+sigusr1(){
+  if [ -e $RP2040_SD ];then
+    [ -e $RP2040_RD ] && rm -f $RP2040_RD
+    SEND=\$(cat $RP2040_SD)
+    SD=\$(echo \$SEND |mawk '{printf \$1}')
+    READCOUNTER=\$(echo \$SEND |mawk '{printf \$2}')
+    READTIMER=\$(echo \$SEND |mawk '{printf \$3}')
+    if [ ! -z \$READTIMER ];then
+      rp2040_write "\$SD"
+      msleep "\$READTIMER"
+      rp2040_read "\$READCOUNTER"
+    elif [ -z \$READCOUNTER ];then
+      if [ \$SD = "DUMMY" ];then
+        rp2040_dummy_read
+        rp2040_rdout \$RD
+      else
+        rp2040_write "\$SD"
+        rp2040_dummy_read
+        rp2040_rdout \$RD
+      fi
+    fi 
+  fi
+}
+
+trap sigusr1 USR1
+while true;do
+  if [ ! -e $RP2040_SD ];then
+    msleep 100
+  fi
+  msleep 10
+done
+EOF
+chmod +x ${EPICON_CMD}
+${CMD_DIO}
+while true;do
+  msleep 10
+done
+

@@ -1,15 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 # The MIT License
-# Copyright (c) 2022-2027 Isamu.Yamauchi , 2025.12.26 update 2025.12.31
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2025.12.26 update 2026.1.23
 ####################################################################################
 # What's this?
-# This script writes about 300 lines of RP2040 program.
+# This script allows you to write RP2040 programs up to approximately 250 lines.
 # This program requires epicon.
 # Please install it by following the instructions below.
 # https://github.com/kujiranodanna/epicon
 ####################################################################################
 DIR=/www/remote-hand/tmp
-prog=pepoRP2040pgwrite
+prog=peporp2040pgwrite
 pid=`echo -n $$`
 CMD="${DIR}/$prog.cmd"
 RPICMD="${DIR}/RP2040.cmd"
@@ -17,11 +17,11 @@ DIO_DEV=/dev/ttyACM0
 EPICON_TTY_LOCK="/var/lock/LCK..ttyacm0"
 EPICON_SOCKET="/var/lock/epicon_socket.*"
 CMD_DIO="/usr/local/bin/epicon -ql ${DIO_DEV} -s 115200 -d 5 -D 50 -c ${CMD}"
-rm -f /var/lock/epicon_socket.*
-rm -f /var/lock/LCK..ttyacm0
- 
+EPICON_SOCKET=/var/lock/epicon_socket.*
+[ -e $EPICON_TTY_LOCK ] && rm $EPICON_TTY_LOCK
+[ -e $EPICON_SOCKET ] && rm $EPICON_SOCKET
 cat >${CMD}<<END
-#!/bin/sh
+#!/bin/bash
 #cat >${RPICMD}<<EOF
 echo
 # Send Ctl-C ,Break
@@ -56,10 +56,10 @@ echo
 END
 chmod +x ${CMD}
 ${CMD}
-rm -f $EPICON_TTY_LOCK
-rm -f $EPICON_SOCKET
-echo RP2040 Program Writer Start
+[ -e $EPICON_TTY_LOCK ] && rm $EPICON_TTY_LOCK
+[ -e $EPICON_SOCKET ] && rm $EPICON_SOCKET
+echo -en "\nRP2040 Program Writer Start\n"
 ${CMD_DIO}
 rm -f ${RPICMD} ${CMD}
-echo RP2040 Program Writer End
+echo -en "\nRP2040 Program Writer End\n"
 exit

@@ -1,0 +1,72 @@
+#!/bin/bash
+# The MIT License
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2026.1.23 update 2026.1.23
+####################################################################################
+# peporp2040ctl
+# What's this?
+# This is a shell program that performs send and receive operations on the RP2040,
+# a client shell program for peporpctld.
+# That daemon uses epicon.
+# Please install it by following the instructions below.
+# https://github.com/kujiranodanna/epicon
+##################################################################################### peporp2040ctl
+DIR=/www/remote-hand/tmp
+prog=peporp2040ctl
+daemon_prog=peporp2040ctld
+EPICON_CMD=${DIR}/${prog}.cmd
+RP2040_RD=${DIR}/${daemon_prog}.rd
+RP2040_SD=${DIR}/${daemon_prog}.sd
+MYPID=${DIR}/${prog}.pid
+EPICONPID=${DIR}/${daemon_prog}.epicon_pid
+SWAIT=100
+RETRY=30
+if [ ! -e $EPICONPID ];then
+  echo $daemon_prog  daemon not Acctive!
+  echo First run the $daemon_prog daemon！
+  exit
+fi
+
+error(){
+  [ -e $MYPID ] && rm -f $MYPID
+#  [ -e $RP2040_RD ] && rm -f $RP2040_RD
+#  [ -e $RP2040_SD ] && rm -f $RP2040_SD
+  exit
+}
+trap error TERM HUP INT QUIT
+usage(){
+  echo $prog "RP2040_COMMAND(eg. do1,1) {READ_COUNTER} {WAIT_TIMER}"
+  error
+}
+if [ $# -eq 0 ];then
+  usage
+elif [ $# -gt 3 ];then
+  usage
+fi
+if [ ! -e $MYPID ];then
+  echo -en $$ >$MYPID
+else
+  echo $prog aleady running!
+  exit
+fi
+sigusr1(){
+  if [ -e $RP2040_RD ];then
+    msleep $SWAIT
+    cat $RP2040_RD >/dev/stderr
+  else
+    echo -en "-1" >/dev/stderr
+  fi
+  error
+}
+trap sigusr1 USR1
+echo -en "$1" "$2" "$3" >$RP2040_SD
+msleep $SWAIT
+kill -USR1 $(cat $EPICONPID)
+TRY=$RETRY
+while [ $TRY -ne 0 ];do
+  msleep $SWAIT
+  TRY=$(($TRY - 1))
+done
+if [ $TRY -eq 0 ];then
+  echo -en "-1" >/dev/stderr
+fi
+error
