@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2022-2027 Isamu.Yamauchi , 2026.1.23 update 2026.1.23
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2026.1.23 update 2026.1.26
 ####################################################################################
 # peporp2040ctld
 # What's this?
@@ -9,7 +9,7 @@
 # This program requires epicon.
 # Please install it by following the instructions below.
 # https://github.com/kujiranodanna/epicon
-##################################################################################### peporp2040ctl
+#####################################################################################
 DIR=/www/remote-hand/tmp
 prog=peporp2040ctld
 sprog=peporp2040ctl
@@ -28,11 +28,12 @@ fi
 
 WAIT=1000
 sWAIT=50
-READTM=1
+READTM=4
+TRY=3
 DATEjitter=2
 # RP2040_RD MAX Bytes
 READCT=47
-CMD_DIO="/usr/local/bin/epicon -ql ${DIO_DEV} -s 115200 -c ${EPICON_CMD}"
+CMD_DIO="/usr/local/bin/epicon -ql ${DIO_DEV} -s 19200 -c ${EPICON_CMD}"
 error(){
   cPID=$(pgrep epicon)
   while [ ! -z $cPID ];do
@@ -63,31 +64,42 @@ error(){
 }
 trap error TERM HUP INT QUIT
 
-rp2040_write(){
-  local SD
-  SD=\$(echo \$1| mawk '{gsub(" ","",\$0);printf \$0}')
-  echo -en "\$SD\\n"
-  echo -en "\\n\$SD\\n" >>$RP2040_SD
-  msleep $WAIT
-}
-
 rp2040_rdout(){
   [ ! -e $SDPID ] && return
-  sdPID=\$(cat $SDPID)
   echo -en "\$1\\n" >$RP2040_RD
-  msleep $sWAIT
+  msleep $WAIT
+  sdPID=\$(cat $SDPID)
+  [ -z \$sdPID ] && return
   kill -USR1 \$sdPID
 }
 
 rp2040_dummy_read(){
-  read -s -n ${READCT} -t $READTM RD
+  echo -en "\\n"
   msleep $sWAIT
+  read -s -t $READTM tRD
+# RD=\$(mawk '{print \$0;exit}')
 }
 
-rp2040_read(){
-  read -s -n \$1 -t ${READTM} RD
-  msleep $sWAIT
-  rp2040_rdout \$RD
+rp2040_write(){
+  local tSD tRCT tRTM
+  tSD=\$(echo \$1| mawk '{gsub(" ","",\$0);printf \$0}')
+  tRCT=\$(echo \$2| mawk '{gsub(" ","",\$0);printf \$0}')
+  tRTM=\$(echo \$3| mawk '{gsub(" ","",\$0);printf \$0}')
+  [ -z \$tRCT ] && tRCT=$READCT
+  [ -z \$tRTM ] && tRTM=$WAIT
+  echo -en "\${tSD}\\n"
+  RETRY=$TRY
+  while [ \${RETRY} -ne 0 ];do
+    retry_time=\`echo -en "\${RANDOM}" |cut -c 1-2\`
+    msleep \${tRTM}
+    read -s -n \${tRCT} -t ${READTM} RD || RD="-1"
+#    RD=\$(mawk '{print \$0;exit}')
+     [ \${RD} != "-1" ] && break
+    RETRY=\$((\${RETRY} - 1))
+    msleep \${retry_time}
+  done
+  rp2040_dummy_read
+  rp2040_rdout \${RD}
 }
 
 sigusr1(){
@@ -95,29 +107,22 @@ sigusr1(){
     [ -e $RP2040_RD ] && rm -f $RP2040_RD
     SEND=\$(cat $RP2040_SD)
     SD=\$(echo \$SEND |mawk '{printf \$1}')
-    READCOUNTER=\$(echo \$SEND |mawk '{printf \$2}')
-    READTIMER=\$(echo \$SEND |mawk '{printf \$3}')
-    if [ ! -z \$READTIMER ];then
-      rp2040_write "\$SD"
-      msleep "\$READTIMER"
-      rp2040_read "\$READCOUNTER"
-    elif [ -z \$READCOUNTER ];then
-      if [ \$SD = "DUMMY" ];then
-        rp2040_dummy_read
-        rp2040_rdout \$RD
-      else
-        rp2040_write "\$SD"
-        rp2040_dummy_read
-        rp2040_rdout \$RD
-      fi
-    fi 
+    RCT=\$(echo \$SEND |mawk '{printf \$2}')
+    RTM=\$(echo \$SEND |mawk '{printf \$3}')
+    if [ \$SD = "DUMMY" ];then
+      rp2040_dummy_read
+      [ -z \$RD ] && RD="-1"
+      rp2040_rdout \$RD
+    else
+      rp2040_write "\$SD" "\$RCT" "\$RTM"
+    fi
   fi
 }
 
 trap sigusr1 USR1
 while true;do
   if [ ! -e $RP2040_SD ];then
-    msleep 100
+    msleep 1000
   fi
   msleep 10
 done
@@ -125,6 +130,6 @@ EOF
 chmod +x ${EPICON_CMD}
 ${CMD_DIO}
 while true;do
-  msleep 10
+  msleep 100
 done
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # The MIT License
-# Copyright (c) 2022-2027 Isamu.Yamauchi , 2026.1.23 update 2026.1.23
+# Copyright (c) 2022-2027 Isamu.Yamauchi , 2026.1.23 update 2026.1.26
 ####################################################################################
 # peporp2040ctl
 # What's this?
@@ -18,8 +18,8 @@ RP2040_RD=${DIR}/${daemon_prog}.rd
 RP2040_SD=${DIR}/${daemon_prog}.sd
 MYPID=${DIR}/${prog}.pid
 EPICONPID=${DIR}/${daemon_prog}.epicon_pid
-SWAIT=100
-RETRY=30
+SWAIT=10
+RETRY=500
 if [ ! -e $EPICONPID ];then
   echo $daemon_prog  daemon not Acctive!
   echo First run the $daemon_prog daemon！
@@ -52,12 +52,21 @@ sigusr1(){
   if [ -e $RP2040_RD ];then
     msleep $SWAIT
     cat $RP2040_RD >/dev/stderr
+    error
   else
     echo -en "-1" >/dev/stderr
   fi
-  error
 }
 trap sigusr1 USR1
+[ -e $RP2040_RD ] && rm -f $RP2040_RD
+[ -e $RP2040_SD ] && rm -f $RP2040_SD
+TRY=1
+while [ $TRY -ne 0 ];do
+  echo -en "DUMMY" >$RP2040_SD
+  msleep $SWAIT
+  kill -USR1 $(cat $EPICONPID)
+  TRY=$(($TRY - 1))
+done
 echo -en "$1" "$2" "$3" >$RP2040_SD
 msleep $SWAIT
 kill -USR1 $(cat $EPICONPID)
@@ -68,5 +77,7 @@ while [ $TRY -ne 0 ];do
 done
 if [ $TRY -eq 0 ];then
   echo -en "-1" >/dev/stderr
+else
+  cat $RP2040_RD >/dev/stderr
 fi
 error
