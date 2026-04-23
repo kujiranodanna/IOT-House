@@ -1,6 +1,6 @@
 #!/bin/sh
 # The MIT License
-# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.8.26 update 2025.11.17
+# Copyright (c) 2020-2027 Isamu.Yamauchi , 2015.8.26 update 2026.4.22
 # ping monitoring of wlan0 fail for rasberry pi
 # pepowlan_monitor 
 MSLEEP=34567
@@ -28,7 +28,7 @@ do
     fi
     GATEWAY=`ip route show|mawk '/default/{printf $3}'`
     if [ ! -z $GATEWAY ];then
-      /etc/init.d/avahi-daemon restart
+      systemctl restart avahi-daemon
       break
     fi
   done
@@ -46,6 +46,11 @@ do
         ifdown eth0
         ifup eth0
       fi
+    fi
+  else
+    PING_HOST=$(cat /etc/hostname).local
+    if ! ping -c 1 $PING_HOST 2>&1 >>$PING_LOG; then
+      systemctl restart avahi-daemon
     fi
   fi
   msleep $MSLEEP
